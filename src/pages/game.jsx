@@ -8,16 +8,30 @@ import { checkGrade } from "../grade/checkGrade";
 
 const Game = () => {
   const [videoId, setVideoId] = useState(null); // ✅ top level
-  const navigate = useNavigate(); // ✅ top level
   const [value, setValue] = useState(90); // initial value
+  const navigate = useNavigate(); // ✅ top level
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  // Function to fetch a new video
+  const fetchNewVideo = async () => {
+    const id = await getData();
+    setVideoId(id);
+  };
+
+  // Load first video on mount
   useEffect(() => {
-    getData().then((id) => setVideoId(id));
+    fetchNewVideo();
   }, []);
+
+  // Submit guess and refresh video
+  const handleSubmit = () => {
+    checkGrade(getGrade(value));
+    fetchNewVideo(); // ✅ fetch new video after submitting
+    setValue(90); // optional: reset slider to default
+  };
 
   // ✅ conditional rendering is fine AFTER hooks
   if (!videoId) return <div>Loading...</div>;
@@ -68,7 +82,7 @@ const Game = () => {
         </div>
         <div className="flex gap-4">
           <button onClick={() => navigate("/")}>Go back</button>
-          <button onClick={() => checkGrade(getGrade(value))}>Submit</button>
+          <button onClick={handleSubmit}>Submit</button>
         </div>
       </div>
     </div>
