@@ -2,19 +2,26 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData } from "../api/getVideo";
 import ReactPlayer from "react-player";
+import { Slider } from "@mui/material";
+import { getGrade } from "../grade/grading";
+import { checkGrade } from "../grade/checkGrade";
 
 const Game = () => {
   const [videoId, setVideoId] = useState(null); // ✅ top level
   const navigate = useNavigate(); // ✅ top level
+  const [value, setValue] = useState(90); // initial value
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
-    getData().then((id) => setVideoId(id)); // ✅ top level
+    getData().then((id) => setVideoId(id));
   }, []);
 
   // ✅ conditional rendering is fine AFTER hooks
   if (!videoId) return <div>Loading...</div>;
 
-  console.log(videoId);
   return (
     <div className="align-self flex flex-col items-center justify-center gap-4">
       <div className="relative w-full max-w-sm">
@@ -42,9 +49,27 @@ const Game = () => {
           }}
         ></div>
       </div>
-      <div className="flex gap-4">
-        <button onClick={() => navigate("/")}>Go back</button>
-        <button>Start challenge</button>
+      <div className="flex flex-col gap-4">
+        <div>
+          <Slider
+            aria-label="Custom marks"
+            step={10}
+            valueLabelDisplay="auto"
+            defaultValue={90}
+            marks
+            min={0}
+            max={180}
+            valueLabelFormat={getGrade}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="align-center flex justify-center gap-2">
+          Guess: <strong>{getGrade(value)}</strong>
+        </div>
+        <div className="flex gap-4">
+          <button onClick={() => navigate("/")}>Go back</button>
+          <button onClick={() => checkGrade(getGrade(value))}>Submit</button>
+        </div>
       </div>
     </div>
   );

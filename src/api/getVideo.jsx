@@ -1,6 +1,8 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig.js";
 
+export let currentGrade = null;
+
 // Calling for a random video
 export async function getData() {
   const querySnapshot = await getDocs(collection(db, "videos"));
@@ -10,11 +12,9 @@ export async function getData() {
 
   const randomIndex = Math.floor(Math.random() * docs.length);
 
-  console.log(randomIndex);
   const randomDoc = docs[randomIndex];
   const data = randomDoc.data();
 
-  console.log("Random ID:", randomDoc.id);
-  console.log("YoutubeLink:", data.youtubeLink);
+  currentGrade = data.grade;
   return data.youtubeLink;
 }
