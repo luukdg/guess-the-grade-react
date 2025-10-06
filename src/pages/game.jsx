@@ -67,7 +67,9 @@ const Game = () => {
           Guess: <strong>{getGrade(value)}</strong>
         </div>
         <div className="flex gap-4">
-          <button onClick={() => navigate("/")}>Go back</button>
+          <button onClick={() => navigate("/guess-the-grade-react/")}>
+            Go back
+          </button>
           <button onClick={() => checkGrade(getGrade(value))}>Submit</button>
         </div>
       </div>

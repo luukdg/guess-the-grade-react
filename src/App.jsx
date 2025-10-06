@@ -6,8 +6,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/game" element={<Game />} />
+        <Route path="/guess-the-grade-react/" element={<Home />} />
+        <Route path="/guess-the-grade-react/game/" element={<Game />} />
       </Routes>
     </Router>
   );
