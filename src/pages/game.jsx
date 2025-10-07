@@ -41,8 +41,8 @@ const Game = () => {
   if (!videoId) return <div>Loading...</div>;
 
   return (
-    <div className="align-self flex flex-col items-center justify-center gap-4">
-      <div className="relative flex aspect-[9/16] w-10/12 items-center justify-center overflow-hidden rounded-lg shadow-lg sm:w-full">
+    <div className="align-self flex h-full flex-col items-center justify-around gap-4 pt-6 pb-6 sm:justify-center sm:gap-10">
+      <div className="relative flex aspect-[9/16] items-center justify-center overflow-hidden rounded-lg sm:w-full">
         <ReactPlayer
           className="h-auto w-full"
           src={`https://www.youtube.com/shorts/${videoId}`}
@@ -80,8 +80,8 @@ const Game = () => {
           {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
       </div>
-      <div className="flex flex-col gap-4">
-        <div>
+      <div className="align-center flex flex-col justify-center gap-4">
+        <div className="flex">
           <Slider
             aria-label="Custom marks"
             step={10}
@@ -94,10 +94,10 @@ const Game = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="align-center flex justify-center gap-2">
+        <div className="align-center mb-2 flex justify-center gap-2">
           Guess: <strong>{getGrade(value)}</strong>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-row gap-4">
           <button onClick={() => navigate("/")}>Go back</button>
           <button onClick={handleSubmit}>Submit</button>
         </div>
