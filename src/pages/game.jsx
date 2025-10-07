@@ -13,7 +13,18 @@ const Game = () => {
   const [videoId, setVideoId] = useState(null);
   const [value, setValue] = useState(90);
   const [muted, setMuted] = useState(true);
+  const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
+
+  // Hide the blur after 5 seconds
+  useEffect(() => {
+    setVisible(true); // make blur visible again immediately
+    const timer = setTimeout(() => {
+      setVisible(false);
+    }, 5000); // hide after 5 seconds
+
+    return () => clearTimeout(timer);
+  }, [videoId]);
 
   // Resets the grade value after submitting
   const handleChange = (event, newValue) => {
@@ -62,9 +73,16 @@ const Game = () => {
         />
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
         <div
-          className="pointer-events-none absolute top-0 left-0 h-[10%] w-full"
+          className={`pointer-events-none absolute top-0 left-0 h-[15%] w-full transition-opacity duration-1000 ${
+            visible ? "opacity-100" : "opacity-0"
+          }`}
           style={{
             backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            maskImage:
+              "linear-gradient(to bottom, black 60%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, black 60%, transparent 100%)",
           }}
         ></div>
         <IconButton
