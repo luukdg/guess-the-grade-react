@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData } from "../api/getVideo";
 import ReactPlayer from "react-player";
 import { Slider } from "@mui/material";
 import { getGrade } from "../grade/grading";
 import { checkGrade } from "../grade/checkGrade";
+import IconButton from "@mui/material/IconButton";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 const Game = () => {
-  const [videoId, setVideoId] = useState(null); // ✅ top level
-  const [value, setValue] = useState(90); // initial value
-  const navigate = useNavigate(); // ✅ top level
+  const [videoId, setVideoId] = useState(null);
+  const [value, setValue] = useState(90);
+  const [muted, setMuted] = useState(true);
+  const navigate = useNavigate();
 
+  // Resets the grade value after submitting
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -29,20 +34,20 @@ const Game = () => {
   // Submit guess and refresh video
   const handleSubmit = () => {
     checkGrade(getGrade(value));
-    fetchNewVideo(); // ✅ fetch new video after submitting
-    setValue(90); // optional: reset slider to default
+    fetchNewVideo();
+    setValue(90);
   };
 
-  // ✅ conditional rendering is fine AFTER hooks
   if (!videoId) return <div>Loading...</div>;
 
   return (
     <div className="align-self flex flex-col items-center justify-center gap-4">
-      <div className="relative w-full max-w-sm">
+      <div className="relative flex aspect-[9/16] w-10/12 items-center justify-center overflow-hidden rounded-lg shadow-lg sm:w-full">
         <ReactPlayer
+          className="h-auto w-full"
           src={`https://www.youtube.com/shorts/${videoId}`}
           playing={true} // autoplay
-          muted={true} // must be muted for autoplay to work on most browsers
+          muted={muted} // must be muted for autoplay to work on most browsers
           controls={false}
           loop={true}
           config={{
@@ -53,7 +58,7 @@ const Game = () => {
               playlist: videoId,
             },
           }}
-          style={{ width: "100%", height: "auto", aspectRatio: "9/16" }}
+          style={{ width: "100%", height: "100%" }}
         />
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
         <div
@@ -62,6 +67,18 @@ const Game = () => {
             backdropFilter: "blur(6px)",
           }}
         ></div>
+        <IconButton
+          onClick={() => setMuted(!muted)}
+          className="!absolute bottom-2 left-2"
+          size="large"
+          sx={{
+            color: "white", // icon color
+            backgroundColor: "rgba(0,0,0,0.0)", // background
+            "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
+          }}
+        >
+          {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+        </IconButton>
       </div>
       <div className="flex flex-col gap-4">
         <div>
@@ -69,7 +86,7 @@ const Game = () => {
             aria-label="Custom marks"
             step={10}
             valueLabelDisplay="auto"
-            defaultValue={90}
+            value={value}
             marks
             min={0}
             max={180}
