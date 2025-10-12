@@ -14,9 +14,9 @@
 } */
 
 html,
-body,
-#root {
+body {
   height: 100dvh;
+  width: 100dvw;
   margin: 0;
 }
 
@@ -24,6 +24,8 @@ body,
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 body {
@@ -45,4 +47,8 @@ button {
 }
 button:hover {
   border-color: #646cff;
+}
+
+.MuiSlider-thumb {
+  background-image: url(/hold.svg);
 }

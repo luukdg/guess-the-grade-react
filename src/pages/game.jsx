@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData } from "../api/getVideo";
 import ReactPlayer from "react-player";
@@ -52,8 +52,8 @@ const Game = () => {
   if (!videoId) return <div>Loading...</div>;
 
   return (
-    <div className="align-self flex h-full flex-col items-center justify-around gap-4 pt-6 pb-6 sm:justify-center sm:gap-10">
-      <div className="relative flex aspect-[9/16] items-center justify-center overflow-hidden rounded-lg sm:w-full">
+    <div className="align-self flex h-full w-full flex-col items-center gap-6 pt-10 pr-6 pb-10 pl-6 sm:justify-center sm:gap-10">
+      <div className="relative flex aspect-[9/16] h-full items-center justify-center overflow-hidden rounded-lg">
         <ReactPlayer
           className="h-auto w-full"
           src={`https://www.youtube.com/shorts/${videoId}`}
@@ -73,7 +73,7 @@ const Game = () => {
         />
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
         <div
-          className={`pointer-events-none absolute top-0 left-0 h-[15%] w-full transition-opacity duration-1000 ${
+          className={`pointer-events-none absolute top-0 left-0 h-[20%] w-full transition-opacity duration-1000 ${
             visible ? "opacity-100" : "opacity-0"
           }`}
           style={{
@@ -98,8 +98,8 @@ const Game = () => {
           {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
       </div>
-      <div className="align-center flex flex-col justify-center gap-4">
-        <div className="flex">
+      <div className="align-center flex w-full flex-col justify-center gap-4">
+        <div className="flex px-2">
           <Slider
             aria-label="Custom marks"
             step={10}
@@ -112,12 +112,16 @@ const Game = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="align-center mb-2 flex justify-center gap-2">
+        <div className="align-center mb-2 flex w-full justify-center gap-2">
           Guess: <strong>{getGrade(value)}</strong>
         </div>
         <div className="flex flex-row gap-4">
-          <button onClick={() => navigate("/")}>Go back</button>
-          <button onClick={handleSubmit}>Submit</button>
+          <button className="w-1/2" onClick={() => navigate("/")}>
+            Go back
+          </button>
+          <button className="w-1/2" onClick={handleSubmit}>
+            Submit
+          </button>
         </div>
       </div>
     </div>
