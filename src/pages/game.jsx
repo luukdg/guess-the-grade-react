@@ -45,8 +45,10 @@ const Game = () => {
   // Submit guess and refresh video
   const handleSubmit = () => {
     checkGrade(getGrade(value));
-    fetchNewVideo();
-    setValue(90);
+  };
+
+  const showResult = () => {
+    navigate("/result");
   };
 
   if (!videoId) return <div>Loading...</div>;
@@ -119,7 +121,10 @@ const Game = () => {
           <button className="w-1/2" onClick={() => navigate("/")}>
             Go back
           </button>
-          <button className="w-1/2" onClick={handleSubmit}>
+          <button
+            className="w-1/2"
+            onClick={() => showResult() & handleSubmit()}
+          >
             Submit
           </button>
         </div>
