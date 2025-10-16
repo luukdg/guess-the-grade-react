@@ -1,4 +1,3 @@
-import { check } from "prettier";
 import { currentGrade } from "../api/getVideo";
 
 // Variable to store the user's guessed grade

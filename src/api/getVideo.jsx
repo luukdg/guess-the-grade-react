@@ -1,6 +1,6 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig.js";
-import convert from "../grade/converter.jsx";
+import { convertToFont, convertToVSale } from "../grade/converter.jsx";
 
 // Variable to store the actual grade of the current video
 export let currentGrade = null;
@@ -12,15 +12,17 @@ export async function getData(useGradeScale) {
 
   if (docs.length === 0) return null;
 
+  // Pick random video
   const randomIndex = Math.floor(Math.random() * docs.length);
 
   const randomDoc = docs[randomIndex];
   const data = randomDoc.data();
 
-  if (useGradeScale) {
-    currentGrade = convert(data.grade);
+  // convert the ACTUAL grade based on useGradeScale
+  if (!useGradeScale) {
+    currentGrade = convertToFont(data.numericGrade);
   } else {
-    currentGrade = data.grade;
+    currentGrade = convertToVSale(data.numericGrade);
   }
 
   return data.youtubeLink;

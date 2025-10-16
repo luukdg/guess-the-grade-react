@@ -9,6 +9,7 @@ try {
       youtubeLink: "",
       hasBeenShown: false,
       timesShown: 0,
+      numericGrade: null,
     });
     console.log("Document written with ID: ", docRef.id);
   }

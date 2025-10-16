@@ -1,4 +1,4 @@
-import { convertGrade, GradeScales } from "@openbeta/sandbag";
+import { convertGrade, GradeScales, Font, VScale } from "@openbeta/sandbag";
 
 // Converts a single grade like 7a, but also 7a/7a+
 export default function convert(grade) {
@@ -11,4 +11,16 @@ export default function convert(grade) {
   );
 
   return fontInVScale;
+}
+
+export function convertToFont(grade) {
+  const convertedGrade = Font.getGrade(grade);
+
+  return convertedGrade;
+}
+
+export function convertToVSale(grade) {
+  const convertedGrade = VScale.getGrade(grade);
+
+  return convertedGrade;
 }

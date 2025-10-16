@@ -1,6 +1,4 @@
-import convert from "./converter";
-
-export const marks = [
+export const marksOld = [
   { value: 0, label: "4a / 4c+" },
   { value: 10, label: "5a / 5c+" },
   { value: 20, label: "6a / 6a+" },
@@ -12,21 +10,20 @@ export const marks = [
   { value: 80, label: "8a" },
 ];
 
+export const marks = [
+  { value: 0, label: [48, 59] },
+  { value: 10, label: [60, 63] },
+  { value: 20, label: [64, 67] },
+  { value: 30, label: [68, 71] },
+  { value: 40, label: [72, 75] },
+  { value: 50, label: [76, 79] },
+  { value: 60, label: [80, 83] },
+];
+
 export function getGrade(value) {
   const mark = marks.find((m) => m.value === value);
   if (mark) {
     return mark.label;
-  } else {
-    return value;
-  }
-}
-
-export function getVGrade(value) {
-  const mark = marks.find((m) => m.value === value);
-  if (mark) {
-    const markLabel = mark.label.replace(/\s+/g, ""); // Removes spaces within 6a / 6a+ -> 6a/6a+
-    const convertedGrade = convert(markLabel); // Uses the convert function
-    return convertedGrade;
   } else {
     return value;
   }

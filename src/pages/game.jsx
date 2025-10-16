@@ -3,24 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { getData } from "../api/getVideo";
 import ReactPlayer from "react-player";
 import { Slider } from "@mui/material";
-import { getGrade, getVGrade } from "../grade/grading";
+import { getGrade } from "../grade/grading";
 import { checkGrade } from "../grade/checkGrade";
 import IconButton from "@mui/material/IconButton";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { useGradeScale } from "../grade/contextGrade";
+import { convertToFont, convertToVSale } from "../grade/converter";
 
 const Game = () => {
   const [videoId, setVideoId] = useState(null);
-  const [value, setValue] = useState(40);
+  const [value, setValue] = useState(30);
   const [muted, setMuted] = useState(true);
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
 
   // Global boolean to change to V-scale
   const { gradeScale, setGradeScale } = useGradeScale();
-
-  // Maybe not remove the blur when people have slow internet?
 
   // Hide the blur after 5 seconds
   useEffect(() => {
@@ -53,11 +52,14 @@ const Game = () => {
     checkGrade(chooseGradeConverter());
   };
 
+  // convert USERS guess to Font or VScale
   const chooseGradeConverter = () => {
+    const numericGrade = getGrade(value);
+
     if (!gradeScale) {
-      return getGrade(value);
+      return convertToFont(numericGrade);
     } else {
-      return getVGrade(value);
+      return convertToVSale(numericGrade);
     }
   };
 
@@ -119,8 +121,8 @@ const Game = () => {
             value={value}
             marks
             min={0}
-            max={80}
-            valueLabelFormat={getGrade}
+            max={60}
+            valueLabelFormat={chooseGradeConverter()}
             onChange={handleChange}
           />
         </div>

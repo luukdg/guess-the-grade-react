@@ -4,7 +4,7 @@ import { createContext, useState, useContext } from "react";
 const GradeScaleContext = createContext();
 
 export const GradeScaleProvider = ({ children }) => {
-  const [gradeScale, setGradeScale] = useState(true);
+  const [gradeScale, setGradeScale] = useState(false);
   return (
     <GradeScaleContext.Provider value={{ gradeScale, setGradeScale }}>
       {children}
