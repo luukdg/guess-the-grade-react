@@ -1,10 +1,12 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig.js";
+import convert from "../grade/converter.jsx";
 
+// Variable to store the actual grade of the current video
 export let currentGrade = null;
 
 // Calling for a random video
-export async function getData() {
+export async function getData(useGradeScale) {
   const querySnapshot = await getDocs(collection(db, "videos"));
   const docs = querySnapshot.docs;
 
@@ -15,6 +17,11 @@ export async function getData() {
   const randomDoc = docs[randomIndex];
   const data = randomDoc.data();
 
-  currentGrade = data.grade;
+  if (useGradeScale) {
+    currentGrade = convert(data.grade);
+  } else {
+    currentGrade = data.grade;
+  }
+
   return data.youtubeLink;
 }

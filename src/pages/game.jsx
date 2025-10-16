@@ -3,18 +3,24 @@ import { useNavigate } from "react-router-dom";
 import { getData } from "../api/getVideo";
 import ReactPlayer from "react-player";
 import { Slider } from "@mui/material";
-import { getGrade } from "../grade/grading";
+import { getGrade, getVGrade } from "../grade/grading";
 import { checkGrade } from "../grade/checkGrade";
 import IconButton from "@mui/material/IconButton";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { useGradeScale } from "../grade/contextGrade";
 
 const Game = () => {
   const [videoId, setVideoId] = useState(null);
-  const [value, setValue] = useState(90);
+  const [value, setValue] = useState(40);
   const [muted, setMuted] = useState(true);
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
+
+  // Global boolean to change to V-scale
+  const { gradeScale, setGradeScale } = useGradeScale();
+
+  // Maybe not remove the blur when people have slow internet?
 
   // Hide the blur after 5 seconds
   useEffect(() => {
@@ -33,7 +39,7 @@ const Game = () => {
 
   // Function to fetch a new video
   const fetchNewVideo = async () => {
-    const id = await getData();
+    const id = await getData(gradeScale);
     setVideoId(id);
   };
 
@@ -44,11 +50,15 @@ const Game = () => {
 
   // Submit guess and refresh video
   const handleSubmit = () => {
-    checkGrade(getGrade(value));
+    checkGrade(chooseGradeConverter());
   };
 
-  const showResult = () => {
-    navigate("/result");
+  const chooseGradeConverter = () => {
+    if (!gradeScale) {
+      return getGrade(value);
+    } else {
+      return getVGrade(value);
+    }
   };
 
   if (!videoId) return <div>Loading...</div>;
@@ -109,13 +119,13 @@ const Game = () => {
             value={value}
             marks
             min={0}
-            max={180}
+            max={80}
             valueLabelFormat={getGrade}
             onChange={handleChange}
           />
         </div>
         <div className="align-center mb-2 flex w-full justify-center gap-2">
-          Guess: <strong>{getGrade(value)}</strong>
+          Guess: <strong>{chooseGradeConverter()}</strong>
         </div>
         <div className="flex flex-row gap-4">
           <button className="w-1/2" onClick={() => navigate("/")}>
@@ -123,7 +133,10 @@ const Game = () => {
           </button>
           <button
             className="w-1/2"
-            onClick={() => showResult() & handleSubmit()}
+            onClick={() => {
+              handleSubmit();
+              navigate("/result");
+            }}
           >
             Submit
           </button>
