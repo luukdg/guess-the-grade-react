@@ -1,4 +1,6 @@
 import { currentGrade } from "../api/getVideo";
+import { checkLives } from "../game/gameWithLives";
+import { lives } from "../game/gameWithLives";
 
 // Variable to store the user's guessed grade
 export let userGrade = null;
@@ -26,6 +28,8 @@ export function checkGrade(guess) {
     "You'll get it next time!",
   ];
 
+  const gameOver = ["Game over!"];
+
   // Choose a random message from the right array
   const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -48,7 +52,9 @@ export function checkGrade(guess) {
   // Receiving a boolean
   let checkMatch = findWord(currentGrade, guess);
 
-  console.log("Check's match: ", checkMatch);
+  checkLives(checkMatch);
+  console.log(checkMatch);
+  console.log("Lives: ", lives);
 
   if (checkMatch) {
     return randomMessage(correctMessages);

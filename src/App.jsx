@@ -3,8 +3,11 @@ import Home from "./pages/home";
 import Game from "./pages/game";
 import Result from "./pages/result";
 import { GradeScaleProvider } from "./grade/contextGrade";
+import { useState } from "react";
 
 function App() {
+  const [lives, setLives] = useState(3);
+
   return (
     <GradeScaleProvider>
       <Router>
