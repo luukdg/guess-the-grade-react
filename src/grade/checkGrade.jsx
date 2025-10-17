@@ -1,64 +1,33 @@
-import { currentGrade } from "../api/getVideo";
-import { checkLives } from "../game/gameWithLives";
-import { lives } from "../game/gameWithLives";
+import { checkGradeBoolean } from "./checkGradeBoolean";
+import { useEffect } from "react";
 
-// Variable to store the user's guessed grade
-export let userGrade = null;
+const messages = {
+  correct: ["Perfect!", "Spot on!", "You nailed it!"],
+  incorrect: ["Close one!", "Almost there!", "Not quite!"],
+};
 
-// The function which returns a correct or wrong message
-export function checkGrade(guess) {
-  userGrade = guess;
+export default function CheckGrade({
+  guess,
+  lives,
+  setLives,
+  streak,
+  setStreak,
+}) {
+  const isCorrect = checkGradeBoolean(guess); // boolean
 
-  console.log("user grade: ", guess);
-  console.log("actual grade: ", currentGrade);
+  // Update state when component renders
+  useEffect(() => {
+    if (isCorrect) {
+      setStreak(streak + 1);
+    } else {
+      setLives(lives - 1);
+    }
+  }, [isCorrect]); // run whenever guess changes
 
-  const correctMessages = [
-    "Perfect!",
-    "Spot on!",
-    "You nailed it!",
-    "Exactly right!",
-    "Nice work!",
-  ];
-
-  const incorrectMessages = [
-    "Close one!",
-    "Almost there!",
-    "Good try!",
-    "Not quite!",
-    "You'll get it next time!",
-  ];
-
-  const gameOver = ["Game over!"];
-
-  // Choose a random message from the right array
   const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const message = isCorrect
+    ? randomMessage(messages.correct)
+    : randomMessage(messages.incorrect);
 
-  // Search for a match in the label
-  function findWord(word, str) {
-    // Normalize both inputs
-    const normalize = (s) =>
-      s
-        .toUpperCase()
-        .replace(/\s+/g, "") // remove all spaces
-        .split(/[-/]/); // split on "-" or "/"
-
-    const wordParts = normalize(word);
-    const strParts = normalize(str);
-
-    // Check if any grade part overlaps
-    return wordParts.some((part) => strParts.includes(part));
-  }
-
-  // Receiving a boolean
-  let checkMatch = findWord(currentGrade, guess);
-
-  checkLives(checkMatch);
-  console.log(checkMatch);
-  console.log("Lives: ", lives);
-
-  if (checkMatch) {
-    return randomMessage(correctMessages);
-  } else {
-    return randomMessage(incorrectMessages);
-  }
+  return <h1 className="text-center text-4xl font-bold">{message}</h1>; // show message in DOM
 }

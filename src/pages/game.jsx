@@ -4,15 +4,23 @@ import { getData } from "../api/getVideo";
 import ReactPlayer from "react-player";
 import { Slider } from "@mui/material";
 import { getGrade } from "../grade/grading";
-import { checkGrade } from "../grade/checkGrade";
+import CheckGrade from "../grade/checkGrade";
 import IconButton from "@mui/material/IconButton";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { useGradeScale } from "../grade/contextGrade";
 import { convertToFont, convertToVSale } from "../grade/converter";
-import { UpdateLives } from "../game/gameWithLives";
+import { currentGrade } from "../api/getVideo";
 
-const Game = () => {
+const Game = ({
+  lives,
+  setLives,
+  finish,
+  streak,
+  setStreak,
+  guess,
+  setGuess,
+}) => {
   const [videoId, setVideoId] = useState(null);
   const [value, setValue] = useState(30);
   const [muted, setMuted] = useState(true);
@@ -48,7 +56,8 @@ const Game = () => {
 
   // Submit guess and refresh video
   const handleSubmit = () => {
-    checkGrade(chooseGradeConverter());
+    setGuess(chooseGradeConverter());
+    finish("result");
   };
 
   // convert USERS guess to Font or VScale
@@ -65,13 +74,8 @@ const Game = () => {
   if (!videoId) return <div>Loading...</div>;
 
   return (
-    <div className="align-self flex h-full w-full flex-col items-center gap-6 pt-10 pr-6 pb-10 pl-6 sm:justify-center sm:gap-10">
-      <div className="flex flex-row items-center">
-        <div className="flex w-10 flex-row items-center justify-center">
-          <p className="pr-3">Lives:</p>
-          <UpdateLives />
-        </div>
-      </div>
+    <div className="flex h-full w-full flex-col items-center justify-center gap-5 sm:gap-10 sm:pb-0">
+      <div className="flex flex-row items-center"></div>
       <div className="relative flex aspect-[9/16] h-full items-center justify-center overflow-hidden rounded-lg">
         <ReactPlayer
           className="h-auto w-full"
@@ -136,13 +140,12 @@ const Game = () => {
         </div>
         <div className="flex flex-row gap-4">
           <button className="w-1/2" onClick={() => navigate("/")}>
-            Stop playing
+            Home
           </button>
           <button
             className="w-1/2"
             onClick={() => {
               handleSubmit();
-              navigate("/result");
             }}
           >
             Submit

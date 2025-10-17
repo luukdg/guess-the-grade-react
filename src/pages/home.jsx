@@ -16,7 +16,7 @@ function Home() {
     <div className="align-self flex h-full w-full flex-col items-center justify-center gap-5">
       <img src={gradeLogo} className="w-75" alt="logo" />
       <div className="absolute bottom-10 flex gap-3">
-        <button className="w-35" onClick={() => navigate("/game")}>
+        <button className="w-35" onClick={() => navigate("/gameOverview")}>
           Start Game
         </button>
       </div>
