@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Game from "./game";
 import Result from "./result";
-import { UpdateLives } from "../game/gameWithLives";
+import { ClimberIcons } from "../game/climberIcons";
 import Streak from "../game/scoreStreak";
 import GameOver from "../game/gameOver";
 
@@ -29,7 +29,7 @@ function GameOverview() {
             <p>Score: </p>
             <Streak streak={streak} />
             <p>Lives:</p>
-            <UpdateLives lives={lives} setLives={setLives} />
+            <ClimberIcons lives={lives} setLives={setLives} />
           </div>
         )}
 
