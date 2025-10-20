@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData } from "../api/getVideo";
+import { updateUserGuess } from "../api/saveUsersGuess";
 import ReactPlayer from "react-player";
 import { Slider } from "@mui/material";
 import { getGrade } from "../grade/grading";
@@ -10,7 +11,6 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { useGradeScale } from "../grade/contextGrade";
 import { convertToFont, convertToVSale } from "../grade/converter";
-import { currentGrade } from "../api/getVideo";
 
 const Game = ({
   lives,
@@ -20,23 +20,15 @@ const Game = ({
   setStreak,
   guess,
   setGuess,
+  numericGuess,
+  setNumericGuess,
 }) => {
-  const [videoId, setVideoId] = useState(null);
+  const [firebaseId, setFirebaseId] = useState(null); // ticket Id of current firebase video
+  const [videoId, setVideoId] = useState(null); // saves the youtubeLink
   const [value, setValue] = useState(30);
   const [muted, setMuted] = useState(true);
-  const [visible, setVisible] = useState(true);
   const { gradeScale, setGradeScale } = useGradeScale(); // Global boolean to change to V-scale
   const navigate = useNavigate();
-
-  // Hide the blur after 5 seconds
-  useEffect(() => {
-    setVisible(true); // make blur visible again immediately
-    const timer = setTimeout(() => {
-      setVisible(false);
-    }, 5000); // hide after 5 seconds
-
-    return () => clearTimeout(timer);
-  }, [videoId]);
 
   // Resets the grade value after submitting
   const handleChange = (event, newValue) => {
@@ -45,8 +37,12 @@ const Game = ({
 
   // Function to fetch a new video
   const fetchNewVideo = async () => {
-    const id = await getData(gradeScale);
-    setVideoId(id);
+    const { youtubeLink, ticketId } = await getData(gradeScale);
+    setFirebaseId(ticketId);
+    setVideoId(youtubeLink);
+
+    console.log("ticketID:", ticketId);
+    console.log("Link:", youtubeLink);
   };
 
   // Load first video on mount
@@ -57,24 +53,25 @@ const Game = ({
   // Submit guess and refresh video
   const handleSubmit = () => {
     setGuess(chooseGradeConverter());
+    updateUserGuess(firebaseId, numericGuess);
     finish("result");
   };
 
   // convert USERS guess to Font or VScale
   const chooseGradeConverter = () => {
-    const numericGrade = getGrade(value);
+    setNumericGuess(getGrade(value));
 
     if (!gradeScale) {
-      return convertToFont(numericGrade);
+      return convertToFont(numericGuess);
     } else {
-      return convertToVSale(numericGrade);
+      return convertToVSale(numericGuess);
     }
   };
 
   if (!videoId) return <div>Loading...</div>;
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-5 sm:gap-10 sm:pb-0">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-5 pb-10 sm:gap-10 sm:pb-0">
       <div className="flex flex-row items-center"></div>
       <div className="relative flex aspect-[9/16] h-full items-center justify-center overflow-hidden rounded-lg">
         <ReactPlayer
@@ -96,9 +93,7 @@ const Game = ({
         />
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
         <div
-          className={`pointer-events-none absolute top-0 left-0 h-[20%] w-full transition-opacity duration-1000 ${
-            visible ? "opacity-100" : "opacity-0"
-          }`}
+          className={`pointer-events-none absolute top-0 left-0 h-[20%] w-full ${"opacity-100"}`}
           style={{
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",

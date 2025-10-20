@@ -18,6 +18,8 @@ export async function getData(useGradeScale) {
   const randomDoc = docs[randomIndex];
   const data = randomDoc.data();
 
+  const ticketId = randomDoc.id;
+
   // convert the ACTUAL grade based on useGradeScale
   if (!useGradeScale) {
     currentGrade = convertToFont(data.numericGrade);
@@ -25,5 +27,5 @@ export async function getData(useGradeScale) {
     currentGrade = convertToVSale(data.numericGrade);
   }
 
-  return data.youtubeLink;
+  return { youtubeLink: data.youtubeLink, ticketId: ticketId };
 }

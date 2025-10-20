@@ -10,14 +10,15 @@ function GameOverview() {
   const [outcome, setOutcome] = useState("game"); // store score or result if needed
   const [streak, setStreak] = useState(0);
   const [guess, setGuess] = useState(null);
-  const [showScoreAndLives, setShowScoreAndLives] = useState(true);
+  const [numericGuess, setNumericGuess] = useState(null);
 
   useEffect(() => {
     if (lives <= 0) {
       setOutcome("gameover");
-      setShowScoreAndLives(false);
     }
   }, [lives]);
+
+  const showScoreAndLives = lives > 0;
 
   return (
     <>
@@ -40,6 +41,8 @@ function GameOverview() {
             finish={(result) => setOutcome(result)}
             guess={guess}
             setGuess={setGuess}
+            numericGuess={numericGuess}
+            setNumericGuess={setNumericGuess}
           />
         )}
 
@@ -66,7 +69,6 @@ function GameOverview() {
               setStreak(0);
               setGuess(null);
               setOutcome("game");
-              setShowScoreAndLives(true);
             }}
           />
         )}

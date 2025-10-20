@@ -2,7 +2,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig.js";
 
 try {
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 1; i++) {
     const docRef = await addDoc(collection(db, "videos"), {
       grade: "",
       lastShowDate: null,
