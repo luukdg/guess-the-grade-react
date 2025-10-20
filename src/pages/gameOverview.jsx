@@ -11,6 +11,7 @@ function GameOverview() {
   const [streak, setStreak] = useState(0);
   const [guess, setGuess] = useState(null);
   const [numericGuess, setNumericGuess] = useState(null);
+  const [firebaseId, setFirebaseId] = useState(null);
 
   useEffect(() => {
     if (lives <= 0) {
@@ -43,6 +44,8 @@ function GameOverview() {
             setGuess={setGuess}
             numericGuess={numericGuess}
             setNumericGuess={setNumericGuess}
+            firebaseId={firebaseId}
+            setFirebaseId={setFirebaseId}
           />
         )}
 
@@ -58,6 +61,8 @@ function GameOverview() {
             restart={() => {
               setOutcome("game");
             }}
+            firebaseId={firebaseId}
+            setFirebaseId={setFirebaseId}
           />
         )}
 

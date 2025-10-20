@@ -11,7 +11,10 @@ async function numericGrade() {
       const grade = data.grade;
 
       const numericValue = data.numericValue;
-      if (numericValue) continue;
+      if (numericValue !== null && numericValue !== undefined) {
+        console.log("⏩ Skipped. Already has been converted.");
+        continue;
+      }
 
       const convertedGrade = convert(grade); // Convert grade to numeric value
 

@@ -22,8 +22,9 @@ const Game = ({
   setGuess,
   numericGuess,
   setNumericGuess,
+  firebaseId,
+  setFirebaseId,
 }) => {
-  const [firebaseId, setFirebaseId] = useState(null); // ticket Id of current firebase video
   const [videoId, setVideoId] = useState(null); // saves the youtubeLink
   const [value, setValue] = useState(30);
   const [muted, setMuted] = useState(true);
@@ -53,8 +54,8 @@ const Game = ({
   // Submit guess and refresh video
   const handleSubmit = () => {
     setGuess(chooseGradeConverter());
-    updateUserGuess(firebaseId, numericGuess);
     finish("result");
+    updateUserGuess(firebaseId, numericGuess);
   };
 
   // convert USERS guess to Font or VScale

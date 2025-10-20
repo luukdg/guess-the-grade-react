@@ -11,7 +11,7 @@ export async function updateUserGuess(firebaseId, numericGuess) {
       [`guesses.${rangeKey}`]: increment(1),
     });
 
-    console.log("Incremented the guess");
+    console.log(`Incremented ${firebaseId} with ${numericGuess}`);
   } catch (e) {
     console.error("Error updating documents: ", e);
   }

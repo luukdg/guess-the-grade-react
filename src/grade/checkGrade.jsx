@@ -12,6 +12,8 @@ export default function CheckGrade({
   setLives,
   streak,
   setStreak,
+  result,
+  setResult,
 }) {
   const isCorrect = checkGradeBoolean(guess); // boolean
 

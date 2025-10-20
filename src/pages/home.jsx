@@ -38,8 +38,8 @@ function Home() {
           backgroundColor: "rgba(0,0,0,0.0)", // background
           "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
           position: "absolute",
-          top: "2.5rem",
-          right: "2.5rem",
+          top: "1rem",
+          right: "1rem",
         }}
       >
         <SettingsIcon fontSize="large" />

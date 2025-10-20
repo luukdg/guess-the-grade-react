@@ -4,13 +4,11 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
 import Home from "./pages/home";
 import Game from "./pages/game";
 import Result from "./pages/result";
 import GameOverview from "./pages/gameOverview";
 import { GradeScaleProvider } from "./grade/contextGrade";
-import { useState } from "react";
 
 function App() {
   return (

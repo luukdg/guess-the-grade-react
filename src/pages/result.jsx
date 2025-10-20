@@ -1,10 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import { currentGrade } from "../api/getVideo";
+import { setState } from "react";
 import { motion } from "motion/react";
 import { useGradeScale } from "../grade/contextGrade";
+import GetAverageGuess from "../api/averageGuess";
 import CheckGrade from "../grade/checkGrade";
 
-const Result = ({ guess, lives, setLives, streak, setStreak, restart }) => {
+const Result = ({
+  guess,
+  lives,
+  setLives,
+  streak,
+  setStreak,
+  restart,
+  firebaseId,
+  setFirebaseId,
+}) => {
   const navigate = useNavigate();
 
   // Global boolean to change to V-scale
@@ -30,6 +41,8 @@ const Result = ({ guess, lives, setLives, streak, setStreak, restart }) => {
           You guessed <strong>{guess}</strong>, and the correct grade was{" "}
           <strong>{currentGrade}</strong>.
         </div>
+
+        <GetAverageGuess firebaseId={firebaseId} guess={guess} />
       </motion.div>
 
       <div className="absolute bottom-10 flex w-full flex-row gap-4 px-6">
