@@ -10,7 +10,7 @@ function GameOverview() {
   const [outcome, setOutcome] = useState("game"); // store score or result if needed
   const [streak, setStreak] = useState(0);
   const [guess, setGuess] = useState(null);
-  const [numericGuess, setNumericGuess] = useState(null);
+  const [numericGuess, setNumericGuess] = useState([68, 71]);
   const [firebaseId, setFirebaseId] = useState(null);
 
   useEffect(() => {

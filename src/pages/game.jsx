@@ -33,7 +33,8 @@ const Game = ({
 
   // Resets the grade value after submitting
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(newValue); // slider state
+    setNumericGuess(getGrade(newValue)); // numericGuess state
   };
 
   // Function to fetch a new video
@@ -53,20 +54,14 @@ const Game = ({
 
   // Submit guess and refresh video
   const handleSubmit = () => {
-    setGuess(chooseGradeConverter());
+    const convertedGuess = chooseGradeConverter(numericGuess);
+    setGuess(convertedGuess);
     finish("result");
     updateUserGuess(firebaseId, numericGuess);
   };
 
-  // convert USERS guess to Font or VScale
-  const chooseGradeConverter = () => {
-    setNumericGuess(getGrade(value));
-
-    if (!gradeScale) {
-      return convertToFont(numericGuess);
-    } else {
-      return convertToVSale(numericGuess);
-    }
+  const chooseGradeConverter = (num) => {
+    return !gradeScale ? convertToFont(num) : convertToVSale(num);
   };
 
   if (!videoId) return <div>Loading...</div>;
@@ -127,12 +122,12 @@ const Game = ({
             marks
             min={0}
             max={60}
-            valueLabelFormat={chooseGradeConverter()}
+            valueLabelFormat={() => chooseGradeConverter(numericGuess)}
             onChange={handleChange}
           />
         </div>
         <div className="align-center mb-2 flex w-full justify-center gap-2">
-          Guess: <strong>{chooseGradeConverter()}</strong>
+          Guess: <strong>{chooseGradeConverter(numericGuess)}</strong>
         </div>
         <div className="flex flex-row gap-4">
           <button className="w-1/2" onClick={() => navigate("/")}>
