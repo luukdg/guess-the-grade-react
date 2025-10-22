@@ -1,155 +1,88 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getData } from "../api/getVideo";
-import { updateUserGuess } from "../api/saveUsersGuess";
-import ReactPlayer from "react-player";
-import { Slider } from "@mui/material";
-import { getGrade } from "../grade/grading";
-import CheckGrade from "../grade/checkGrade";
-import IconButton from "@mui/material/IconButton";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { useGradeScale } from "../grade/contextGrade";
-import { convertToFont, convertToVSale } from "../grade/converter";
+import { useState, useEffect } from "react";
+import VideoGuess from "../components/main/videoGuess";
+import Result from "../components/main/result";
+import { ClimberIcons } from "../components/UI/climberIcons";
+import Streak from "../components/UI/scoreStreak";
+import GameOver from "../components/main/gameOver";
 
-const Game = ({
-  lives,
-  setLives,
-  finish,
-  streak,
-  setStreak,
-  guess,
-  setGuess,
-  numericGuess,
-  setNumericGuess,
-  firebaseId,
-  setFirebaseId,
-}) => {
-  const [videoId, setVideoId] = useState(null); // saves the youtubeLink
-  const [value, setValue] = useState(30);
-  const [muted, setMuted] = useState(true);
-  const { gradeScale, setGradeScale } = useGradeScale(); // Global boolean to change to V-scale
-  const navigate = useNavigate();
+function Game() {
+  const [lives, setLives] = useState(3);
+  const [outcome, setOutcome] = useState("game"); // store score or result if needed
+  const [streak, setStreak] = useState(0);
+  const [guess, setGuess] = useState(null);
+  const [numericGuess, setNumericGuess] = useState([68, 71]);
+  const [firebaseId, setFirebaseId] = useState(null);
 
-  // Resets the grade value after submitting
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  // Function to fetch a new video
-  const fetchNewVideo = async () => {
-    const { youtubeLink, ticketId } = await getData(gradeScale);
-    setFirebaseId(ticketId);
-    setVideoId(youtubeLink);
-
-    console.log("ticketID:", ticketId);
-    console.log("Link:", youtubeLink);
-  };
-
-  // Load first video on mount
   useEffect(() => {
-    fetchNewVideo();
-  }, []);
-
-  // Submit guess and refresh video
-  const handleSubmit = () => {
-    setGuess(chooseGradeConverter());
-    finish("result");
-    updateUserGuess(firebaseId, numericGuess);
-  };
-
-  // convert USERS guess to Font or VScale
-  const chooseGradeConverter = () => {
-    setNumericGuess(getGrade(value));
-
-    if (!gradeScale) {
-      return convertToFont(numericGuess);
-    } else {
-      return convertToVSale(numericGuess);
+    if (lives <= 0) {
+      setOutcome("gameover");
     }
-  };
+  }, [lives]);
 
-  if (!videoId) return <div>Loading...</div>;
+  const showScoreAndLives = lives > 0;
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-5 pb-10 sm:gap-10 sm:pb-0">
-      <div className="flex flex-row items-center"></div>
-      <div className="relative flex aspect-[9/16] h-full items-center justify-center overflow-hidden rounded-lg">
-        <ReactPlayer
-          className="h-auto w-full"
-          src={`https://www.youtube.com/shorts/${videoId}`}
-          playing={true} // autoplay
-          muted={muted} // must be muted for autoplay to work on most browsers
-          controls={false}
-          loop={true}
-          config={{
-            youtube: {
-              modestbranding: 1,
-              rel: 0,
-              showinfo: 0,
-              playlist: videoId,
-            },
-          }}
-          style={{ width: "100%", height: "100%" }}
-        />
-        <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
-        <div
-          className={`pointer-events-none absolute top-0 left-0 h-[20%] w-full ${"opacity-100"}`}
-          style={{
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            maskImage:
-              "linear-gradient(to bottom, black 60%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, black 60%, transparent 100%)",
-          }}
-        ></div>
-        <IconButton
-          onClick={() => setMuted(!muted)}
-          className="!absolute bottom-2 left-2"
-          size="large"
-          sx={{
-            color: "white", // icon color
-            backgroundColor: "rgba(0,0,0,0.0)", // background
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
-          }}
-        >
-          {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-        </IconButton>
-      </div>
-      <div className="align-center flex w-full flex-col justify-center gap-4">
-        <div className="flex px-2">
-          <Slider
-            aria-label="Custom marks"
-            step={10}
-            valueLabelDisplay="auto"
-            value={value}
-            marks
-            min={0}
-            max={60}
-            valueLabelFormat={chooseGradeConverter()}
-            onChange={handleChange}
+    <>
+      <div className="align-self flex h-full w-full flex-col items-center pt-10 pr-6 pb-10 pl-6 sm:justify-center">
+        {showScoreAndLives && (
+          <div className="flex w-10 flex-row items-center justify-center gap-1">
+            <p>Score: </p>
+            <Streak streak={streak} />
+            <p>Lives:</p>
+            <ClimberIcons lives={lives} setLives={setLives} />
+          </div>
+        )}
+
+        {outcome === "game" && (
+          <VideoGuess
+            lives={lives}
+            setLives={setLives}
+            streak={streak}
+            setStreak={setStreak}
+            finish={(result) => setOutcome(result)}
+            guess={guess}
+            setGuess={setGuess}
+            numericGuess={numericGuess}
+            setNumericGuess={setNumericGuess}
+            firebaseId={firebaseId}
+            setFirebaseId={setFirebaseId}
+            outcome={outcome}
+            setOutcome={setOutcome}
           />
-        </div>
-        <div className="align-center mb-2 flex w-full justify-center gap-2">
-          Guess: <strong>{chooseGradeConverter()}</strong>
-        </div>
-        <div className="flex flex-row gap-4">
-          <button className="w-1/2" onClick={() => navigate("/")}>
-            Home
-          </button>
-          <button
-            className="w-1/2"
-            onClick={() => {
-              handleSubmit();
+        )}
+
+        {outcome === "result" && (
+          <Result
+            guess={guess}
+            setGuess={setGuess}
+            lives={lives}
+            setLives={setLives}
+            streak={streak}
+            setStreak={setStreak}
+            result={outcome}
+            restart={() => {
+              setOutcome("game");
+              setNumericGuess([68, 71]);
             }}
-          >
-            Submit
-          </button>
-        </div>
+            firebaseId={firebaseId}
+            setFirebaseId={setFirebaseId}
+          />
+        )}
+
+        {outcome === "gameover" && (
+          <GameOver
+            streak={streak}
+            restart={() => {
+              setLives(3);
+              setStreak(0);
+              setGuess(null);
+              setOutcome("game");
+            }}
+          />
+        )}
       </div>
-    </div>
+    </>
   );
-};
+}
 
 export default Game;

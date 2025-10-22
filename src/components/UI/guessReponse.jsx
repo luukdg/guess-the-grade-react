@@ -1,4 +1,4 @@
-import { checkGradeBoolean } from "./checkGradeBoolean";
+import { isGradeCorrect } from "../../functions/isGradeCorrect";
 import { useEffect } from "react";
 
 const messages = {
@@ -12,10 +12,8 @@ export default function CheckGrade({
   setLives,
   streak,
   setStreak,
-  result,
-  setResult,
 }) {
-  const isCorrect = checkGradeBoolean(guess); // boolean
+  const isCorrect = isGradeCorrect(guess); // boolean
 
   // Update state when component renders
   useEffect(() => {

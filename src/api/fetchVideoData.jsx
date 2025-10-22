@@ -1,6 +1,6 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig.js";
-import { convertToFont, convertToVSale } from "../grade/converter.jsx";
+import { convertToFont, convertToVSale } from "../functions/gradeConverter.jsx";
 
 // Variable to store the actual grade of the current video
 export let currentGrade = null;

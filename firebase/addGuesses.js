@@ -1,6 +1,5 @@
 import { collection, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig.js";
-import convert from "./converter.js";
 
 async function numericGrade() {
   try {

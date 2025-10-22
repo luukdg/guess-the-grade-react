@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import gradeLogo from "/logo.svg";
-import { useGradeScale } from "../grade/contextGrade";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGradeScale } from "../functions/gradeScaleContext";
+import SettingsIcon from "@mui/icons-material/Settings";
 import IconButton from "@mui/material/IconButton";
+import gradeLogo from "/logo.svg";
 
 function Home() {
   const navigate = useNavigate();
@@ -13,10 +13,10 @@ function Home() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="align-self flex h-full w-full flex-col items-center justify-center gap-5">
+    <div className="align-self relative flex h-full w-full flex-col items-center justify-center gap-5 p-10">
       <img src={gradeLogo} className="w-75" alt="logo" />
-      <div className="absolute bottom-10 flex gap-3">
-        <button className="w-35" onClick={() => navigate("/gameOverview")}>
+      <div className="absolute bottom-10 flex w-full gap-3 px-6">
+        <button className="w-full" onClick={() => navigate("/game")}>
           Start Game
         </button>
       </div>
