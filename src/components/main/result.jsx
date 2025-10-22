@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { currentGrade } from "../api/getVideo";
-import { motion } from "motion/react";
-import { useGradeScale } from "../grade/contextGrade";
-import ComparePickedGrade from "../game/ComparePickedGrade";
-import CheckGrade from "../grade/checkGrade";
+import { currentGrade } from "../../api/fetchVideoData";
+import { useGradeScale } from "../../functions/gradeScaleContext";
+import { isGradeCorrect } from "../../functions/isGradeCorrect";
+import CheckGrade from "../UI/guessReponse";
+import ComparePickedGrade from "../UI/comparePickedGrade";
+import { color, motion } from "motion/react";
+import { useEffect } from "react";
 
 const Result = ({
   guess,
@@ -19,9 +21,10 @@ const Result = ({
 
   // Global boolean to change to V-scale
   const { gradeScale, setGradeScale } = useGradeScale();
+  const isCorrect = isGradeCorrect(guess);
 
   return (
-    <div className="align-self flex h-full w-full flex-col items-center justify-center pb-12">
+    <div className="align-self flex h-full w-full flex-col items-center justify-center">
       <motion.div
         className="mb-6 flex flex-col gap-3"
         initial={{ opacity: 0, y: -20 }}
@@ -37,19 +40,20 @@ const Result = ({
         />
 
         <div className="mb-6 text-center text-2xl">
-          You guessed <strong>{guess}</strong>, and the correct grade was{" "}
-          <strong>{currentGrade}</strong>.
+          You guessed{" "}
+          <strong className={isCorrect ? "text-green-400" : "text-red-400"}>
+            {guess}
+          </strong>
+          , and the correct grade was{" "}
+          <strong className="text-green-400">{currentGrade}</strong>.
         </div>
       </motion.div>
 
       <ComparePickedGrade currentGrade={currentGrade} guess={guess} />
 
       <div className="absolute bottom-10 flex w-full flex-row gap-4 px-6">
-        <button className="w-1/2" onClick={() => navigate("/")}>
-          Home
-        </button>
-        <button className="w-1/2" onClick={() => restart()}>
-          Next
+        <button className="w-full" onClick={() => restart()}>
+          Next video
         </button>
       </div>
     </div>

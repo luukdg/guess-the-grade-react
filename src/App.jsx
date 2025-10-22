@@ -5,10 +5,10 @@ import {
   useLocation,
 } from "react-router-dom";
 import Home from "./pages/home";
+import VideoGuess from "./components/main/videoGuess";
+import Result from "./components/main/result";
 import Game from "./pages/game";
-import Result from "./pages/result";
-import GameOverview from "./pages/gameOverview";
-import { GradeScaleProvider } from "./grade/contextGrade";
+import { GradeScaleProvider } from "./functions/gradeScaleContext";
 
 function App() {
   return (
@@ -16,8 +16,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/gameOverview" element={<GameOverview />} />
           <Route path="/game" element={<Game />} />
+          <Route path="/videoGuess" element={<VideoGuess />} />
           <Route path="/result" element={<Result />} />
         </Routes>
       </Router>

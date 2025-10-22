@@ -1,6 +1,6 @@
 import { collection, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig.js";
-import convert from "./converter.js";
+import convertGradeToScore from "./convertGradeToScore.js";
 
 async function numericGrade() {
   try {
@@ -16,7 +16,7 @@ async function numericGrade() {
         continue;
       }
 
-      const convertedGrade = convert(grade); // Convert grade to numeric value
+      const convertedGrade = convertGradeToScore(grade); // Convert grade to numeric value
 
       // Update Firestore document with the new field
       await updateDoc(docSnap.ref, {

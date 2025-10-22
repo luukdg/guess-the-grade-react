@@ -1,7 +1,7 @@
-import { currentGrade } from "../api/getVideo";
+import { currentGrade } from "../api/fetchVideoData";
 
 // gradeUtils.js
-export function checkGradeBoolean(playerGuess) {
+export function isGradeCorrect(playerGuess) {
   const normalize = (s) => s.toUpperCase().replace(/\s+/g, "").split(/[-/]/);
 
   const guessParts = normalize(playerGuess);

@@ -1,7 +1,7 @@
 import { French, VScale } from "@openbeta/sandbag";
 
 // Converts a single grade like 7a, but also 7a/7a+
-export default function convert(grade) {
+export default function convertGradeToScore(grade) {
   let score = null;
 
   const str = grade;
