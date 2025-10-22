@@ -44,7 +44,6 @@ const VideoGuess = ({
     setFirebaseId(ticketId);
     setVideoId(youtubeLink);
 
-    // console.log("ticketID:", ticketId);
     // console.log("Link:", youtubeLink);
   };
 
