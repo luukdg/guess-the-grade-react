@@ -44,7 +44,6 @@ const VideoGuess = ({
     setFirebaseId(ticketId);
     setVideoId(youtubeLink);
 
-    // console.log("Link:", youtubeLink);
   };
 
   // Load first video on mount
