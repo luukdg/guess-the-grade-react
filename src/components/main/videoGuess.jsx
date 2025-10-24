@@ -5,7 +5,6 @@ import { getData } from "../../api/fetchVideoData";
 import { updateUserGuess } from "../../api/updateUserGuess";
 import { useGradeScale } from "../../functions/gradeScaleContext";
 import { getGrade } from "../../functions/GetGradeLabel";
-import { playbackSpeed } from "../UI/videoControlButtons";
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter";
 import IconButton from "@mui/material/IconButton";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
