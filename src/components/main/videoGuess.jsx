@@ -80,7 +80,7 @@ const VideoGuess = ({
 
   return (
     <div className="flex h-11/12 w-full flex-col gap-4">
-      <div className="relative flex items-center justify-center overflow-hidden rounded-lg">
+      <div className="relative flex items-center justify-center overflow-hidden">
         <ReactPlayer
           src={`https://www.youtube.com/shorts/${videoId}`}
           playing={isPlaying} // autoplay
@@ -153,7 +153,7 @@ const VideoGuess = ({
         <div className="flex flex-col items-center justify-center gap-2">
           <Button
             size="lg"
-            variant="outline"
+            variant="default"
             className="w-full"
             onClick={() => {
               handleSubmit();

@@ -71,6 +71,7 @@ function Game() {
           <GameOver
             streak={streak}
             restart={() => {
+              setNumericGuess([68, 71]);
               setLives(3);
               setStreak(0);
               setGuess(null);

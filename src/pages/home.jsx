@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useGradeScale } from "../functions/gradeScaleContext";
 import { Button } from "@/components/ui/button";
 import gradeLogo from "/logo.svg";
+import { retrieveStreak } from "@/api/localStorage/streakLocalStorage";
+import { HighScore } from "../components/UI/highScoreButton";
 
 function Home() {
   const navigate = useNavigate();
@@ -11,9 +13,20 @@ function Home() {
   const { gradeScale, setGradeScale } = useGradeScale();
   const [open, setOpen] = useState(false);
 
+  const currentStreak = retrieveStreak();
+
   return (
-    <div className="align-self relative flex h-full w-full flex-col items-center justify-center gap-5 pb-10">
-      <img src={gradeLogo} className="w-48" alt="logo" />
+    <div className="align-self relative flex h-full w-full flex-col items-center justify-center gap-5 px-10">
+      <div className="absolute top-4 left-4">
+        <HighScore />
+      </div>
+      <img src={gradeLogo} className="w-60" alt="logo" />
+      <div>
+        <p className="text-center">Clips, grades, consequences. 3 lives.</p>
+        <p className="text-center">
+          If it screams <strong>‘v2 in my gym’</strong> aim higher.
+        </p>
+      </div>
       <div className="absolute bottom-6 flex w-full justify-center gap-3 px-6">
         <Button
           size="lg"

@@ -1,9 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
+import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage";
 
 export default function GameOver({ streak, restart }) {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    saveStreakToLocalStorage(streak);
+  }, [streak]);
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">
@@ -29,7 +35,7 @@ export default function GameOver({ streak, restart }) {
         </Button>
         <Button
           size="lg"
-          variant="outline"
+          variant="default"
           className="flex-1"
           onClick={restart}
         >
