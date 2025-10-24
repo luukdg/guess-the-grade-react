@@ -13,7 +13,7 @@ function Home() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="align-self relative flex h-full w-full flex-col items-center justify-center gap-5 p-10">
+    <div className="align-self relative flex h-full w-full flex-col items-center justify-center gap-5 pb-10">
       <img src={gradeLogo} className="w-75" alt="logo" />
       <div className="absolute bottom-10 flex w-full gap-3 px-6">
         <button className="w-full" onClick={() => navigate("/game")}>

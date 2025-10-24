@@ -5,6 +5,7 @@ import { getData } from "../../api/fetchVideoData";
 import { updateUserGuess } from "../../api/updateUserGuess";
 import { useGradeScale } from "../../functions/gradeScaleContext";
 import { getGrade } from "../../functions/GetGradeLabel";
+import { playbackSpeed } from "../UI/videoControlButtons";
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter";
 import IconButton from "@mui/material/IconButton";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
@@ -29,6 +30,8 @@ const VideoGuess = ({
   const [videoId, setVideoId] = useState(null); // saves the youtubeLink
   const [value, setValue] = useState(30);
   const [muted, setMuted] = useState(true);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [playing, setPlaying] = useState(true);
   const { gradeScale, setGradeScale } = useGradeScale(); // Global boolean to change to V-scale
   const navigate = useNavigate();
 
@@ -43,9 +46,6 @@ const VideoGuess = ({
     const { youtubeLink, ticketId } = await getData(gradeScale);
     setFirebaseId(ticketId);
     setVideoId(youtubeLink);
-
-    // console.log("ticketID:", ticketId);
-    // console.log("Link:", youtubeLink);
   };
 
   // Load first video on mount
@@ -72,16 +72,15 @@ const VideoGuess = ({
   if (!videoId) return <div>Loading...</div>;
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-5">
-      <div className="flex flex-row items-center"></div>
-      <div className="relative flex aspect-[9/16] h-full items-center justify-center overflow-hidden rounded-lg">
+    <div className="flex h-full w-full flex-col gap-5">
+      <div className="border-box relative overflow-hidden">
         <ReactPlayer
-          className="h-auto w-full"
           src={`https://www.youtube.com/shorts/${videoId}`}
-          playing={true} // autoplay
+          playing={playing} // autoplay
           muted={muted} // must be muted for autoplay to work on most browsers
           controls={false}
           loop={true}
+          playbackRate={playbackSpeed}
           config={{
             youtube: {
               modestbranding: 1,
@@ -90,7 +89,7 @@ const VideoGuess = ({
               playlist: videoId,
             },
           }}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", aspectRatio: "9/16" }}
         />
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
         <div
@@ -117,7 +116,7 @@ const VideoGuess = ({
           {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
       </div>
-      <div className="align-center flex w-full flex-col justify-center gap-4">
+      <div className="flex flex-col justify-center gap-4">
         <div className="flex px-2">
           <Slider
             aria-label="Custom marks"
@@ -134,7 +133,7 @@ const VideoGuess = ({
         <div className="align-center mb-2 flex w-full justify-center gap-2">
           Guess: <strong>{chooseGradeConverter(numericGuess)}</strong>
         </div>
-        <div className="flex flex-row justify-center gap-4">
+        <div className="flex flex-row justify-center gap-2">
           {/* <button className="w-1/2" onClick={() => navigate("/")}>
             Home
           </button> */}
@@ -146,6 +145,11 @@ const VideoGuess = ({
           >
             Check your guess
           </button>
+          <button onClick={() => setPlaying(!playing)}>
+            {playing ? "Pause" : "Play"}
+          </button>
+          <button onClick={() => setPlaybackSpeed(1)}>1x</button>
+          <button onClick={() => setPlaybackSpeed(2)}>2x</button>
         </div>
       </div>
     </div>
