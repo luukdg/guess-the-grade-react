@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import { Button } from "@/components/ui/button";
 
 export default function GameOver({ streak, restart }) {
   const navigate = useNavigate();
@@ -13,15 +14,27 @@ export default function GameOver({ streak, restart }) {
         transition={{ duration: 0.5 }}
       >
         <p className="text-4xl font-semibold">Game Over!</p>
-        <p className="text-xl">Your final streak: {streak}</p>
+        <p className="text-xl">
+          Your final score: <strong>{streak}</strong>
+        </p>
       </motion.div>
-      <div className="absolute bottom-10 flex w-full justify-between gap-4 px-6">
-        <button className="w-1/2" onClick={() => navigate("/")}>
+      <div className="absolute bottom-6 flex w-full justify-center gap-3 px-6">
+        <Button
+          size="lg"
+          variant="outline"
+          className="flex-1"
+          onClick={() => navigate("/")}
+        >
           Home
-        </button>
-        <button className="w-1/2" onClick={restart}>
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          className="flex-1"
+          onClick={restart}
+        >
           Restart
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { ChevronDown } from "lucide-react";
 import { isGradeCorrect } from "../../functions/isGradeCorrect";
 import { motion } from "motion/react";
 import { gradeMap, levels } from "../../constants/gradeMap";
@@ -28,7 +28,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
             transform: "translateX(-50%)",
           }}
         >
-          <KeyboardArrowDownIcon fontSize="large" />
+          <ChevronDown fontSize="large" />
         </motion.div>
         <motion.div
           initial={{ left: `calc(${(startingValue + 0.5) * (100 / 7)}%)` }}
@@ -45,7 +45,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
             transform: "translateX(-50%)",
           }}
         >
-          <KeyboardArrowDownIcon
+          <ChevronDown
             fontSize="large"
             className={isCorrect ? "text-green-400" : "text-red-400"}
           />

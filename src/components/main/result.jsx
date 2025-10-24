@@ -5,7 +5,7 @@ import { isGradeCorrect } from "../../functions/isGradeCorrect";
 import CheckGrade from "../UI/guessReponse";
 import ComparePickedGrade from "../UI/comparePickedGrade";
 import { color, motion } from "motion/react";
-import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 const Result = ({
   guess,
@@ -51,10 +51,15 @@ const Result = ({
 
       <ComparePickedGrade currentGrade={currentGrade} guess={guess} />
 
-      <div className="absolute bottom-10 flex w-full flex-row gap-4 px-6">
-        <button className="w-full" onClick={() => restart()}>
+      <div className="absolute bottom-6 flex w-full flex-row gap-4 px-6">
+        <Button
+          size="lg"
+          variant="outline"
+          className="w-full"
+          onClick={() => restart()}
+        >
           Next video
-        </button>
+        </Button>
       </div>
     </div>
   );

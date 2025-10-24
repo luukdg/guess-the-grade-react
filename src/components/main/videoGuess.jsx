@@ -6,10 +6,11 @@ import { updateUserGuess } from "../../api/updateUserGuess";
 import { useGradeScale } from "../../functions/gradeScaleContext";
 import { getGrade } from "../../functions/GetGradeLabel";
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter";
-import IconButton from "@mui/material/IconButton";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { Slider } from "@mui/material";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react";
+import SliderDemo from "../UI/sliderForGrading";
 
 const VideoGuess = ({
   lives,
@@ -29,13 +30,13 @@ const VideoGuess = ({
   const [videoId, setVideoId] = useState(null); // saves the youtubeLink
   const [value, setValue] = useState(30);
   const [muted, setMuted] = useState(true);
-  const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const [playing, setPlaying] = useState(true);
+  const [speed, setSpeed] = useState(1);
+  const [isPlaying, setIsPlaying] = useState(true);
   const { gradeScale, setGradeScale } = useGradeScale(); // Global boolean to change to V-scale
   const navigate = useNavigate();
 
   // Resets the grade value after submitting
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue); // slider state
     setNumericGuess(getGrade(newValue)); // numericGuess state
   };
@@ -56,30 +57,37 @@ const VideoGuess = ({
   const handleSubmit = () => {
     if (lives === 0) {
       setOutcome("gameover");
+    } else {
+      const convertedGuess = chooseGradeConverter(numericGuess);
+      setGuess(convertedGuess);
+      finish("result");
+      updateUserGuess(firebaseId, numericGuess);
     }
-
-    const convertedGuess = chooseGradeConverter(numericGuess);
-    setGuess(convertedGuess);
-    finish("result");
-    updateUserGuess(firebaseId, numericGuess);
   };
 
   const chooseGradeConverter = (num) => {
     return !gradeScale ? convertToFont(num) : convertToVSale(num);
   };
 
-  if (!videoId) return <div>Loading...</div>;
+  const speeds = [1, 2];
+
+  if (!videoId)
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <Spinner size="30" />
+      </div>
+    );
 
   return (
-    <div className="flex h-full w-full flex-col gap-5">
-      <div className="border-box relative overflow-hidden">
+    <div className="flex h-11/12 w-full flex-col gap-4">
+      <div className="relative flex items-center justify-center overflow-hidden rounded-lg">
         <ReactPlayer
           src={`https://www.youtube.com/shorts/${videoId}`}
-          playing={playing} // autoplay
+          playing={isPlaying} // autoplay
           muted={muted} // must be muted for autoplay to work on most browsers
           controls={false}
           loop={true}
-          playbackRate={playbackSpeed}
+          playbackRate={speed}
           config={{
             youtube: {
               modestbranding: 1,
@@ -92,7 +100,7 @@ const VideoGuess = ({
         />
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
         <div
-          className={`pointer-events-none absolute top-0 left-0 h-[20%] w-full ${"opacity-100"}`}
+          className={`pointer-events-none absolute top-0 left-0 h-[15%] w-full ${"opacity-100"}`}
           style={{
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
@@ -102,53 +110,57 @@ const VideoGuess = ({
               "linear-gradient(to bottom, black 60%, transparent 100%)",
           }}
         ></div>
-        <IconButton
-          onClick={() => setMuted(!muted)}
-          className="!absolute bottom-2 left-2"
-          size="large"
-          sx={{
-            color: "white", // icon color
-            backgroundColor: "rgba(0,0,0,0.0)", // background
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
-          }}
-        >
-          {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-        </IconButton>
+        <div className="absolute bottom-2 flex w-full flex-col items-center gap-4">
+          <ButtonGroup>
+            <Button
+              onClick={() => setMuted(!muted)}
+              size="sm"
+              variant="outline"
+            >
+              {muted ? <VolumeOff /> : <Volume2 />}
+            </Button>
+            <Button
+              onClick={() => setIsPlaying(!isPlaying)}
+              size="sm"
+              variant="outline"
+            >
+              {isPlaying ? <PauseIcon /> : <PlayIcon />}
+            </Button>
+            {speeds.map((s) => (
+              <Button
+                key={s}
+                onClick={() => setSpeed(s)}
+                size="sm"
+                variant={speed === s ? "default" : "outline"}
+              >
+                {s}x
+              </Button>
+            ))}
+          </ButtonGroup>
+        </div>
       </div>
       <div className="flex flex-col justify-center gap-4">
-        <div className="flex px-2">
-          <Slider
-            aria-label="Custom marks"
-            step={10}
-            valueLabelDisplay="auto"
-            value={value}
-            marks
-            min={0}
-            max={60}
-            valueLabelFormat={() => chooseGradeConverter(numericGuess)}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="align-center mb-2 flex w-full justify-center gap-2">
+        <div className="align-center flex w-full justify-center gap-2">
           Guess: <strong>{chooseGradeConverter(numericGuess)}</strong>
         </div>
-        <div className="flex flex-row justify-center gap-2">
-          {/* <button className="w-1/2" onClick={() => navigate("/")}>
-            Home
-          </button> */}
-          <button
+        <div className="mb-2 flex h-5 px-2">
+          <SliderDemo
+            value={value}
+            setValue={setValue}
+            handleChange={handleChange}
+          />
+        </div>
+        <div className="flex flex-col items-center justify-center gap-2">
+          <Button
+            size="lg"
+            variant="outline"
             className="w-full"
             onClick={() => {
               handleSubmit();
             }}
           >
             Check your guess
-          </button>
-          <button onClick={() => setPlaying(!playing)}>
-            {playing ? "Pause" : "Play"}
-          </button>
-          <button onClick={() => setPlaybackSpeed(1)}>1x</button>
-          <button onClick={() => setPlaybackSpeed(2)}>2x</button>
+          </Button>
         </div>
       </div>
     </div>
