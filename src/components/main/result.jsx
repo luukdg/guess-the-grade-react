@@ -24,7 +24,7 @@ const Result = ({
   const isCorrect = isGradeCorrect(guess);
 
   return (
-    <div className="align-self flex h-full w-full flex-col items-center justify-center">
+    <div className="align-self mb-12 flex h-11/12 w-full flex-col items-center justify-center">
       <motion.div
         className="mb-6 flex flex-col gap-3"
         initial={{ opacity: 0, y: -20 }}

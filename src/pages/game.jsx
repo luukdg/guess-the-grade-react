@@ -23,9 +23,9 @@ function Game() {
 
   return (
     <>
-      <div className="align-self flex h-full w-full flex-col items-center pt-10 pr-6 pb-10 pl-6 sm:justify-center">
+      <div className="justify-content flex h-full flex-col items-center px-6 py-10">
         {showScoreAndLives && (
-          <div className="flex w-10 flex-row items-center justify-center gap-1">
+          <div className="flex h-1/12 w-10 flex-row items-center justify-center gap-1 pb-5">
             <p>Score: </p>
             <Streak streak={streak} />
             <p>Lives:</p>
@@ -33,53 +33,53 @@ function Game() {
           </div>
         )}
 
-        {outcome === "game" && (
-          <VideoGuess
-            lives={lives}
-            setLives={setLives}
-            streak={streak}
-            setStreak={setStreak}
-            finish={(result) => setOutcome(result)}
-            guess={guess}
-            setGuess={setGuess}
-            numericGuess={numericGuess}
-            setNumericGuess={setNumericGuess}
-            firebaseId={firebaseId}
-            setFirebaseId={setFirebaseId}
-            outcome={outcome}
-            setOutcome={setOutcome}
-          />
-        )}
-
-        {outcome === "result" && (
-          <Result
-            guess={guess}
-            setGuess={setGuess}
-            lives={lives}
-            setLives={setLives}
-            streak={streak}
-            setStreak={setStreak}
-            result={outcome}
-            restart={() => {
-              setOutcome("game");
-              setNumericGuess([68, 71]);
-            }}
-            firebaseId={firebaseId}
-            setFirebaseId={setFirebaseId}
-          />
-        )}
-
-        {outcome === "gameover" && (
-          <GameOver
-            streak={streak}
-            restart={() => {
-              setLives(3);
-              setStreak(0);
-              setGuess(null);
-              setOutcome("game");
-            }}
-          />
-        )}
+        <div className="h-11/12 w-full">
+          {outcome === "game" && (
+            <VideoGuess
+              lives={lives}
+              setLives={setLives}
+              streak={streak}
+              setStreak={setStreak}
+              finish={(result) => setOutcome(result)}
+              guess={guess}
+              setGuess={setGuess}
+              numericGuess={numericGuess}
+              setNumericGuess={setNumericGuess}
+              firebaseId={firebaseId}
+              setFirebaseId={setFirebaseId}
+              outcome={outcome}
+              setOutcome={setOutcome}
+            />
+          )}
+          {outcome === "result" && (
+            <Result
+              guess={guess}
+              setGuess={setGuess}
+              lives={lives}
+              setLives={setLives}
+              streak={streak}
+              setStreak={setStreak}
+              result={outcome}
+              restart={() => {
+                setOutcome("game");
+                setNumericGuess([68, 71]);
+              }}
+              firebaseId={firebaseId}
+              setFirebaseId={setFirebaseId}
+            />
+          )}
+          {outcome === "gameover" && (
+            <GameOver
+              streak={streak}
+              restart={() => {
+                setLives(3);
+                setStreak(0);
+                setGuess(null);
+                setOutcome("game");
+              }}
+            />
+          )}
+        </div>
       </div>
     </>
   );

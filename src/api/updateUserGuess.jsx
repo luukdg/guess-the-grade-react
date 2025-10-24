@@ -10,7 +10,6 @@ export async function updateUserGuess(firebaseId, numericGuess) {
     await updateDoc(videoRef, {
       [`guesses.${rangeKey}`]: increment(1),
     });
-
   } catch (e) {
     console.error("Error updating documents: ", e);
   }

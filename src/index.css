@@ -15,23 +15,14 @@
 
 html,
 body {
-  height: 100dvh;
-  width: 100dvw;
+  height: 100%;
   margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 #root {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
-  width: 100%;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 button {
