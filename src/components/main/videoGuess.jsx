@@ -6,11 +6,10 @@ import { updateUserGuess } from "../../api/updateUserGuess";
 import { useGradeScale } from "../../functions/gradeScaleContext";
 import { getGrade } from "../../functions/GetGradeLabel";
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter";
-import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react";
-import SliderDemo from "../UI/sliderForGrading";
+import SliderForGrading from "../UI/sliderForGrading";
 
 const VideoGuess = ({
   lives,
@@ -71,33 +70,29 @@ const VideoGuess = ({
 
   const speeds = [1, 2];
 
-  if (!videoId)
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <Spinner size="30" />
-      </div>
-    );
-
   return (
     <div className="flex h-11/12 w-full flex-col gap-4">
       <div className="relative flex items-center justify-center overflow-hidden">
-        <ReactPlayer
-          src={`https://www.youtube.com/shorts/${videoId}`}
-          playing={isPlaying} // autoplay
-          muted={muted} // must be muted for autoplay to work on most browsers
-          controls={false}
-          loop={true}
-          playbackRate={speed}
-          config={{
-            youtube: {
-              modestbranding: 1,
-              rel: 0,
-              showinfo: 0,
-              playlist: videoId,
-            },
-          }}
-          style={{ width: "100%", height: "100%", aspectRatio: "9/16" }}
-        />
+        <div className="aspect-[9/16] h-full w-full bg-black">
+          <ReactPlayer
+            src={`https://www.youtube.com/shorts/${videoId}`}
+            playing={isPlaying} // autoplay
+            muted={muted} // must be muted for autoplay to work on most browsers
+            controls={false}
+            loop={true}
+            playbackRate={speed}
+            config={{
+              youtube: {
+                modestbranding: 1,
+                rel: 0,
+                showinfo: 0,
+                playlist: videoId,
+              },
+            }}
+            style={{ width: "100%", height: "100%", aspectRatio: "9/16" }}
+          />
+        </div>
+
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
         <div
           className={`pointer-events-none absolute top-0 left-0 h-[15%] w-full ${"opacity-100"}`}
@@ -139,12 +134,12 @@ const VideoGuess = ({
           </ButtonGroup>
         </div>
       </div>
-      <div className="flex flex-col justify-center gap-4">
+      <div className="flex flex-col justify-center">
         <div className="align-center flex w-full justify-center gap-2">
           Guess: <strong>{chooseGradeConverter(numericGuess)}</strong>
         </div>
-        <div className="mb-2 flex h-5 px-2">
-          <SliderDemo
+        <div className="flex h-15">
+          <SliderForGrading
             value={value}
             setValue={setValue}
             handleChange={handleChange}

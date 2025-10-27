@@ -1,5 +1,5 @@
 import { Slider } from "@/components/ui/slider";
-export default function SliderDemo({ value, handleChange }) {
+export default function sliderForGrading({ value, handleChange }) {
   return (
     <Slider
       value={[value]}

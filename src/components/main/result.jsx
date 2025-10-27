@@ -4,7 +4,7 @@ import { useGradeScale } from "../../functions/gradeScaleContext";
 import { isGradeCorrect } from "../../functions/isGradeCorrect";
 import CheckGrade from "../UI/guessReponse";
 import ComparePickedGrade from "../UI/comparePickedGrade";
-import { color, motion } from "motion/react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 
 const Result = ({
