@@ -29,5 +29,9 @@ export default function CheckGrade({
     ? randomMessage(messages.correct)
     : randomMessage(messages.incorrect);
 
-  return <h1 className="text-center text-4xl font-bold">{message}</h1>; // show message in DOM
+  return (
+    <h1 className="text-center text-4xl font-bold">
+      {lives === 0 ? "Game Over!" : message}
+    </h1>
+  ); // show message in DOM
 }

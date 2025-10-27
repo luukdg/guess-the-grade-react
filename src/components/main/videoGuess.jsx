@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react";
 import SliderForGrading from "../UI/sliderForGrading";
+import { Spinner } from "../UI/shadcn-io/spinner";
 
 const VideoGuess = ({
   lives,
@@ -30,7 +31,7 @@ const VideoGuess = ({
   const [value, setValue] = useState(30);
   const [muted, setMuted] = useState(true);
   const [speed, setSpeed] = useState(1);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const { gradeScale, setGradeScale } = useGradeScale(); // Global boolean to change to V-scale
   const navigate = useNavigate();
 
@@ -54,14 +55,10 @@ const VideoGuess = ({
 
   // Submit guess and refresh video
   const handleSubmit = () => {
-    if (lives === 0) {
-      setOutcome("gameover");
-    } else {
-      const convertedGuess = chooseGradeConverter(numericGuess);
-      setGuess(convertedGuess);
-      finish("result");
-      updateUserGuess(firebaseId, numericGuess);
-    }
+    const convertedGuess = chooseGradeConverter(numericGuess);
+    setGuess(convertedGuess);
+    finish("result");
+    updateUserGuess(firebaseId, numericGuess);
   };
 
   const chooseGradeConverter = (num) => {
@@ -76,6 +73,7 @@ const VideoGuess = ({
         <div className="aspect-[9/16] h-full w-full bg-black">
           <ReactPlayer
             src={`https://www.youtube.com/shorts/${videoId}`}
+            onReady={() => setIsPlaying(true)}
             playing={isPlaying} // autoplay
             muted={muted} // must be muted for autoplay to work on most browsers
             controls={false}

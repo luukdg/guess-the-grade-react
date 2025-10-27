@@ -3,7 +3,6 @@ import VideoGuess from "../components/main/videoGuess";
 import Result from "../components/main/result";
 import { ClimberIcons } from "../components/UI/climberIcons";
 import Streak from "../components/UI/scoreStreak";
-import GameOver from "../components/main/gameOver";
 
 function Game() {
   const [lives, setLives] = useState(3);
@@ -13,25 +12,21 @@ function Game() {
   const [numericGuess, setNumericGuess] = useState([68, 71]);
   const [firebaseId, setFirebaseId] = useState(null);
 
-  useEffect(() => {
-    if (lives <= 0) {
-      setOutcome("gameover");
-    }
-  }, [lives]);
-
   const showScoreAndLives = lives > 0;
 
   return (
     <>
       <div className="justify-content flex h-full flex-col items-center px-6 py-6">
-        {showScoreAndLives && (
-          <div className="flex h-1/12 w-10 flex-row items-center justify-center gap-1 pb-5">
-            <p>Score: </p>
-            <Streak streak={streak} />
-            <p>Lives:</p>
-            <ClimberIcons lives={lives} setLives={setLives} />
-          </div>
-        )}
+        <div className="flex h-1/12 flex-row items-center justify-center gap-2 pb-5">
+          <p>Score: </p>
+          <Streak streak={streak} />
+          {showScoreAndLives && (
+            <>
+              <p>Lives:</p>
+              <ClimberIcons lives={lives} setLives={setLives} />
+            </>
+          )}
+        </div>
 
         {outcome === "game" && (
           <VideoGuess
@@ -59,17 +54,10 @@ function Game() {
             streak={streak}
             setStreak={setStreak}
             result={outcome}
-            restart={() => {
+            nextVideo={() => {
               setOutcome("game");
               setNumericGuess([68, 71]);
             }}
-            firebaseId={firebaseId}
-            setFirebaseId={setFirebaseId}
-          />
-        )}
-        {outcome === "gameover" && (
-          <GameOver
-            streak={streak}
             restart={() => {
               setNumericGuess([68, 71]);
               setLives(3);
@@ -77,6 +65,8 @@ function Game() {
               setGuess(null);
               setOutcome("game");
             }}
+            firebaseId={firebaseId}
+            setFirebaseId={setFirebaseId}
           />
         )}
       </div>
