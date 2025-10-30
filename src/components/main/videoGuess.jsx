@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react";
 import SliderForGrading from "../UI/sliderForGrading";
+import { statuses } from "../UI/indoorOrOutdoorButton";
 
 const VideoGuess = ({
   lives,
@@ -25,6 +26,7 @@ const VideoGuess = ({
   setFirebaseId,
   outcome,
   setOutcome,
+  selectedStatus,
 }) => {
   const [videoId, setVideoId] = useState(null); // saves the youtubeLink
   const [videoArray, setVideoArray] = useState([]); // array of videos fetched
@@ -43,7 +45,9 @@ const VideoGuess = ({
 
   // Function to fetch a new video
   const fetchNewVideo = async () => {
-    const { youtubeLink, ticketId } = await getData(gradeScale);
+    const videoType = selectedStatus.value;
+
+    const { youtubeLink, ticketId } = await getData(gradeScale, videoType);
     if (videoArray.includes(youtubeLink)) {
       return fetchNewVideo();
     } else {

@@ -3,6 +3,7 @@ import VideoGuess from "@/components/main/videoGuess";
 import Result from "@/components/main/result";
 import { ClimberIcons } from "@/components/UI/climberIcons";
 import Streak from "@/components/UI/scoreStreak";
+import { useLocation } from "react-router-dom";
 
 function Game() {
   const [lives, setLives] = useState(3);
@@ -11,6 +12,9 @@ function Game() {
   const [guess, setGuess] = useState(null);
   const [numericGuess, setNumericGuess] = useState([68, 71]);
   const [firebaseId, setFirebaseId] = useState(null);
+
+  const location = useLocation();
+  const { selectedStatus } = location.state || {};
 
   const showScoreAndLives = lives > 0;
 
@@ -43,6 +47,7 @@ function Game() {
             setFirebaseId={setFirebaseId}
             outcome={outcome}
             setOutcome={setOutcome}
+            selectedStatus={selectedStatus}
           />
         )}
         {outcome === "result" && (

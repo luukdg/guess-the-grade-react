@@ -22,16 +22,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const statuses = [
+export const statuses = [
   { value: "indoor", label: "Indoor" },
   { value: "outdoor", label: "Outdoor" },
   { value: "all", label: "All" },
 ];
 
-export default function ComboBoxResponsive() {
+export function ComboBoxResponsive({ selectedStatus, setSelectedStatus }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedStatus, setSelectedStatus] = useState(statuses[0]);
 
   return (
     <div className="flex w-full justify-center">
@@ -80,7 +79,6 @@ export default function ComboBoxResponsive() {
 function StatusList({ setOpen, setSelectedStatus, selectedStatus }) {
   return (
     <Command>
-      <CommandInput placeholder="Search..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>

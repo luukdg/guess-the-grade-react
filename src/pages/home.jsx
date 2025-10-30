@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 import gradeLogo from "/logo.svg";
 import { retrieveStreak } from "@/api/localStorage/streakLocalStorage";
 import { HighScore } from "../components/UI/highScoreButton";
-import ComboBoxResponsive from "@/components/UI/indoorOrOutdoorButton";
+import {
+  ComboBoxResponsive,
+  statuses,
+} from "@/components/UI/indoorOrOutdoorButton";
 
 function Home() {
   const navigate = useNavigate();
@@ -13,6 +16,7 @@ function Home() {
   // Global boolean to change to V-scale
   const { gradeScale, setGradeScale } = useGradeScale();
   const [open, setOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(statuses[2]); // default to 'all'
 
   const currentStreak = retrieveStreak();
 
@@ -30,7 +34,10 @@ function Home() {
       </div>
       <div className="flex flex-col items-center justify-center gap-2">
         <p>Video type (beta):</p>
-        <ComboBoxResponsive />
+        <ComboBoxResponsive
+          selectedStatus={selectedStatus}
+          setSelectedStatus={setSelectedStatus}
+        />
       </div>
 
       <div className="absolute bottom-6 flex w-full justify-center gap-3 px-6">
@@ -38,7 +45,7 @@ function Home() {
           size="lg"
           variant="outline"
           className="w-full"
-          onClick={() => navigate("/game")}
+          onClick={() => navigate("/game", { state: { selectedStatus } })}
         >
           Start Game
         </Button>

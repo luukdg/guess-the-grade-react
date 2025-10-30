@@ -3,7 +3,7 @@ import { db } from "./firebaseConfig.js";
 
 try {
   for (let i = 0; i < 6; i++) {
-    const docRef = await addDoc(collection(db, "videos"), {
+    const docRef = await addDoc(collection(db, "outdoor"), {
       grade: "",
       lastShowDate: null,
       youtubeLink: "",
