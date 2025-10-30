@@ -17,17 +17,20 @@ export default defineConfig({
         short_name: "GuessGrade",
         start_url: ".",
         display: "standalone",
-        background_color: "oklch(0.13 0.028 261.692)",
+        background_color: "#121212",
+        theme_color: "#121212",
         icons: [
           {
-            src: "/guess-the-grade-react/icon-192.png",
+            src: "icons/manifest-icon-192.maskable.png",
             sizes: "192x192",
             type: "image/png",
+            purpose: "any maskable",
           },
           {
-            src: "/guess-the-grade-react/icon-512.png",
+            src: "icons/manifest-icon-512.maskable.png",
             sizes: "512x512",
             type: "image/png",
+            purpose: "any maskable",
           },
         ],
       },

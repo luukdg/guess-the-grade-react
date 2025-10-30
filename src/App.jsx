@@ -1,9 +1,4 @@
-import {
-  HashRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import VideoGuess from "./components/main/videoGuess";
 import Result from "./components/main/result";

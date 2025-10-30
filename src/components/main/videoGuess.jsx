@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react";
 import SliderForGrading from "../UI/sliderForGrading";
-import { Spinner } from "../UI/shadcn-io/spinner";
 
 const VideoGuess = ({
   lives,
@@ -28,10 +27,11 @@ const VideoGuess = ({
   setOutcome,
 }) => {
   const [videoId, setVideoId] = useState(null); // saves the youtubeLink
-  const [value, setValue] = useState(30);
-  const [muted, setMuted] = useState(true);
-  const [speed, setSpeed] = useState(1);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [videoArray, setVideoArray] = useState([]); // array of videos fetched
+  const [value, setValue] = useState(30); // slider state
+  const [muted, setMuted] = useState(true); // video mute state
+  const [speed, setSpeed] = useState(1); // playback speed
+  const [isPlaying, setIsPlaying] = useState(false); // video play state
   const { gradeScale, setGradeScale } = useGradeScale(); // Global boolean to change to V-scale
   const navigate = useNavigate();
 
@@ -44,8 +44,13 @@ const VideoGuess = ({
   // Function to fetch a new video
   const fetchNewVideo = async () => {
     const { youtubeLink, ticketId } = await getData(gradeScale);
-    setFirebaseId(ticketId);
-    setVideoId(youtubeLink);
+    if (videoArray.includes(youtubeLink)) {
+      return fetchNewVideo();
+    } else {
+      setFirebaseId(ticketId);
+      setVideoId(youtubeLink);
+      setVideoArray((prev) => [...prev, youtubeLink]);
+    }
   };
 
   // Load first video on mount

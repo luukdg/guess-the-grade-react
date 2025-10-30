@@ -127,3 +127,8 @@ body,
   padding: 0;
   overflow: hidden;
 }
+
+/* // Fix when video type drawers pops open and pushes the body up */
+[data-scroll-locked][data-scroll-locked] {
+  height: 100% !important;
+}

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import gradeLogo from "/logo.svg";
 import { retrieveStreak } from "@/api/localStorage/streakLocalStorage";
 import { HighScore } from "../components/UI/highScoreButton";
+import ComboBoxResponsive from "@/components/UI/indoorOrOutdoorButton";
 
 function Home() {
   const navigate = useNavigate();
@@ -27,6 +28,11 @@ function Home() {
           If it screams <strong>‘v2 in my gym’</strong> aim higher.
         </p>
       </div>
+      <div className="flex flex-col items-center justify-center gap-2">
+        <p>Video type (beta):</p>
+        <ComboBoxResponsive />
+      </div>
+
       <div className="absolute bottom-6 flex w-full justify-center gap-3 px-6">
         <Button
           size="lg"
