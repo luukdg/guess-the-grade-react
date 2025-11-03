@@ -3,9 +3,8 @@ import VideoGuess from "@/components/main/videoGuess";
 import Result from "@/components/main/result";
 import { ClimberIcons } from "@/components/UI/climberIcons";
 import Streak from "@/components/UI/scoreStreak";
-import { useLocation } from "react-router-dom";
 
-function Game() {
+function Game({ videoType }) {
   const [lives, setLives] = useState(3);
   const [outcome, setOutcome] = useState("game"); // store score or result if needed
   const [streak, setStreak] = useState(0);
@@ -13,15 +12,12 @@ function Game() {
   const [numericGuess, setNumericGuess] = useState([68, 71]);
   const [firebaseId, setFirebaseId] = useState(null);
 
-  const location = useLocation();
-  const { selectedStatus } = location.state || {};
-
   const showScoreAndLives = lives > 0;
 
   return (
     <>
-      <div className="justify-content flex h-full flex-col items-center px-6 py-6">
-        <div className="flex h-1/12 flex-row items-center justify-center gap-2 pb-5">
+      <div className="align-self flex h-full w-full flex-1 flex-col items-center justify-center gap-4">
+        <div className="flex w-full flex-row items-center justify-center">
           <p>Score: </p>
           <Streak streak={streak} />
           {showScoreAndLives && (
@@ -47,7 +43,7 @@ function Game() {
             setFirebaseId={setFirebaseId}
             outcome={outcome}
             setOutcome={setOutcome}
-            selectedStatus={selectedStatus}
+            videoType={videoType}
           />
         )}
         {outcome === "result" && (

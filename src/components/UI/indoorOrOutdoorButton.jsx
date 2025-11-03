@@ -28,9 +28,15 @@ export const statuses = [
   { value: "all", label: "All" },
 ];
 
-export function ComboBoxResponsive({ selectedStatus, setSelectedStatus }) {
+export function ComboBoxResponsive({ videoType, setVideoType }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  function saveVideoTypeToLocalStorage(videoType) {
+    setVideoType(videoType);
+    localStorage.setItem("VideoType", JSON.stringify(videoType));
+    console.log("VideoType saved to localStorage, value:", videoType);
+  }
 
   return (
     <div className="flex w-full justify-center">
@@ -39,14 +45,11 @@ export function ComboBoxResponsive({ selectedStatus, setSelectedStatus }) {
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button variant="outline" className="w-[150px] justify-start">
-              {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
+              {videoType.label}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0" align="start">
-            <StatusList
-              setOpen={setOpen}
-              setSelectedStatus={setSelectedStatus}
-            />
+            <StatusList setOpen={setOpen} />
           </PopoverContent>
         </Popover>
       ) : (
@@ -54,7 +57,7 @@ export function ComboBoxResponsive({ selectedStatus, setSelectedStatus }) {
         <Drawer open={open} onOpenChange={setOpen} autoFocus={open}>
           <DrawerTrigger asChild>
             <Button variant="outline" className="w-[150px] justify-start">
-              {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
+              {videoType.label}
             </Button>
           </DrawerTrigger>
           <DrawerContent className="pb-safe mt-auto border-t">
@@ -65,8 +68,7 @@ export function ComboBoxResponsive({ selectedStatus, setSelectedStatus }) {
             <div className="mt-4 border-t">
               <StatusList
                 setOpen={setOpen}
-                setSelectedStatus={setSelectedStatus}
-                selectedStatus={selectedStatus}
+                saveVideoTypeToLocalStorage={saveVideoTypeToLocalStorage}
               />
             </div>
           </DrawerContent>
@@ -76,7 +78,7 @@ export function ComboBoxResponsive({ selectedStatus, setSelectedStatus }) {
   );
 }
 
-function StatusList({ setOpen, setSelectedStatus, selectedStatus }) {
+function StatusList({ setOpen, saveVideoTypeToLocalStorage }) {
   return (
     <Command>
       <CommandList>
@@ -87,7 +89,7 @@ function StatusList({ setOpen, setSelectedStatus, selectedStatus }) {
               key={status.value}
               value={status.value}
               onSelect={(value) => {
-                setSelectedStatus(
+                saveVideoTypeToLocalStorage(
                   statuses.find((s) => s.value === value) || null,
                 );
                 setOpen(false);

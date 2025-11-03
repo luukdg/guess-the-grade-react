@@ -29,18 +29,18 @@ const Result = ({
 
   useEffect(() => {
     saveStreakToLocalStorage(streak);
-  }, []);
+  }, [lives, streak]);
 
   return (
-    <div className="align-self flex h-11/12 w-full flex-col items-center justify-center">
+    <div className="align-self relative flex h-full w-full flex-col items-center justify-center">
       {/* Results message */}
       <motion.div
         className="mb-6 flex flex-col gap-3"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
-          duration: 0.25, // faster
-          ease: [0.34, 1.56, 0.64, 1], // custom spring-like cubic-bezier
+          duration: 0.25,
+          ease: [0.34, 1.56, 0.64, 1],
         }}
       >
         <CheckGrade
@@ -65,7 +65,7 @@ const Result = ({
       <ComparePickedGrade currentGrade={currentGrade} guess={guess} />
 
       {/* Buttons at the bottom */}
-      <div className="absolute bottom-6 flex w-full flex-row gap-4 px-6">
+      <div className="absolute bottom-0 flex w-full flex-row gap-4">
         {lives === 0 ? (
           <GameOverButtons restart={restart} />
         ) : (
