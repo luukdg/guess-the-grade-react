@@ -6,17 +6,8 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import {
-  BookOpen,
-  Home,
-  Rss,
-  Settings,
-  Trophy,
-  User,
-  Upload,
-  Play,
-} from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
+import { Home, Settings, Upload, Play } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const navigationMenuItems = [
   { title: "Home", href: "/", icon: Home },
