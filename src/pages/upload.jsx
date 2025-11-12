@@ -8,9 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -33,6 +31,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { numericGrades } from "@/constants/numericGrades";
+import { uploadNewVideo } from "@/api/uploadNewVideo";
 
 const frameworks = [
   {
@@ -75,172 +74,184 @@ export default function Upload() {
   });
 
   function onSubmit(data) {
-    console.log("The form object: ", data);
+    uploadNewVideo(data);
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-8">
-      <h1 className="text-xl font-bold">Upload your own bouldering video</h1>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full space-y-6"
+    <div className="flex h-full w-full flex-col">
+      <div className="flex h-full flex-col justify-center gap-10">
+        <Form {...form}>
+          <form
+            id="video-form"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex w-full flex-col gap-4"
+          >
+            <h1 className="text-xl font-bold">
+              Upload your own bouldering video
+            </h1>
+            <FormField
+              control={form.control}
+              name="youtubeLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Paste a YouTube link" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="grade"
+              render={({ field }) => (
+                <Drawer
+                  open={SecondOpen}
+                  onOpenChange={setSecondOpen}
+                  autoFocus={open}
+                >
+                  <DrawerTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full justify-between"
+                    >
+                      {field.value
+                        ? numericGrades.find((f) => f.value === field.value)
+                            ?.label
+                        : "Choose a grade..."}
+                      <ChevronsUpDown className="opacity-50" />
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent className="pb-safe mt-auto border-t">
+                    <DrawerTitle className="px-4 pt-4 text-lg font-medium">
+                      Select a grade
+                    </DrawerTitle>
+                    <DrawerDescription />
+                    <Command>
+                      <CommandList>
+                        <CommandGroup>
+                          {numericGrades.map((grade) => (
+                            <CommandItem
+                              key={grade.value}
+                              value={grade.value}
+                              onSelect={(currentValue) => {
+                                field.onChange(currentValue, {
+                                  shouldValidate: true,
+                                  shouldTouch: true,
+                                });
+                                console.log(form.watch());
+                                setSecondOpen(false);
+                              }}
+                            >
+                              {grade.label}
+                              <Check
+                                className={cn(
+                                  "ml-auto",
+                                  form.watch("grade") === grade.value
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </DrawerContent>
+                  <FormMessage />
+                </Drawer>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <Drawer
+                  open={firstOpen}
+                  onOpenChange={setFirstOpen}
+                  autoFocus={open}
+                >
+                  <DrawerTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full justify-between"
+                    >
+                      {field.value
+                        ? frameworks.find((f) => f.value === field.value)?.label
+                        : "Indoor or outdoor..."}
+                      <ChevronsUpDown className="opacity-50" />
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent className="pb-safe mt-auto border-t">
+                    <DrawerTitle className="px-4 pt-4 text-lg font-medium">
+                      Select a Location
+                    </DrawerTitle>
+                    <Command>
+                      <CommandList>
+                        <CommandGroup>
+                          {frameworks.map((framework) => (
+                            <CommandItem
+                              key={framework.value}
+                              value={framework.value}
+                              onSelect={(currentValue) => {
+                                field.onChange(currentValue, {
+                                  shouldValidate: true,
+                                  shouldTouch: true,
+                                });
+                                console.log(form.watch());
+                                setFirstOpen(false);
+                              }}
+                            >
+                              {framework.label}
+                              <Check
+                                className={cn(
+                                  "ml-auto",
+                                  form.watch("location") === framework.value
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </DrawerContent>
+                  <FormMessage />
+                </Drawer>
+              )}
+            />
+          </form>
+        </Form>
+        <div className="flex flex-col items-center justify-center gap-2">
+          <h1 className="text-base font-bold">
+            Guideline for video submission
+          </h1>
+          <ul className="list-disc space-y-1 pl-6 text-sm">
+            <li>YouTube Shorts or regular videos</li>
+            <li>Max length: 60 seconds</li>
+            <li>Only bouldering content</li>
+            <li>No on-screen text or grades</li>
+            <li>Clear, stable footage</li>
+            <li>Public or unlisted link</li>
+          </ul>
+        </div>
+      </div>
+      <div className="w-full">
+        <Button
+          form="video-form"
+          size="lg"
+          variant="default"
+          className="w-full"
+          type="submit"
         >
-          <FormField
-            control={form.control}
-            name="youtubeLink"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Youtube link</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="https://www.youtube.com/shorts/LPGwTAJkpJM"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Fill in the link of the youtube video.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="grade"
-            render={({ field }) => (
-              <Drawer
-                open={SecondOpen}
-                onOpenChange={setSecondOpen}
-                autoFocus={open}
-              >
-                <DrawerTrigger asChild className="m-0">
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className="w-full justify-between"
-                  >
-                    {field.value
-                      ? numericGrades.find((f) => f.value === field.value)
-                          ?.label
-                      : "Choose a grade..."}
-                    <ChevronsUpDown className="opacity-50" />
-                  </Button>
-                </DrawerTrigger>
-                <DrawerDescription className="mt-2 mb-2">
-                  Pick a grade between 5a and 8a.
-                </DrawerDescription>
-                <FormMessage />
-                <DrawerContent className="pb-safe mt-auto border-t">
-                  <DrawerTitle className="px-4 pt-4 text-lg font-medium">
-                    Select a grade
-                  </DrawerTitle>
-                  <DrawerDescription />
-                  <Command>
-                    <CommandList>
-                      <CommandGroup>
-                        {numericGrades.map((grade) => (
-                          <CommandItem
-                            key={grade.value}
-                            value={grade.value}
-                            onSelect={(currentValue) => {
-                              field.onChange(currentValue, {
-                                shouldValidate: true,
-                                shouldTouch: true,
-                              });
-                              console.log(form.watch());
-                              setSecondOpen(false);
-                            }}
-                          >
-                            {grade.label}
-                            <Check
-                              className={cn(
-                                "ml-auto",
-                                form.watch("grade") === grade.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </DrawerContent>
-              </Drawer>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <Drawer
-                open={firstOpen}
-                onOpenChange={setFirstOpen}
-                autoFocus={open}
-              >
-                <DrawerTrigger asChild className="m-0">
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className="w-full justify-between"
-                  >
-                    {field.value
-                      ? frameworks.find((f) => f.value === field.value)?.label
-                      : "Indoor or outdoor..."}
-                    <ChevronsUpDown className="opacity-50" />
-                  </Button>
-                </DrawerTrigger>
-                <DrawerDescription className="mt-2 mb-2">
-                  Rock or plastic?
-                </DrawerDescription>
-                <FormMessage />
-                <DrawerContent className="pb-safe mt-auto border-t">
-                  <DrawerTitle className="px-4 pt-4 text-lg font-medium">
-                    Select a Location
-                  </DrawerTitle>
-                  <DrawerDescription />
-                  <Command>
-                    <CommandList>
-                      <CommandGroup>
-                        {frameworks.map((framework) => (
-                          <CommandItem
-                            key={framework.value}
-                            value={framework.value}
-                            onSelect={(currentValue) => {
-                              field.onChange(currentValue, {
-                                shouldValidate: true,
-                                shouldTouch: true,
-                              });
-                              console.log(form.watch());
-                              setFirstOpen(false);
-                            }}
-                          >
-                            {framework.label}
-                            <Check
-                              className={cn(
-                                "ml-auto",
-                                form.watch("location") === framework.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </DrawerContent>
-              </Drawer>
-            )}
-          />
-
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+          Submit
+        </Button>
+      </div>
     </div>
   );
 }
