@@ -1,6 +1,6 @@
 import { currentGrade } from "../api/fetchVideoData";
 
-// gradeUtils.js
+// Checks if a match is found between the player's guess and the actual grade
 export function isGradeCorrect(playerGuess) {
   const normalize = (s) => s.toUpperCase().replace(/\s+/g, "").split(/[-/]/);
 

@@ -1,9 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import {
   Form,
   FormControl,
@@ -13,62 +23,75 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+  DrawerTitle,
+  DrawerDescription,
+} from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { numericGrades } from "@/constants/numericGrades";
+
+const frameworks = [
+  {
+    value: "indoor",
+    label: "Indoor",
+  },
+  {
+    value: "outdoor",
+    label: "Outdoor",
+  },
+];
 
 const profileFormSchema = z.object({
-  username: z
+  youtubeLink: z
     .string()
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Username must not be longer than 30 characters.",
-    }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: "Please enter a valid URL." }),
-      }),
-    )
-    .optional(),
+    .nonempty({ message: "You must enter a YouTube link." })
+    .refine(
+      (val) => {
+        return /^https?:\/\/(www\.)?youtube\.com\/(watch\?v=|shorts\/)[\w-]+$/.test(
+          val,
+        );
+      },
+      { message: "Please enter a valid YouTube link." },
+    ),
+  grade: z.string().nonempty({ message: "You must select a grade." }),
+  location: z.string().nonempty({ message: "You must select a location." }),
 });
 
 export default function Upload() {
+  const [firstOpen, setFirstOpen] = useState(false);
+  const [SecondOpen, setSecondOpen] = useState(false);
   const form = useForm({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      username: "",
-      email: "",
-      bio: "",
+      youtubeLink: "",
+      grade: "",
+      location: "",
     },
     mode: "onChange",
   });
 
   function onSubmit(data) {
-    console.log(data);
+    console.log("The form object: ", data);
   }
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8">
-      <h1 className="text-xl font-bold">Work in progress</h1>
+      <h1 className="text-xl font-bold">Upload your own bouldering video</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
+          className="w-full space-y-6"
         >
           <FormField
             control={form.control}
-            name="username"
+            name="youtubeLink"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Youtube Link</FormLabel>
+                <FormLabel>Youtube link</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="https://www.youtube.com/shorts/LPGwTAJkpJM"
@@ -76,8 +99,7 @@ export default function Upload() {
                   />
                 </FormControl>
                 <FormDescription>
-                  This is your public display name. It can be your real name or
-                  a pseudonym. You can only change this once every 30 days.
+                  Fill in the link of the youtube video.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -85,37 +107,137 @@ export default function Upload() {
           />
           <FormField
             control={form.control}
-            name="email"
+            name="grade"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Grade</FormLabel>
-                <FormControl>
-                  <Input placeholder="7c+" type="email" {...field} />
-                </FormControl>
-                <FormDescription>
-                  What is the grade of the boulder?
-                </FormDescription>
+              <Drawer
+                open={SecondOpen}
+                onOpenChange={setSecondOpen}
+                autoFocus={open}
+              >
+                <DrawerTrigger asChild className="m-0">
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-full justify-between"
+                  >
+                    {field.value
+                      ? numericGrades.find((f) => f.value === field.value)
+                          ?.label
+                      : "Choose a grade..."}
+                    <ChevronsUpDown className="opacity-50" />
+                  </Button>
+                </DrawerTrigger>
+                <DrawerDescription className="mt-2 mb-2">
+                  Pick a grade between 5a and 8a.
+                </DrawerDescription>
                 <FormMessage />
-              </FormItem>
+                <DrawerContent className="pb-safe mt-auto border-t">
+                  <DrawerTitle className="px-4 pt-4 text-lg font-medium">
+                    Select a grade
+                  </DrawerTitle>
+                  <DrawerDescription />
+                  <Command>
+                    <CommandList>
+                      <CommandGroup>
+                        {numericGrades.map((grade) => (
+                          <CommandItem
+                            key={grade.value}
+                            value={grade.value}
+                            onSelect={(currentValue) => {
+                              field.onChange(currentValue, {
+                                shouldValidate: true,
+                                shouldTouch: true,
+                              });
+                              console.log(form.watch());
+                              setSecondOpen(false);
+                            }}
+                          >
+                            {grade.label}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                form.watch("grade") === grade.value
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </DrawerContent>
+              </Drawer>
             )}
           />
+
           <FormField
             control={form.control}
-            name="bio"
+            name="location"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Indoor or outdoor</FormLabel>
-                <FormControl>
-                  <Input placeholder="Outdoor" type="type" {...field} />
-                </FormControl>
-                <FormDescription>
-                  You can <span>@mention</span> other users and organizations to
-                  link them.
-                </FormDescription>
+              <Drawer
+                open={firstOpen}
+                onOpenChange={setFirstOpen}
+                autoFocus={open}
+              >
+                <DrawerTrigger asChild className="m-0">
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-full justify-between"
+                  >
+                    {field.value
+                      ? frameworks.find((f) => f.value === field.value)?.label
+                      : "Indoor or outdoor..."}
+                    <ChevronsUpDown className="opacity-50" />
+                  </Button>
+                </DrawerTrigger>
+                <DrawerDescription className="mt-2 mb-2">
+                  Rock or plastic?
+                </DrawerDescription>
                 <FormMessage />
-              </FormItem>
+                <DrawerContent className="pb-safe mt-auto border-t">
+                  <DrawerTitle className="px-4 pt-4 text-lg font-medium">
+                    Select a Location
+                  </DrawerTitle>
+                  <DrawerDescription />
+                  <Command>
+                    <CommandList>
+                      <CommandGroup>
+                        {frameworks.map((framework) => (
+                          <CommandItem
+                            key={framework.value}
+                            value={framework.value}
+                            onSelect={(currentValue) => {
+                              field.onChange(currentValue, {
+                                shouldValidate: true,
+                                shouldTouch: true,
+                              });
+                              console.log(form.watch());
+                              setFirstOpen(false);
+                            }}
+                          >
+                            {framework.label}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                form.watch("location") === framework.value
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </DrawerContent>
+              </Drawer>
             )}
           />
+
           <Button type="submit">Submit</Button>
         </form>
       </Form>
