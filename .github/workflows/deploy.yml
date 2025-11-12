@@ -1,0 +1,21 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches: [ deploy ]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.VITE_GIPHY_KEY }}
+          publish_dir: ./dist
