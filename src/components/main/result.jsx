@@ -1,11 +1,14 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { currentGrade } from "../../api/fetchVideoData";
 import { useGradeScale } from "../../functions/gradeScaleContext";
 import { isGradeCorrect } from "../../functions/isGradeCorrect";
 import CheckGrade from "../UI/guessReponse";
 import ComparePickedGrade from "../UI/comparePickedGrade";
-import { color, motion } from "motion/react";
-import { useEffect } from "react";
+import { motion } from "motion/react";
+import { Button } from "@/components/ui/button";
+import GameOverButtons from "../UI/gameOverButtons";
+import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage";
 
 const Result = ({
   guess,
@@ -14,6 +17,7 @@ const Result = ({
   streak,
   setStreak,
   restart,
+  nextVideo,
   firebaseId,
   setFirebaseId,
 }) => {
@@ -23,13 +27,21 @@ const Result = ({
   const { gradeScale, setGradeScale } = useGradeScale();
   const isCorrect = isGradeCorrect(guess);
 
+  useEffect(() => {
+    saveStreakToLocalStorage(streak);
+  }, [lives, streak]);
+
   return (
-    <div className="align-self mb-12 flex h-11/12 w-full flex-col items-center justify-center">
+    <div className="align-self relative flex h-full w-full flex-col items-center justify-center">
+      {/* Results message */}
       <motion.div
         className="mb-6 flex flex-col gap-3"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{
+          duration: 0.25,
+          ease: [0.34, 1.56, 0.64, 1],
+        }}
       >
         <CheckGrade
           guess={guess}
@@ -49,12 +61,23 @@ const Result = ({
         </div>
       </motion.div>
 
+      {/* Comparison bar */}
       <ComparePickedGrade currentGrade={currentGrade} guess={guess} />
 
-      <div className="absolute bottom-10 flex w-full flex-row gap-4 px-6">
-        <button className="w-full" onClick={() => restart()}>
-          Next video
-        </button>
+      {/* Buttons at the bottom */}
+      <div className="absolute bottom-0 flex w-full flex-row gap-4">
+        {lives === 0 ? (
+          <GameOverButtons restart={restart} />
+        ) : (
+          <Button
+            size="lg"
+            variant="default"
+            className="w-full"
+            onClick={() => nextVideo()}
+          >
+            Next video
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -2,8 +2,8 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig.js";
 
 try {
-  for (let i = 0; i < 6; i++) {
-    const docRef = await addDoc(collection(db, "videos"), {
+  for (let i = 0; i < 10; i++) {
+    const docRef = await addDoc(collection(db, "outdoor"), {
       grade: "",
       lastShowDate: null,
       youtubeLink: "",

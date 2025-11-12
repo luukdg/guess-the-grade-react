@@ -7,5 +7,9 @@ export function isGradeCorrect(playerGuess) {
   const guessParts = normalize(playerGuess);
   const gradeParts = normalize(currentGrade);
 
+  if (guessParts[0] === "5A") {
+    guessParts.push(...["5A+", "5B", "5B+", "5C"]);
+  }
+
   return gradeParts.some((part) => guessParts.includes(part)); // true or false
 }

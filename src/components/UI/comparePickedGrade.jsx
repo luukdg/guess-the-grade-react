@@ -1,4 +1,4 @@
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { ChevronDown } from "lucide-react";
 import { isGradeCorrect } from "../../functions/isGradeCorrect";
 import { motion } from "motion/react";
 import { gradeMap, levels } from "../../constants/gradeMap";
@@ -12,7 +12,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
 
   return (
     <>
-      <div className="relative w-full">
+      <div className="relative w-full pb-12">
         <motion.div
           initial={{ left: `calc(${(startingValue + 0.5) * (100 / 7)}%)` }}
           animate={{
@@ -20,15 +20,15 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
           }}
           transition={{
             type: "spring",
-            stiffness: 100,
-            damping: 25,
+            stiffness: 500,
+            damping: 30,
           }}
           className="absolute -top-8 text-green-400"
           style={{
             transform: "translateX(-50%)",
           }}
         >
-          <KeyboardArrowDownIcon fontSize="large" />
+          <ChevronDown fontSize="large" />
         </motion.div>
         <motion.div
           initial={{ left: `calc(${(startingValue + 0.5) * (100 / 7)}%)` }}
@@ -37,22 +37,22 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
           }}
           transition={{
             type: "spring",
-            stiffness: 100,
-            damping: 25,
+            stiffness: 500,
+            damping: 30,
           }}
           className="absolute -top-8"
           style={{
             transform: "translateX(-50%)",
           }}
         >
-          <KeyboardArrowDownIcon
+          <ChevronDown
             fontSize="large"
             className={isCorrect ? "text-green-400" : "text-red-400"}
           />
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.25 }}
           animate={{ opacity: 100 }}
           className="border-box flex h-12 w-full flex-row overflow-hidden rounded-md text-sm/3.5 font-bold"
         >

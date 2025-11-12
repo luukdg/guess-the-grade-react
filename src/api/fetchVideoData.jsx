@@ -6,9 +6,22 @@ import { convertToFont, convertToVSale } from "../functions/gradeConverter.jsx";
 export let currentGrade = null;
 
 // Calling for a random video
-export async function getData(useGradeScale) {
-  const querySnapshot = await getDocs(collection(db, "videos"));
-  const docs = querySnapshot.docs;
+export async function getData(useGradeScale, videoType) {
+  let indoorSnapshot;
+  let outdoorSnapshot;
+  let docs;
+
+  if (videoType === "indoor") {
+    indoorSnapshot = await getDocs(collection(db, "videos"));
+    docs = indoorSnapshot.docs;
+  } else if (videoType === "outdoor") {
+    outdoorSnapshot = await getDocs(collection(db, "outdoor"));
+    docs = outdoorSnapshot.docs;
+  } else {
+    indoorSnapshot = await getDocs(collection(db, "videos"));
+    outdoorSnapshot = await getDocs(collection(db, "outdoor"));
+    docs = [...indoorSnapshot.docs, ...outdoorSnapshot.docs];
+  }
 
   if (docs.length === 0) return null;
 

@@ -6,10 +6,10 @@ import { updateUserGuess } from "../../api/updateUserGuess";
 import { useGradeScale } from "../../functions/gradeScaleContext";
 import { getGrade } from "../../functions/GetGradeLabel";
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter";
-import IconButton from "@mui/material/IconButton";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { Slider } from "@mui/material";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react";
+import SliderForGrading from "../UI/sliderForGrading";
 
 const VideoGuess = ({
   lives,
@@ -25,26 +25,36 @@ const VideoGuess = ({
   setFirebaseId,
   outcome,
   setOutcome,
+  videoType,
 }) => {
   const [videoId, setVideoId] = useState(null); // saves the youtubeLink
-  const [value, setValue] = useState(30);
-  const [muted, setMuted] = useState(true);
-  const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const [playing, setPlaying] = useState(true);
+  const [videoArray, setVideoArray] = useState([]); // array of videos fetched
+  const [value, setValue] = useState(30); // slider state
+  const [muted, setMuted] = useState(true); // video mute state
+  const [speed, setSpeed] = useState(1); // playback speed
+  const [isPlaying, setIsPlaying] = useState(false); // video play state
   const { gradeScale, setGradeScale } = useGradeScale(); // Global boolean to change to V-scale
   const navigate = useNavigate();
 
   // Resets the grade value after submitting
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue); // slider state
     setNumericGuess(getGrade(newValue)); // numericGuess state
   };
 
   // Function to fetch a new video
   const fetchNewVideo = async () => {
-    const { youtubeLink, ticketId } = await getData(gradeScale);
-    setFirebaseId(ticketId);
-    setVideoId(youtubeLink);
+    const { youtubeLink, ticketId } = await getData(
+      gradeScale,
+      videoType.value,
+    );
+    if (videoArray.includes(youtubeLink)) {
+      return await fetchNewVideo();
+    } else {
+      setFirebaseId(ticketId);
+      setVideoId(youtubeLink);
+      setVideoArray((prev) => [...prev, youtubeLink]);
+    }
   };
 
   // Load first video on mount
@@ -54,45 +64,51 @@ const VideoGuess = ({
 
   // Submit guess and refresh video
   const handleSubmit = () => {
-    if (lives === 0) {
-      setOutcome("gameover");
-    }
-
     const convertedGuess = chooseGradeConverter(numericGuess);
     setGuess(convertedGuess);
     finish("result");
-    updateUserGuess(firebaseId, numericGuess);
+    // updateUserGuess(firebaseId, numericGuess);
   };
 
   const chooseGradeConverter = (num) => {
     return !gradeScale ? convertToFont(num) : convertToVSale(num);
   };
 
-  if (!videoId) return <div>Loading...</div>;
+  const speeds = [1, 2];
 
   return (
-    <div className="flex h-full w-full flex-col gap-5">
-      <div className="border-box relative overflow-hidden">
-        <ReactPlayer
-          src={`https://www.youtube.com/shorts/${videoId}`}
-          playing={playing} // autoplay
-          muted={muted} // must be muted for autoplay to work on most browsers
-          controls={false}
-          loop={true}
-          playbackRate={playbackSpeed}
-          config={{
-            youtube: {
-              modestbranding: 1,
-              rel: 0,
-              showinfo: 0,
-              playlist: videoId,
-            },
-          }}
-          style={{ width: "100%", height: "100%", aspectRatio: "9/16" }}
-        />
+    <div className="flex h-full w-full flex-col gap-4">
+      <div className="relative flex h-full items-center justify-center overflow-hidden">
+        <div className="absolute aspect-[9/16] h-full w-full bg-black">
+          {videoId && (
+            <ReactPlayer
+              src={`https://www.youtube.com/shorts/${videoId}`}
+              onReady={() => setIsPlaying(true)}
+              playing={isPlaying} // autoplay
+              muted={muted} // must be muted for autoplay to work on most browsers
+              controls={false}
+              loop={true}
+              playbackRate={speed}
+              config={{
+                youtube: {
+                  modestbranding: 1,
+                  rel: 0,
+                  showinfo: 0,
+                  playlist: videoId,
+                },
+              }}
+              style={{
+                aspectRatio: "9/16",
+                height: "100%",
+                width: "100%",
+              }}
+            />
+          )}
+        </div>
+
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
         <div
-          className={`pointer-events-none absolute top-0 left-0 h-[20%] w-full ${"opacity-100"}`}
+          className={`pointer-events-none absolute top-0 left-0 h-[15%] w-full ${"opacity-100"}`}
           style={{
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
@@ -102,53 +118,64 @@ const VideoGuess = ({
               "linear-gradient(to bottom, black 60%, transparent 100%)",
           }}
         ></div>
-        <IconButton
-          onClick={() => setMuted(!muted)}
-          className="!absolute bottom-2 left-2"
-          size="large"
-          sx={{
-            color: "white", // icon color
-            backgroundColor: "rgba(0,0,0,0.0)", // background
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
-          }}
-        >
-          {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-        </IconButton>
-      </div>
-      <div className="flex flex-col justify-center gap-4">
-        <div className="flex px-2">
-          <Slider
-            aria-label="Custom marks"
-            step={10}
-            valueLabelDisplay="auto"
-            value={value}
-            marks
-            min={0}
-            max={60}
-            valueLabelFormat={() => chooseGradeConverter(numericGuess)}
-            onChange={handleChange}
-          />
+        <div className="absolute bottom-2 flex w-full flex-col items-center gap-4">
+          <ButtonGroup>
+            <Button
+              onClick={() => setMuted(!muted)}
+              size="sm"
+              variant="outline"
+            >
+              {muted ? <VolumeOff /> : <Volume2 />}
+            </Button>
+            <Button
+              onClick={() => setIsPlaying(!isPlaying)}
+              size="sm"
+              variant="outline"
+            >
+              {isPlaying ? <PauseIcon /> : <PlayIcon />}
+            </Button>
+            {speeds.map((s) => (
+              <Button
+                key={s}
+                onClick={() => setSpeed(s)}
+                size="sm"
+                variant={speed === s ? "default" : "outline"}
+              >
+                {s}x
+              </Button>
+            ))}
+            <Button
+              onClick={() => setIsPlaying(!isPlaying)}
+              size="sm"
+              variant="outline"
+            >
+              Report
+            </Button>
+          </ButtonGroup>
         </div>
-        <div className="align-center mb-2 flex w-full justify-center gap-2">
+      </div>
+      <div className="flex flex-1 flex-col justify-center">
+        <div className="align-center flex w-full justify-center gap-2">
           Guess: <strong>{chooseGradeConverter(numericGuess)}</strong>
         </div>
-        <div className="flex flex-row justify-center gap-2">
-          {/* <button className="w-1/2" onClick={() => navigate("/")}>
-            Home
-          </button> */}
-          <button
+        <div className="flex h-15">
+          <SliderForGrading
+            value={value}
+            setValue={setValue}
+            handleChange={handleChange}
+          />
+        </div>
+        <div className="flex flex-col items-center justify-center gap-2">
+          <Button
+            size="lg"
+            variant="default"
             className="w-full"
             onClick={() => {
               handleSubmit();
             }}
           >
             Check your guess
-          </button>
-          <button onClick={() => setPlaying(!playing)}>
-            {playing ? "Pause" : "Play"}
-          </button>
-          <button onClick={() => setPlaybackSpeed(1)}>1x</button>
-          <button onClick={() => setPlaybackSpeed(2)}>2x</button>
+          </Button>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { db } from "./firebaseConfig.js";
 
 async function numericGrade() {
   try {
-    const querySnapshot = await getDocs(collection(db, "videos"));
+    const querySnapshot = await getDocs(collection(db, "outdoor"));
 
     for (const docSnap of querySnapshot.docs) {
       // Update Firestore document with the new field
