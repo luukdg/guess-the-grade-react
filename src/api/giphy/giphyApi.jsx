@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 export default function GetGif() {
   const [gifUrl, setGifUrl] = useState(null);
   const [error, setError] = useState(null);
-  const apiKey = "CPOYt6kOnprJThCeUgjF7pBO5PnnWCMV"; // ← replace this
 
   useEffect(() => {
+    const apiKey = import.meta.env.VITE_GIPHY_KEY;
+
     async function fetchGif() {
       try {
         const res = await fetch(
@@ -19,6 +20,7 @@ export default function GetGif() {
       } catch (err) {
         console.error("Error fetching GIF:", err);
         setError("Failed to load GIF 😢");
+        console.log(apiKey);
       }
     }
 
