@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { numericGrades } from "@/constants/numericGrades";
+import { gradeValues } from "@/constants/gradeValues";
 import { uploadNewVideo } from "@/api/uploadNewVideo";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
@@ -138,7 +138,7 @@ export default function UploadSection() {
                       }`}
                     >
                       {field.value
-                        ? numericGrades.find((f) => f.value === field.value)
+                        ? gradeValues.find((f) => f.value === field.value)
                             ?.label
                         : "Choose a grade..."}
                       <ChevronsUpDown className="opacity-50" />
@@ -152,7 +152,7 @@ export default function UploadSection() {
                     <Command>
                       <CommandList>
                         <CommandGroup>
-                          {numericGrades.map((grade) => (
+                          {gradeValues.map((grade) => (
                             <CommandItem
                               key={grade.value}
                               value={grade.value}
