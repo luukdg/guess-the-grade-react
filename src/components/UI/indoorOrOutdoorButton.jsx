@@ -49,7 +49,10 @@ export function ComboBoxResponsive({ videoType, setVideoType }) {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0" align="start">
-            <StatusList setOpen={setOpen} />
+            <StatusList
+              setOpen={setOpen}
+              saveVideoTypeToLocalStorage={saveVideoTypeToLocalStorage}
+            />
           </PopoverContent>
         </Popover>
       ) : (
