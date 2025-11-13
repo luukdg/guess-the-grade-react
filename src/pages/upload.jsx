@@ -34,6 +34,7 @@ import { numericGrades } from "@/constants/numericGrades";
 import { uploadNewVideo } from "@/api/uploadNewVideo";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { Upload, SearchCheck } from "lucide-react";
 
 const frameworks = [
   {
@@ -62,7 +63,7 @@ const profileFormSchema = z.object({
   location: z.string().nonempty({ message: "You must select a location." }),
 });
 
-export default function Upload() {
+export default function UploadSection() {
   const [firstOpen, setFirstOpen] = useState(false);
   const [SecondOpen, setSecondOpen] = useState(false);
   const form = useForm({
@@ -91,27 +92,30 @@ export default function Upload() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex h-full w-full flex-col overflow-y-auto">
       <Toaster position="top-center" />
-      <div className="flex h-full flex-col justify-center gap-10">
+      <div className="mb-5 flex w-full items-center justify-center gap-2 text-xl font-bold">
+        <h1>Upload</h1>
+        <Upload className="text-(--muted-foreground)" />
+      </div>
+
+      <div className="flex h-full flex-col gap-6">
         <Form {...form}>
           <form
             id="video-form"
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex w-full flex-col gap-4"
           >
-            <h1 className="text-xl font-bold">
-              Upload your own bouldering video
-            </h1>
+            <h1 className="text-base">Submit your own bouldering video</h1>
             <FormField
               control={form.control}
               name="youtubeLink"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
+                  <FormControl className="text-sm">
                     <Input placeholder="Paste a YouTube link" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="mt-2" />
                 </FormItem>
               )}
             />
@@ -129,7 +133,9 @@ export default function Upload() {
                       variant="outline"
                       role="combobox"
                       aria-expanded={open}
-                      className="w-full justify-between"
+                      className={`w-full justify-between ${
+                        !field.value ? "text-muted-foreground" : ""
+                      }`}
                     >
                       {field.value
                         ? numericGrades.find((f) => f.value === field.value)
@@ -192,7 +198,9 @@ export default function Upload() {
                       variant="outline"
                       role="combobox"
                       aria-expanded={open}
-                      className="w-full justify-between"
+                      className={`w-full justify-between ${
+                        !field.value ? "text-muted-foreground" : ""
+                      }`}
                     >
                       {field.value
                         ? frameworks.find((f) => f.value === field.value)?.label
@@ -241,11 +249,11 @@ export default function Upload() {
             />
           </form>
         </Form>
-        <div className="flex flex-col items-center justify-center gap-2">
+        <div className="flex flex-col justify-center gap-2">
           <h1 className="text-base font-bold">
             Guideline for video submission
           </h1>
-          <ul className="list-disc space-y-1 pl-6 text-sm">
+          <ul className="list-disc space-y-1 pl-6 text-sm text-(--muted-foreground)">
             <li>YouTube Shorts or regular videos</li>
             <li>Max length: 60 seconds</li>
             <li>Only bouldering content</li>
@@ -253,6 +261,13 @@ export default function Upload() {
             <li>Clear, stable footage</li>
             <li>Public or unlisted link</li>
           </ul>
+        </div>
+        <div className="mb-5 flex flex-row items-center justify-center gap-2">
+          <SearchCheck className="w-10" />
+          <p className="text-sm">
+            After submission, a moderator will check your video before it
+            appears in the database.
+          </p>
         </div>
       </div>
       <div className="w-full">
@@ -263,7 +278,7 @@ export default function Upload() {
           type="submit"
           form="video-form"
         >
-          Show Toast
+          Submit video
         </Button>
       </div>
     </div>
