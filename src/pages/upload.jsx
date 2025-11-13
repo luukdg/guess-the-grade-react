@@ -32,6 +32,8 @@ import { Input } from "@/components/ui/input";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { numericGrades } from "@/constants/numericGrades";
 import { uploadNewVideo } from "@/api/uploadNewVideo";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const frameworks = [
   {
@@ -73,12 +75,24 @@ export default function Upload() {
     mode: "onChange",
   });
 
-  function onSubmit(data) {
-    uploadNewVideo(data);
+  async function onSubmit(data) {
+    try {
+      await uploadNewVideo(data);
+      console.log("Upload successful!");
+      toast("Succesfully uploaded your video!", {
+        description:
+          "We will check your submission and add your video to the collection.",
+      });
+      form.reset();
+    } catch (error) {
+      console.error("Upload failed:", error);
+      toast("Sorry, something went wrong");
+    }
   }
 
   return (
     <div className="flex h-full w-full flex-col">
+      <Toaster position="top-center" />
       <div className="flex h-full flex-col justify-center gap-10">
         <Form {...form}>
           <form
@@ -243,13 +257,13 @@ export default function Upload() {
       </div>
       <div className="w-full">
         <Button
-          form="video-form"
+          className="w-full"
           size="lg"
           variant="default"
-          className="w-full"
           type="submit"
+          form="video-form"
         >
-          Submit
+          Show Toast
         </Button>
       </div>
     </div>

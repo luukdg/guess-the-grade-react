@@ -7,6 +7,7 @@ export async function uploadNewVideo(data) {
   const grade = data.grade;
   const location = data.location;
   const numericGrade = convertToNumericGrade(grade);
+  const today = new Date();
 
   // splitting the youtube link
   const url = new URL(youtubeLink);
@@ -41,6 +42,7 @@ export async function uploadNewVideo(data) {
         "76-79": 0,
         "80-83": 0,
       },
+      timeUploaded: today,
     });
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
