@@ -1,4 +1,4 @@
-import { Slider } from "@/components/ui/slider";
+import { Slider } from "@/components/ui/slider"
 export default function sliderForGrading({ value, handleChange }) {
   return (
     <Slider
@@ -9,5 +9,5 @@ export default function sliderForGrading({ value, handleChange }) {
       className="w-[100%]"
       onValueChange={(valArray) => handleChange(valArray[0])} // pass the number
     />
-  );
+  )
 }

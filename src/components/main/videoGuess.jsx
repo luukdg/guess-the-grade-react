@@ -1,80 +1,66 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ReactPlayer from "react-player";
-import { getData } from "../../api/fetchVideoData";
-import { updateUserGuess } from "../../api/updateUserGuess";
-import { useGradeScale } from "../../functions/gradeScaleContext";
-import { getGrade } from "../../functions/GetGradeLabel";
-import { convertToFont, convertToVSale } from "../../functions/gradeConverter";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react";
-import SliderForGrading from "../UI/sliderForGrading";
+import { useEffect, useState } from "react"
+import ReactPlayer from "react-player"
+import { getData } from "../../api/fetchVideoData"
+import { useGradeScale } from "../../functions/gradeScaleContext"
+import { getGrade } from "../../functions/GetGradeLabel"
+import { convertToFont, convertToVSale } from "../../functions/gradeConverter"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react"
+import SliderForGrading from "../UI/sliderForGrading"
 
 const VideoGuess = ({
-  lives,
-  setLives,
   finish,
-  streak,
-  setStreak,
-  guess,
   setGuess,
   numericGuess,
   setNumericGuess,
-  firebaseId,
   setFirebaseId,
-  outcome,
-  setOutcome,
   videoType,
 }) => {
-  const [videoId, setVideoId] = useState(null); // saves the youtubeLink
-  const [videoArray, setVideoArray] = useState([]); // array of videos fetched
-  const [value, setValue] = useState(30); // slider state
-  const [muted, setMuted] = useState(true); // video mute state
-  const [speed, setSpeed] = useState(1); // playback speed
-  const [isPlaying, setIsPlaying] = useState(false); // video play state
-  const { gradeScale, setGradeScale } = useGradeScale(); // Global boolean to change to V-scale
-  const navigate = useNavigate();
+  const [videoId, setVideoId] = useState(null) // saves the youtubeLink
+  const [videoArray, setVideoArray] = useState([]) // array of videos fetched
+  const [value, setValue] = useState(30) // slider state
+  const [muted, setMuted] = useState(true) // video mute state
+  const [speed, setSpeed] = useState(1) // playback speed
+  const [isPlaying, setIsPlaying] = useState(false) // video play state
+  const { gradeScale } = useGradeScale() // Global boolean to change to V-scale
 
   // Resets the grade value after submitting
   const handleChange = (newValue) => {
-    setValue(newValue); // slider state
-    setNumericGuess(getGrade(newValue)); // numericGuess state
-  };
+    setValue(newValue) // slider state
+    setNumericGuess(getGrade(newValue)) // numericGuess state
+  }
 
   // Function to fetch a new video
   const fetchNewVideo = async () => {
-    const { youtubeLink, ticketId } = await getData(
-      gradeScale,
-      videoType.value,
-    );
+    const { youtubeLink, ticketId } = await getData(gradeScale, videoType.value)
     if (videoArray.includes(youtubeLink)) {
-      return await fetchNewVideo();
+      return await fetchNewVideo()
     } else {
-      setFirebaseId(ticketId);
-      setVideoId(youtubeLink);
-      setVideoArray((prev) => [...prev, youtubeLink]);
+      setFirebaseId(ticketId)
+      setVideoId(youtubeLink)
+      setVideoArray((prev) => [...prev, youtubeLink])
     }
-  };
+  }
 
   // Load first video on mount
   useEffect(() => {
-    fetchNewVideo();
-  }, []);
+    fetchNewVideo()
+  }, [])
 
   // Submit guess and refresh video
   const handleSubmit = () => {
-    const convertedGuess = chooseGradeConverter(numericGuess);
-    setGuess(convertedGuess);
-    finish("result");
+    const convertedGuess = chooseGradeConverter(numericGuess)
+    setGuess(convertedGuess)
+    finish("result")
     // updateUserGuess(firebaseId, numericGuess);
-  };
+  }
 
   const chooseGradeConverter = (num) => {
-    return !gradeScale ? convertToFont(num) : convertToVSale(num);
-  };
+    return !gradeScale ? convertToFont(num) : convertToVSale(num)
+  }
 
-  const speeds = [1, 2];
+  const speeds = [1, 2]
 
   return (
     <div className="flex h-full w-full flex-col gap-4">
@@ -171,7 +157,7 @@ const VideoGuess = ({
             variant="default"
             className="w-full"
             onClick={() => {
-              handleSubmit();
+              handleSubmit()
             }}
           >
             Check your guess
@@ -179,7 +165,7 @@ const VideoGuess = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default VideoGuess;
+export default VideoGuess

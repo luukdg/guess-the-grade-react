@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export function ChevronDownIcon({
   size = 24,
   color = "currentColor",
@@ -19,8 +17,9 @@ export function ChevronDownIcon({
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
-      {...props}>
+      {...props}
+    >
       <path d="m6 9l6 6l6-6" />
     </svg>
-  );
+  )
 }

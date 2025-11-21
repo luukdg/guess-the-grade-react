@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
 import {
   PauseIcon,
   PlayIcon,
   SkipBackIcon,
   SkipForwardIcon,
-} from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
+} from "lucide-react"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
 
-export const title = "Player Controls";
+export const title = "Player Controls"
 
 const Example = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false)
 
   return (
     <div className="flex flex-col gap-4">
@@ -21,7 +21,11 @@ const Example = () => {
         <Button size="sm" variant="outline">
           <SkipBackIcon />
         </Button>
-        <Button onClick={() => setIsPlaying(!isPlaying)} size="sm" variant="outline">
+        <Button
+          onClick={() => setIsPlaying(!isPlaying)}
+          size="sm"
+          variant="outline"
+        >
           {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </Button>
         <Button size="sm" variant="outline">
@@ -33,7 +37,11 @@ const Example = () => {
           <SkipBackIcon />
           Previous
         </Button>
-        <Button onClick={() => setIsPlaying(!isPlaying)} size="sm" variant="outline">
+        <Button
+          onClick={() => setIsPlaying(!isPlaying)}
+          size="sm"
+          variant="outline"
+        >
           {isPlaying ? (
             <>
               <PauseIcon />
@@ -52,7 +60,7 @@ const Example = () => {
         </Button>
       </ButtonGroup>
     </div>
-  );
-};
+  )
+}
 
-export default Example;
+export default Example

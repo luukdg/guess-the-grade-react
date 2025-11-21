@@ -1,20 +1,20 @@
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
-import Home from "./pages/home";
-import VideoGuess from "./components/main/videoGuess";
-import Result from "./components/main/result";
-import Game from "./pages/game";
-import Upload from "./pages/upload";
-import Settings from "./pages/settings";
-import { GradeScaleProvider } from "./functions/gradeScaleContext";
-import { ThemeProvider } from "./components/themeProvider";
-import NavigationMenuMobile from "@/components/main/navigationBar";
+import { HashRouter as Router, Routes, Route } from "react-router-dom"
+import { useState } from "react"
+import Home from "./pages/home"
+import VideoGuess from "./components/main/videoGuess"
+import Result from "./components/main/result"
+import Game from "./pages/game"
+import Upload from "./pages/upload"
+import Settings from "./pages/settings"
+import { GradeScaleProvider } from "./functions/gradeScaleContext"
+import { ThemeProvider } from "./components/themeProvider"
+import NavigationMenuMobile from "@/components/main/navigationBar"
 
 function App() {
   const [videoType, setVideoType] = useState(() => {
-    const stored = localStorage.getItem("VideoType"); // Save videoType to localstorage
-    return stored ? JSON.parse(stored) : { value: "all", label: "All" };
-  });
+    const stored = localStorage.getItem("VideoType") // Save videoType to localstorage
+    return stored ? JSON.parse(stored) : { value: "all", label: "All" }
+  })
 
   return (
     <Router>
@@ -41,7 +41,7 @@ function App() {
         </ThemeProvider>
       </GradeScaleProvider>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

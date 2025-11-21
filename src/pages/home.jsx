@@ -1,20 +1,11 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useGradeScale } from "../functions/gradeScaleContext";
-import { Button } from "@/components/ui/button";
-import gradeLogo from "/logo.svg";
-import { HighScore } from "../components/UI/highScoreButton";
-import {
-  ComboBoxResponsive,
-  statuses,
-} from "@/components/UI/indoorOrOutdoorButton";
+import { useNavigate } from "react-router-dom"
+import { Button } from "@/components/ui/button"
+import gradeLogo from "/logo.svg"
+import { HighScore } from "../components/UI/highScoreButton"
+import { ComboBoxResponsive } from "@/components/UI/indoorOrOutdoorButton"
 
 function Home({ videoType, setVideoType }) {
-  const navigate = useNavigate();
-
-  // Global boolean to change to V-scale
-  const { gradeScale, setGradeScale } = useGradeScale();
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate()
 
   return (
     <div className="align-self relative flex h-full w-full flex-1 flex-col items-center justify-center gap-6">
@@ -38,7 +29,7 @@ function Home({ videoType, setVideoType }) {
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

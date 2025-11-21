@@ -5,7 +5,7 @@ function Settings() {
         <h1 className="text-xl font-bold">Work in progress (settings)</h1>
       </div>
     </>
-  );
+  )
 }
 
-export default Settings;
+export default Settings
