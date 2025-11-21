@@ -29,7 +29,8 @@ export function HighScore() {
           <AlertDialogHeader>
             <AlertDialogTitle>Nothing to show!</AlertDialogTitle>
             <AlertDialogDescription>
-              You don't have a high score yet. Play the game to set your first.
+              You don&apos;t have a high score yet. Play the game to set your
+              first.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

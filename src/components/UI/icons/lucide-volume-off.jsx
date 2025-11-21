@@ -1,5 +1,3 @@
-import * as React from "react"
-
 export function VolumeOffIcon({
   size = 24,
   color = "currentColor",

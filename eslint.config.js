@@ -7,7 +7,7 @@ import eslintPluginPrettier from "eslint-plugin-prettier"
 import eslintConfigPrettier from "eslint-config-prettier"
 
 export default defineConfig([
-  { ignores: ["dist/**", "node_modules/**"] },
+  { ignores: ["dist/**", "node_modules/**", "vite.config.js"] },
 
   {
     files: ["**/*.{js,mjs,cjs,jsx}"],

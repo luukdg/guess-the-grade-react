@@ -6,28 +6,28 @@ const messages = {
   incorrect: ["Close one!", "Almost there!", "Not quite!"],
 }
 
-export default function CheckGrade({
-  guess,
-  lives,
-  setLives,
-  streak,
-  setStreak,
-}) {
-  const isCorrect = isGradeCorrect(guess) // boolean
+const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)]
+
+export default function CheckGrade({ guess, lives, setLives, setStreak }) {
+  const correct = isGradeCorrect(guess)
+
+  const message =
+    guess == null
+      ? ""
+      : correct
+        ? randomMessage(messages.correct)
+        : randomMessage(messages.incorrect)
 
   // Update state when component renders
   useEffect(() => {
-    if (isCorrect) {
-      setStreak(streak + 1)
-    } else {
-      setLives(lives - 1)
-    }
-  }, [isCorrect]) // run whenever guess changes
+    if (guess == null) return
 
-  const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)]
-  const message = isCorrect
-    ? randomMessage(messages.correct)
-    : randomMessage(messages.incorrect)
+    if (correct) {
+      setStreak((prev) => prev + 1)
+    } else {
+      setLives((prev) => prev - 1)
+    }
+  }, [correct])
 
   return (
     <h1 className="text-center text-4xl font-bold">

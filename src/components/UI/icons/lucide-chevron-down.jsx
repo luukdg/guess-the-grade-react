@@ -1,5 +1,3 @@
-import * as React from "react"
-
 export function ChevronDownIcon({
   size = 24,
   color = "currentColor",

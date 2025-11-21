@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import ReactPlayer from "react-player"
 import { getData } from "../../api/fetchVideoData"
 import { useGradeScale } from "../../functions/gradeScaleContext"
@@ -11,19 +10,11 @@ import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react"
 import SliderForGrading from "../UI/sliderForGrading"
 
 const VideoGuess = ({
-  lives,
-  setLives,
   finish,
-  streak,
-  setStreak,
-  guess,
   setGuess,
   numericGuess,
   setNumericGuess,
-  firebaseId,
   setFirebaseId,
-  outcome,
-  setOutcome,
   videoType,
 }) => {
   const [videoId, setVideoId] = useState(null) // saves the youtubeLink
@@ -32,7 +23,7 @@ const VideoGuess = ({
   const [muted, setMuted] = useState(true) // video mute state
   const [speed, setSpeed] = useState(1) // playback speed
   const [isPlaying, setIsPlaying] = useState(false) // video play state
-  const { gradeScale, setGradeScale } = useGradeScale() // Global boolean to change to V-scale
+  const { gradeScale } = useGradeScale() // Global boolean to change to V-scale
 
   // Resets the grade value after submitting
   const handleChange = (newValue) => {

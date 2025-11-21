@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 
-export default function Streak({ streak, setStreak }) {
+export default function Streak({ streak }) {
   return (
     <>
       <motion.p

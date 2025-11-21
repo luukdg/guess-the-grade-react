@@ -1,5 +1,3 @@
-import * as React from "react"
-
 export function Volume2Icon({
   size = 24,
   color = "currentColor",

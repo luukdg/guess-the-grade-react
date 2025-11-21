@@ -1,7 +1,5 @@
 import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 import { currentGrade } from "../../api/fetchVideoData"
-import { useGradeScale } from "../../functions/gradeScaleContext"
 import { isGradeCorrect } from "../../functions/isGradeCorrect"
 import CheckGrade from "../UI/guessReponse"
 import ComparePickedGrade from "../UI/comparePickedGrade"
@@ -18,13 +16,7 @@ const Result = ({
   setStreak,
   restart,
   nextVideo,
-  firebaseId,
-  setFirebaseId,
 }) => {
-  const navigate = useNavigate()
-
-  // Global boolean to change to V-scale
-  const { gradeScale, setGradeScale } = useGradeScale()
   const isCorrect = isGradeCorrect(guess)
 
   useEffect(() => {
