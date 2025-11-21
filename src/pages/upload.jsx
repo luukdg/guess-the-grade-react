@@ -1,40 +1,38 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandGroup,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 import {
   Drawer,
   DrawerContent,
   DrawerTrigger,
   DrawerTitle,
   DrawerDescription,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { gradeValues } from "@/constants/gradeValues";
-import { uploadNewVideo } from "@/api/uploadNewVideo";
-import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
-import { Upload, SearchCheck } from "lucide-react";
+} from "@/components/ui/drawer"
+import { Input } from "@/components/ui/input"
+import { Check, ChevronsUpDown } from "lucide-react"
+import { gradeValues } from "@/constants/gradeValues"
+import { uploadNewVideo } from "@/api/uploadNewVideo"
+import { toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner"
+import { Upload, SearchCheck } from "lucide-react"
 
 const frameworks = [
   {
@@ -45,7 +43,7 @@ const frameworks = [
     value: "outdoor",
     label: "Outdoor",
   },
-];
+]
 
 const profileFormSchema = z.object({
   youtubeLink: z
@@ -55,17 +53,17 @@ const profileFormSchema = z.object({
       (val) => {
         return /^https?:\/\/(www\.)?youtube\.com\/(watch\?v=|shorts\/)[\w-]+$/.test(
           val,
-        );
+        )
       },
       { message: "Please enter a valid YouTube link." },
     ),
   grade: z.string().nonempty({ message: "You must select a grade." }),
   location: z.string().nonempty({ message: "You must select a location." }),
-});
+})
 
 export default function UploadSection() {
-  const [firstOpen, setFirstOpen] = useState(false);
-  const [SecondOpen, setSecondOpen] = useState(false);
+  const [firstOpen, setFirstOpen] = useState(false)
+  const [SecondOpen, setSecondOpen] = useState(false)
   const form = useForm({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
@@ -74,20 +72,20 @@ export default function UploadSection() {
       location: "",
     },
     mode: "onChange",
-  });
+  })
 
   async function onSubmit(data) {
     try {
-      await uploadNewVideo(data);
-      console.log("Upload successful!");
+      await uploadNewVideo(data)
+      console.log("Upload successful!")
       toast("Succesfully uploaded your video!", {
         description:
           "We will check your submission and add your video to the collection.",
-      });
-      form.reset();
+      })
+      form.reset()
     } catch (error) {
-      console.error("Upload failed:", error);
-      toast("Sorry, something went wrong");
+      console.error("Upload failed:", error)
+      toast("Sorry, something went wrong")
     }
   }
 
@@ -160,9 +158,9 @@ export default function UploadSection() {
                                 field.onChange(currentValue, {
                                   shouldValidate: true,
                                   shouldTouch: true,
-                                });
-                                console.log(form.watch());
-                                setSecondOpen(false);
+                                })
+                                console.log(form.watch())
+                                setSecondOpen(false)
                               }}
                             >
                               {grade.label}
@@ -223,9 +221,9 @@ export default function UploadSection() {
                                 field.onChange(currentValue, {
                                   shouldValidate: true,
                                   shouldTouch: true,
-                                });
-                                console.log(form.watch());
-                                setFirstOpen(false);
+                                })
+                                console.log(form.watch())
+                                setFirstOpen(false)
                               }}
                             >
                               {framework.label}
@@ -282,5 +280,5 @@ export default function UploadSection() {
         </Button>
       </div>
     </div>
-  );
+  )
 }

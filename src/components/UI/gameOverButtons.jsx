@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom"
+import { Button } from "@/components/ui/button"
 
 export default function GameOverButtons({ restart }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <>
@@ -18,5 +18,5 @@ export default function GameOverButtons({ restart }) {
         Restart
       </Button>
     </>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "./firebaseConfig.js";
+import { collection, addDoc } from "firebase/firestore"
+import { db } from "./firebaseConfig.js"
 
 try {
   for (let i = 0; i < 10; i++) {
@@ -19,9 +19,9 @@ try {
         "76-79": 0,
         "80-83": 0,
       },
-    });
-    console.log("Document written with ID: ", docRef.id);
+    })
+    console.log("Document written with ID: ", docRef.id)
   }
 } catch (e) {
-  console.error("Error adding document: ", e);
+  console.error("Error adding document: ", e)
 }

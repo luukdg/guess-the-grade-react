@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { retrieveStreak } from "@/api/localStorage/streakLocalStorage";
-import { Trophy } from "lucide-react";
+import { Button } from "@/components/ui/button"
+import { retrieveStreak } from "@/api/localStorage/streakLocalStorage"
+import { Trophy } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,11 +10,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import GetGif from "@/api/giphy/giphyApi";
+} from "@/components/ui/alert-dialog"
+import GetGif from "@/api/giphy/giphyApi"
 
 export function HighScore() {
-  const currentStreak = retrieveStreak();
+  const currentStreak = retrieveStreak()
 
   // Show different message with no high score
   if (currentStreak === null || currentStreak === "0") {
@@ -37,7 +37,7 @@ export function HighScore() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    );
+    )
   }
 
   return (
@@ -61,5 +61,5 @@ export function HighScore() {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }

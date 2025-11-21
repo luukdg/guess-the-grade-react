@@ -1,10 +1,10 @@
-import { isGradeCorrect } from "../../functions/isGradeCorrect";
-import { useEffect } from "react";
+import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import { useEffect } from "react"
 
 const messages = {
   correct: ["Perfect!", "Spot on!", "You nailed it!"],
   incorrect: ["Close one!", "Almost there!", "Not quite!"],
-};
+}
 
 export default function CheckGrade({
   guess,
@@ -13,25 +13,25 @@ export default function CheckGrade({
   streak,
   setStreak,
 }) {
-  const isCorrect = isGradeCorrect(guess); // boolean
+  const isCorrect = isGradeCorrect(guess) // boolean
 
   // Update state when component renders
   useEffect(() => {
     if (isCorrect) {
-      setStreak(streak + 1);
+      setStreak(streak + 1)
     } else {
-      setLives(lives - 1);
+      setLives(lives - 1)
     }
-  }, [isCorrect]); // run whenever guess changes
+  }, [isCorrect]) // run whenever guess changes
 
-  const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)]
   const message = isCorrect
     ? randomMessage(messages.correct)
-    : randomMessage(messages.incorrect);
+    : randomMessage(messages.incorrect)
 
   return (
     <h1 className="text-center text-4xl font-bold">
       {lives === 0 ? "Game Over!" : message}
     </h1>
-  ); // show message in DOM
+  ) // show message in DOM
 }

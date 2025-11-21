@@ -1,13 +1,12 @@
-import climberIcon from "/climber.svg";
-import { AnimatePresence, motion } from "framer-motion";
+import climberIcon from "/climber.svg"
 
 // Updates the lives inside the DOM
-export function ClimberIcons({ lives, setLives }) {
-  const icons = [];
+export function ClimberIcons({ lives }) {
+  const icons = []
 
   for (let i = 0; i < lives; i++) {
-    icons.push(<img className="w-10" key={i} src={climberIcon} alt="" />);
+    icons.push(<img className="w-10" key={i} src={climberIcon} alt="" />)
   }
 
-  return <>{icons}</>;
+  return <>{icons}</>
 }

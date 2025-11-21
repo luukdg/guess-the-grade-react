@@ -18,4 +18,4 @@ export const gradeValues = [
   { value: "7c", label: "7c" },
   { value: "7c+", label: "7c+" },
   { value: "8a", label: "8a" },
-];
+]

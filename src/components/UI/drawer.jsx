@@ -1,22 +1,22 @@
-import * as React from "react";
-import { Drawer as DrawerPrimitive } from "vaul";
+import * as React from "react"
+import { Drawer as DrawerPrimitive } from "vaul"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 function Drawer({ ...props }) {
-  return <DrawerPrimitive.Root data-slot="drawer" {...props} />;
+  return <DrawerPrimitive.Root data-slot="drawer" {...props} />
 }
 
 function DrawerTrigger({ ...props }) {
-  return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />;
+  return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />
 }
 
 function DrawerPortal({ ...props }) {
-  return <DrawerPrimitive.Portal data-slot="drawer-portal" {...props} />;
+  return <DrawerPrimitive.Portal data-slot="drawer-portal" {...props} />
 }
 
 function DrawerClose({ ...props }) {
-  return <DrawerPrimitive.Close data-slot="drawer-close" {...props} />;
+  return <DrawerPrimitive.Close data-slot="drawer-close" {...props} />
 }
 
 function DrawerOverlay({ className, ...props }) {
@@ -29,7 +29,7 @@ function DrawerOverlay({ className, ...props }) {
       )}
       {...props}
     />
-  );
+  )
 }
 
 function DrawerContent({ className, children, ...props }) {
@@ -52,7 +52,7 @@ function DrawerContent({ className, children, ...props }) {
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>
-  );
+  )
 }
 
 function DrawerHeader({ className, ...props }) {
@@ -65,7 +65,7 @@ function DrawerHeader({ className, ...props }) {
       )}
       {...props}
     />
-  );
+  )
 }
 
 function DrawerFooter({ className, ...props }) {
@@ -75,7 +75,7 @@ function DrawerFooter({ className, ...props }) {
       className={cn("mt-auto flex flex-col gap-2 p-4", className)}
       {...props}
     />
-  );
+  )
 }
 
 function DrawerTitle({ className, ...props }) {
@@ -85,7 +85,7 @@ function DrawerTitle({ className, ...props }) {
       className={cn("text-foreground font-semibold", className)}
       {...props}
     />
-  );
+  )
 }
 
 function DrawerDescription({ className, ...props }) {
@@ -95,7 +95,7 @@ function DrawerDescription({ className, ...props }) {
       className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
-  );
+  )
 }
 
 export {
@@ -109,4 +109,4 @@ export {
   DrawerFooter,
   DrawerTitle,
   DrawerDescription,
-};
+}

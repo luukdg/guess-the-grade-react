@@ -1,14 +1,14 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { currentGrade } from "../../api/fetchVideoData";
-import { useGradeScale } from "../../functions/gradeScaleContext";
-import { isGradeCorrect } from "../../functions/isGradeCorrect";
-import CheckGrade from "../UI/guessReponse";
-import ComparePickedGrade from "../UI/comparePickedGrade";
-import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import GameOverButtons from "../UI/gameOverButtons";
-import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage";
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { currentGrade } from "../../api/fetchVideoData"
+import { useGradeScale } from "../../functions/gradeScaleContext"
+import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import CheckGrade from "../UI/guessReponse"
+import ComparePickedGrade from "../UI/comparePickedGrade"
+import { motion } from "motion/react"
+import { Button } from "@/components/ui/button"
+import GameOverButtons from "../UI/gameOverButtons"
+import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage"
 
 const Result = ({
   guess,
@@ -21,15 +21,15 @@ const Result = ({
   firebaseId,
   setFirebaseId,
 }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // Global boolean to change to V-scale
-  const { gradeScale, setGradeScale } = useGradeScale();
-  const isCorrect = isGradeCorrect(guess);
+  const { gradeScale, setGradeScale } = useGradeScale()
+  const isCorrect = isGradeCorrect(guess)
 
   useEffect(() => {
-    saveStreakToLocalStorage(streak);
-  }, [lives, streak]);
+    saveStreakToLocalStorage(streak)
+  }, [lives, streak])
 
   return (
     <div className="align-self relative flex h-full w-full flex-col items-center justify-center">
@@ -80,7 +80,7 @@ const Result = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Result;
+export default Result

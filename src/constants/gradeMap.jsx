@@ -17,7 +17,7 @@ export const gradeMap = {
   "7b+": 5,
   "7c": 6,
   "7c+": 6,
-};
+}
 
 export const levels = [
   "5a/5c+",
@@ -27,4 +27,4 @@ export const levels = [
   "7a/7a+",
   "7b/7b+",
   "7c/7c+",
-];
+]
