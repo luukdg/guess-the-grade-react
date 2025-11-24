@@ -1,5 +1,4 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom"
-import { useState } from "react"
 import Home from "./pages/home"
 import VideoGuess from "./components/main/videoGuess"
 import Result from "./components/main/result"

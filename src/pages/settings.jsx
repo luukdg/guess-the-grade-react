@@ -1,9 +1,9 @@
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { Settings } from "lucide-react"
 import { ComboBoxResponsive } from "@/components/UI/SettingsPopover"
 import { location, gradeScale } from "@/constants/applicationSettings"
 import { LightModeToggle } from "@/components/UI/lightModeToggle"
+import { VideoSettings } from "@/components/UI/videoSettings"
 
 function SettingsPage() {
   return (
@@ -20,22 +20,7 @@ function SettingsPage() {
               Change your playback functions.
             </p>
           </div>
-          <div className="flex w-full flex-row justify-between">
-            <Label htmlFor="autoplay">Autoplay videos on load:</Label>
-            <Switch id="autoplay" />
-          </div>
-          <div className="flex w-full flex-row justify-between">
-            <Label htmlFor="mute">Mute videos by default:</Label>
-            <Switch id="mute" />
-          </div>
-          <div className="flex w-full flex-row justify-between">
-            <Label htmlFor="loop">Loop video automatically:</Label>
-            <Switch id="loop" type="" />
-          </div>
-          <div className="flex w-full flex-row justify-between">
-            <Label htmlFor="speed">Play videos at 2x speed by default:</Label>
-            <Switch id="speed" />
-          </div>
+          <VideoSettings />
         </div>
         <div className="mb-6 flex flex-col gap-2">
           <div className="mb-3 flex-col">
@@ -45,7 +30,7 @@ function SettingsPage() {
             </p>
           </div>
           <div className="flex w-full flex-row justify-between">
-            <Label htmlFor="gradeScale">Default grade scale:</Label>
+            <Label htmlFor="gradeScale">Default grade scale (WIP):</Label>
             <ComboBoxResponsive
               id="gradeScale"
               inputArray={gradeScale}

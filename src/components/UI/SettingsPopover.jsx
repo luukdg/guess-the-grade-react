@@ -16,30 +16,18 @@ import { useSettings } from "@/functions/settingsContext"
 
 export function ComboBoxResponsive({ inputArray, localStorageType }) {
   const [open, setOpen] = useState(false)
-  const { videoType, setVideoType, gradeScale, setGradeScale } = useSettings()
+  const { videoType, updateVideoType, gradeScale, updateGradeScale } =
+    useSettings()
   const statuses = inputArray
   let storedValue = null
   let storedFunction = null
-  let localStorageString = ""
 
   if (localStorageType === "gradeScale") {
     storedValue = gradeScale
-    storedFunction = setGradeScale
-    localStorageString = "gradeScale"
+    storedFunction = updateGradeScale
   } else {
     storedValue = videoType
-    storedFunction = setVideoType
-    localStorageString = "VideoType"
-  }
-
-  function saveTypeToLocalStorage(storedValue) {
-    storedFunction(storedValue)
-    localStorage.setItem(localStorageString, JSON.stringify(storedValue))
-    console.log(
-      localStorageString,
-      "saved to localStorage, value:",
-      storedValue,
-    )
+    storedFunction = updateVideoType
   }
 
   return (
@@ -53,7 +41,7 @@ export function ComboBoxResponsive({ inputArray, localStorageType }) {
         <PopoverContent className="w-[200px] p-0" align="end">
           <StatusList
             setOpen={setOpen}
-            saveTypeToLocalStorage={saveTypeToLocalStorage}
+            storedFunction={storedFunction}
             statuses={statuses}
           />
         </PopoverContent>
@@ -62,7 +50,7 @@ export function ComboBoxResponsive({ inputArray, localStorageType }) {
   )
 }
 
-function StatusList({ setOpen, saveTypeToLocalStorage, statuses }) {
+function StatusList({ setOpen, storedFunction, statuses }) {
   return (
     <Command>
       <CommandList>
@@ -73,9 +61,7 @@ function StatusList({ setOpen, saveTypeToLocalStorage, statuses }) {
               key={status.value}
               value={status.value}
               onSelect={(value) => {
-                saveTypeToLocalStorage(
-                  statuses.find((s) => s.value === value) || null,
-                )
+                storedFunction(statuses.find((s) => s.value === value) || null)
                 setOpen(false)
               }}
             >

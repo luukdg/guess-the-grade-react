@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import ReactPlayer from "react-player"
 import { getData } from "../../api/fetchVideoData"
-import { useGradeScale } from "../../functions/gradeScaleContext"
 import { getGrade } from "../../functions/GetGradeLabel"
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter"
 import { Button } from "@/components/ui/button"
@@ -9,6 +8,7 @@ import { ButtonGroup } from "@/components/ui/button-group"
 import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react"
 import SliderForGrading from "../UI/sliderForGrading"
 import { useSettings } from "@/functions/settingsContext"
+import { useGradeScale } from "@/functions/gradeScaleContext"
 
 const VideoGuess = ({
   finish,
@@ -17,14 +17,14 @@ const VideoGuess = ({
   setNumericGuess,
   setFirebaseId,
 }) => {
+  const { videoType, always2x, autoPlay, mute, loop } = useSettings()
   const [videoId, setVideoId] = useState(null) // saves the youtubeLink
   const [videoArray, setVideoArray] = useState([]) // array of videos fetched
   const [value, setValue] = useState(30) // slider state
-  const [muted, setMuted] = useState(true) // video mute state
-  const [speed, setSpeed] = useState(1) // playback speed
+  const [muted, setMuted] = useState(() => (!mute ? false : true))
   const [isPlaying, setIsPlaying] = useState(false) // video play state
-  const { gradeScale } = useGradeScale() // Global boolean to change to V-scale
-  const { videoType } = useSettings()
+  const [speed, setSpeed] = useState(() => (always2x ? 2 : 1))
+  const { gradeScale } = useGradeScale()
 
   // Resets the grade value after submitting
   const handleChange = (newValue) => {
@@ -49,6 +49,15 @@ const VideoGuess = ({
     fetchNewVideo()
   }, [])
 
+  useEffect(() => {
+    if (mute) {
+      setMuted(true)
+    }
+    if (always2x) {
+      setSpeed(2)
+    }
+  }, [always2x, mute])
+
   // Submit guess and refresh video
   const handleSubmit = () => {
     const convertedGuess = chooseGradeConverter(numericGuess)
@@ -70,11 +79,11 @@ const VideoGuess = ({
           {videoId && (
             <ReactPlayer
               src={`https://www.youtube.com/shorts/${videoId}`}
-              onReady={() => setIsPlaying(true)}
-              playing={isPlaying} // autoplay
-              muted={muted} // must be muted for autoplay to work on most browsers
+              onReady={autoPlay ? () => setIsPlaying(true) : null}
+              playing={isPlaying}
+              muted={muted}
               controls={false}
-              loop={true}
+              loop={loop}
               playbackRate={speed}
               config={{
                 youtube: {
