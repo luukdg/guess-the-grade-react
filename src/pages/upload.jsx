@@ -53,7 +53,8 @@ const profileFormSchema = z.object({
             `https://www.youtube.com/oembed?url=${encodeURIComponent(val)}&format=json`,
           )
           return res.ok // true if video exists
-        } catch (e) {
+        } catch (err) {
+          console.log(err)
           return false
         }
       },
@@ -88,7 +89,8 @@ export default function UploadSection() {
           "We will check your submission and add your video to the collection.",
       })
       form.reset()
-    } catch (error) {
+    } catch (err) {
+      console.log(err)
       toast("Sorry, something went wrong")
     }
   }
