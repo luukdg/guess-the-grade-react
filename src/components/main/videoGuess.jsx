@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react"
 import SliderForGrading from "../UI/sliderForGrading"
+import { useSettings } from "@/functions/settingsContext"
 
 const VideoGuess = ({
   finish,
@@ -15,7 +16,6 @@ const VideoGuess = ({
   numericGuess,
   setNumericGuess,
   setFirebaseId,
-  videoType,
 }) => {
   const [videoId, setVideoId] = useState(null) // saves the youtubeLink
   const [videoArray, setVideoArray] = useState([]) // array of videos fetched
@@ -24,6 +24,7 @@ const VideoGuess = ({
   const [speed, setSpeed] = useState(1) // playback speed
   const [isPlaying, setIsPlaying] = useState(false) // video play state
   const { gradeScale } = useGradeScale() // Global boolean to change to V-scale
+  const { videoType } = useSettings()
 
   // Resets the grade value after submitting
   const handleChange = (newValue) => {

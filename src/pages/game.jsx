@@ -4,7 +4,7 @@ import Result from "@/components/main/result"
 import { ClimberIcons } from "@/components/UI/climberIcons"
 import Streak from "@/components/UI/scoreStreak"
 
-function Game({ videoType }) {
+function Game() {
   const [lives, setLives] = useState(3)
   const [outcome, setOutcome] = useState("game") // store score or result if needed
   const [streak, setStreak] = useState(0)
@@ -43,7 +43,6 @@ function Game({ videoType }) {
             setFirebaseId={setFirebaseId}
             outcome={outcome}
             setOutcome={setOutcome}
-            videoType={videoType}
           />
         )}
         {outcome === "result" && (
