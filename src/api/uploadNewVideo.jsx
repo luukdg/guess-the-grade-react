@@ -1,28 +1,14 @@
 import { convertToNumericGrade } from "@/functions/gradeConverter.jsx"
 import { collection, addDoc } from "firebase/firestore"
 import { db } from "../../firebase/firebaseConfig.js"
+import UrlParser from "js-video-url-parser"
 
 export async function uploadNewVideo(data) {
-  const youtubeLink = data.youtubeLink
+  const videoId = UrlParser.parse(data.youtubeLink).id
   const grade = data.grade
   const location = data.location
   const numericGrade = convertToNumericGrade(grade)
   const today = new Date()
-
-  // splitting the youtube link
-  const url = new URL(youtubeLink)
-
-  let videoId = null
-
-  if (url.hostname.includes("youtube.com")) {
-    if (url.pathname.startsWith("/shorts/")) {
-      videoId = url.pathname.split("/").pop() // Shorts format
-    } else {
-      videoId = url.searchParams.get("v") // Normal watch?v= format
-    }
-  } else if (url.hostname === "youtu.be") {
-    videoId = url.pathname.slice(1) // Handles youtu.be/xxxxxx
-  }
 
   try {
     const docRef = await addDoc(collection(db, "new-videos"), {

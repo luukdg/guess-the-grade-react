@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -28,39 +26,46 @@ import {
 } from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input"
 import { Check, ChevronsUpDown } from "lucide-react"
-import { gradeValues } from "@/constants/gradeValues"
+import { grades } from "@/constants/gradeValues"
 import { uploadNewVideo } from "@/api/uploadNewVideo"
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
 import { Upload, SearchCheck } from "lucide-react"
+import { boulderLocation } from "@/constants/gradeValues"
+import UrlParser from "js-video-url-parser"
 
-const frameworks = [
-  {
-    value: "indoor",
-    label: "Indoor",
-  },
-  {
-    value: "outdoor",
-    label: "Outdoor",
-  },
-]
-
+// Zod schema for form validation
 const profileFormSchema = z.object({
   youtubeLink: z
     .string()
     .nonempty({ message: "You must enter a YouTube link." })
     .refine(
-      (val) => {
-        return /^https?:\/\/(www\.)?youtube\.com\/(watch\?v=|shorts\/)[\w-]+$/.test(
-          val,
-        )
+      (value) => {
+        const parsed = UrlParser.parse(value)
+        return parsed && parsed.provider === "youtube"
       },
       { message: "Please enter a valid YouTube link." },
+    )
+    .refine(
+      async (val) => {
+        try {
+          const res = await fetch(
+            `https://www.youtube.com/oembed?url=${encodeURIComponent(val)}&format=json`,
+          )
+          return res.ok // true if video exists
+        } catch (e) {
+          return false
+        }
+      },
+      {
+        message: "YouTube video does not exist or is not reachable.",
+      },
     ),
   grade: z.string().nonempty({ message: "You must select a grade." }),
   location: z.string().nonempty({ message: "You must select a location." }),
 })
 
+// useStates and useForm variables
 export default function UploadSection() {
   const [firstOpen, setFirstOpen] = useState(false)
   const [SecondOpen, setSecondOpen] = useState(false)
@@ -74,17 +79,16 @@ export default function UploadSection() {
     mode: "onChange",
   })
 
+  // Toaster notification on submit
   async function onSubmit(data) {
     try {
       await uploadNewVideo(data)
-      console.log("Upload successful!")
       toast("Succesfully uploaded your video!", {
         description:
           "We will check your submission and add your video to the collection.",
       })
       form.reset()
     } catch (error) {
-      console.error("Upload failed:", error)
       toast("Sorry, something went wrong")
     }
   }
@@ -135,10 +139,10 @@ export default function UploadSection() {
                         !field.value ? "text-muted-foreground" : ""
                       }`}
                     >
-                      {field.value
-                        ? gradeValues.find((f) => f.value === field.value)
-                            ?.label
+                      {field.value && grades.includes(field.value)
+                        ? field.value
                         : "Choose a grade..."}
+
                       <ChevronsUpDown className="opacity-50" />
                     </Button>
                   </DrawerTrigger>
@@ -150,24 +154,23 @@ export default function UploadSection() {
                     <Command>
                       <CommandList>
                         <CommandGroup>
-                          {gradeValues.map((grade) => (
+                          {grades.map((grade) => (
                             <CommandItem
-                              key={grade.value}
-                              value={grade.value}
+                              key={grade}
+                              value={grade}
                               onSelect={(currentValue) => {
                                 field.onChange(currentValue, {
                                   shouldValidate: true,
                                   shouldTouch: true,
                                 })
-                                console.log(form.watch())
                                 setSecondOpen(false)
                               }}
                             >
-                              {grade.label}
+                              {grade}
                               <Check
                                 className={cn(
                                   "ml-auto",
-                                  form.watch("grade") === grade.value
+                                  form.watch("grade") === grade
                                     ? "opacity-100"
                                     : "opacity-0",
                                 )}
@@ -201,7 +204,8 @@ export default function UploadSection() {
                       }`}
                     >
                       {field.value
-                        ? frameworks.find((f) => f.value === field.value)?.label
+                        ? boulderLocation.find((f) => f.value === field.value)
+                            ?.label
                         : "Indoor or outdoor..."}
                       <ChevronsUpDown className="opacity-50" />
                     </Button>
@@ -213,24 +217,23 @@ export default function UploadSection() {
                     <Command>
                       <CommandList>
                         <CommandGroup>
-                          {frameworks.map((framework) => (
+                          {boulderLocation.map((location) => (
                             <CommandItem
-                              key={framework.value}
-                              value={framework.value}
+                              key={location.value}
+                              value={location.value}
                               onSelect={(currentValue) => {
                                 field.onChange(currentValue, {
                                   shouldValidate: true,
                                   shouldTouch: true,
                                 })
-                                console.log(form.watch())
                                 setFirstOpen(false)
                               }}
                             >
-                              {framework.label}
+                              {location.label}
                               <Check
                                 className={cn(
                                   "ml-auto",
-                                  form.watch("location") === framework.value
+                                  form.watch("location") === location.value
                                     ? "opacity-100"
                                     : "opacity-0",
                                 )}
