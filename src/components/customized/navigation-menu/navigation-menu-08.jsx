@@ -4,10 +4,10 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
-import { BookOpen, Home, Rss, Settings, User } from "lucide-react";
-import Link from "next/link";
+} from "@/components/ui/navigation-menu"
+import { cn } from "@/lib/utils"
+import { BookOpen, Home, Rss, Settings, User } from "lucide-react"
+import Link from "next/link"
 
 const navigationMenuItems = [
   { title: "Home", href: "#", icon: Home, isActive: true },
@@ -15,7 +15,7 @@ const navigationMenuItems = [
   { title: "Docs", href: "#docs", icon: BookOpen },
   { title: "Account", href: "#account", icon: Settings },
   { title: "Settings", href: "#settings", icon: User },
-];
+]
 
 export default function NavigationMenuMobile() {
   return (
@@ -26,10 +26,11 @@ export default function NavigationMenuMobile() {
             <NavigationMenuLink
               className={cn(
                 navigationMenuTriggerStyle(),
-                "flex flex-col h-auto items-center px-5 py-2.5"
+                "flex h-auto flex-col items-center px-5 py-2.5",
               )}
               active={item.isActive}
-              asChild>
+              asChild
+            >
               <Link href={item.href}>
                 <item.icon className="mb-1.5 h-5 w-5" />
                 {item.title}
@@ -39,5 +40,5 @@ export default function NavigationMenuMobile() {
         ))}
       </NavigationMenuList>
     </NavigationMenu>
-  );
+  )
 }

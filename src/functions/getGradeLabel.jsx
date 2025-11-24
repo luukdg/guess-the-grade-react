@@ -6,13 +6,13 @@ export const marks = [
   { value: 40, label: [72, 75] }, // "7a / 7a+"
   { value: 50, label: [76, 79] }, // "7b / 7b+"
   { value: 60, label: [80, 83] }, // "7c / 7c+"
-];
+]
 
 export function getGrade(value) {
-  const mark = marks.find((m) => m.value === value);
+  const mark = marks.find((m) => m.value === value)
   if (mark) {
-    return mark.label;
+    return mark.label
   } else {
-    return value;
+    return value
   }
 }

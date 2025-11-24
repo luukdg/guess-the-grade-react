@@ -1,14 +1,14 @@
-import { ChevronDown } from "lucide-react";
-import { isGradeCorrect } from "../../functions/isGradeCorrect";
-import { motion } from "motion/react";
-import { gradeMap, levels } from "../../constants/gradeMap";
+import { ChevronDown } from "lucide-react"
+import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import { motion } from "motion/react"
+import { gradeMap } from "../../constants/gradeMap"
 
 export default function ComparePickedGrade({ currentGrade, guess }) {
-  const isCorrect = isGradeCorrect(guess);
+  const isCorrect = isGradeCorrect(guess)
 
-  let actualValue = gradeMap[currentGrade];
-  let userValue = gradeMap[guess.split("/")[0]];
-  let startingValue = -1;
+  let actualValue = gradeMap[currentGrade]
+  let userValue = gradeMap[guess.split("/")[0]]
+  let startingValue = -1
 
   return (
     <>
@@ -136,5 +136,5 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
         </motion.div>
       </div>
     </>
-  );
+  )
 }

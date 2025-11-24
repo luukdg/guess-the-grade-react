@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
-import VideoGuess from "@/components/main/videoGuess";
-import Result from "@/components/main/result";
-import { ClimberIcons } from "@/components/UI/climberIcons";
-import Streak from "@/components/UI/scoreStreak";
+import { useState } from "react"
+import VideoGuess from "@/components/main/videoGuess"
+import Result from "@/components/main/result"
+import { ClimberIcons } from "@/components/UI/climberIcons"
+import Streak from "@/components/UI/scoreStreak"
 
 function Game({ videoType }) {
-  const [lives, setLives] = useState(3);
-  const [outcome, setOutcome] = useState("game"); // store score or result if needed
-  const [streak, setStreak] = useState(0);
-  const [guess, setGuess] = useState(null);
-  const [numericGuess, setNumericGuess] = useState([68, 71]);
-  const [firebaseId, setFirebaseId] = useState(null);
+  const [lives, setLives] = useState(3)
+  const [outcome, setOutcome] = useState("game") // store score or result if needed
+  const [streak, setStreak] = useState(0)
+  const [guess, setGuess] = useState(null)
+  const [numericGuess, setNumericGuess] = useState([68, 71])
+  const [firebaseId, setFirebaseId] = useState(null)
 
-  const showScoreAndLives = lives > 0;
+  const showScoreAndLives = lives > 0
 
   return (
     <>
@@ -23,7 +23,7 @@ function Game({ videoType }) {
           {showScoreAndLives && (
             <>
               <p>Lives:</p>
-              <ClimberIcons lives={lives} setLives={setLives} />
+              <ClimberIcons lives={lives} />
             </>
           )}
         </div>
@@ -56,15 +56,15 @@ function Game({ videoType }) {
             setStreak={setStreak}
             result={outcome}
             nextVideo={() => {
-              setOutcome("game");
-              setNumericGuess([68, 71]);
+              setOutcome("game")
+              setNumericGuess([68, 71])
             }}
             restart={() => {
-              setNumericGuess([68, 71]);
-              setLives(3);
-              setStreak(0);
-              setGuess(null);
-              setOutcome("game");
+              setNumericGuess([68, 71])
+              setLives(3)
+              setStreak(0)
+              setGuess(null)
+              setOutcome("game")
             }}
             firebaseId={firebaseId}
             setFirebaseId={setFirebaseId}
@@ -72,7 +72,7 @@ function Game({ videoType }) {
         )}
       </div>
     </>
-  );
+  )
 }
 
-export default Game;
+export default Game

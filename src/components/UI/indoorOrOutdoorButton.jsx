@@ -1,41 +1,40 @@
-import { useState } from "react";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 import {
   Drawer,
   DrawerContent,
   DrawerTrigger,
   DrawerTitle,
   DrawerDescription,
-} from "@/components/ui/drawer";
+} from "@/components/ui/drawer"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
 
 export const statuses = [
   { value: "indoor", label: "Indoor" },
   { value: "outdoor", label: "Outdoor" },
   { value: "all", label: "All" },
-];
+]
 
 export function ComboBoxResponsive({ videoType, setVideoType }) {
-  const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [open, setOpen] = useState(false)
+  const isDesktop = useMediaQuery("(min-width: 768px)")
 
   function saveVideoTypeToLocalStorage(videoType) {
-    setVideoType(videoType);
-    localStorage.setItem("VideoType", JSON.stringify(videoType));
-    console.log("VideoType saved to localStorage, value:", videoType);
+    setVideoType(videoType)
+    localStorage.setItem("VideoType", JSON.stringify(videoType))
+    console.log("VideoType saved to localStorage, value:", videoType)
   }
 
   return (
@@ -49,7 +48,10 @@ export function ComboBoxResponsive({ videoType, setVideoType }) {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0" align="start">
-            <StatusList setOpen={setOpen} />
+            <StatusList
+              setOpen={setOpen}
+              saveVideoTypeToLocalStorage={saveVideoTypeToLocalStorage}
+            />
           </PopoverContent>
         </Popover>
       ) : (
@@ -75,7 +77,7 @@ export function ComboBoxResponsive({ videoType, setVideoType }) {
         </Drawer>
       )}
     </div>
-  );
+  )
 }
 
 function StatusList({ setOpen, saveVideoTypeToLocalStorage }) {
@@ -91,8 +93,8 @@ function StatusList({ setOpen, saveVideoTypeToLocalStorage }) {
               onSelect={(value) => {
                 saveVideoTypeToLocalStorage(
                   statuses.find((s) => s.value === value) || null,
-                );
-                setOpen(false);
+                )
+                setOpen(false)
               }}
             >
               {status.label}
@@ -101,5 +103,5 @@ function StatusList({ setOpen, saveVideoTypeToLocalStorage }) {
         </CommandGroup>
       </CommandList>
     </Command>
-  );
+  )
 }

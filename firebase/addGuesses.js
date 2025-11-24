@@ -1,9 +1,9 @@
-import { collection, getDocs, updateDoc } from "firebase/firestore";
-import { db } from "./firebaseConfig.js";
+import { collection, getDocs, updateDoc } from "firebase/firestore"
+import { db } from "./firebaseConfig.js"
 
 async function numericGrade() {
   try {
-    const querySnapshot = await getDocs(collection(db, "outdoor"));
+    const querySnapshot = await getDocs(collection(db, "outdoor"))
 
     for (const docSnap of querySnapshot.docs) {
       // Update Firestore document with the new field
@@ -17,13 +17,13 @@ async function numericGrade() {
           "76-79": 0,
           "80-83": 0,
         },
-      });
+      })
     }
 
-    console.log("🎉 All videos updated with guesses field!");
+    console.log("🎉 All videos updated with guesses field!")
   } catch (e) {
-    console.error("Error updating documents: ", e);
+    console.error("Error updating documents: ", e)
   }
 }
 
-numericGrade();
+numericGrade()

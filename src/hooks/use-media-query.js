@@ -6,21 +6,18 @@ const IS_SERVER = typeof window === "undefined"
 
 export function useMediaQuery(
   query,
-  {
-    defaultValue = false,
-    initializeWithValue = true
-  } = {}
+  { defaultValue = false, initializeWithValue = true } = {},
 ) {
-  const getMatches = query => {
+  const getMatches = (query) => {
     if (IS_SERVER) {
       return defaultValue
     }
-    return window.matchMedia(query).matches;
+    return window.matchMedia(query).matches
   }
 
   const [matches, setMatches] = useState(() => {
     if (initializeWithValue) {
-      return getMatches(query);
+      return getMatches(query)
     }
     return defaultValue
   })
@@ -49,7 +46,7 @@ export function useMediaQuery(
       } else {
         matchMedia.removeEventListener("change", handleChange)
       }
-    };
+    }
   }, [query])
 
   return matches

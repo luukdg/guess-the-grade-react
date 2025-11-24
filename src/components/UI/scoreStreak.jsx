@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"
 
-export default function Streak({ streak, setStreak }) {
+export default function Streak({ streak }) {
   return (
     <>
       <motion.p
@@ -17,5 +17,5 @@ export default function Streak({ streak, setStreak }) {
         {streak}
       </motion.p>
     </>
-  );
+  )
 }
