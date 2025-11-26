@@ -1,4 +1,4 @@
-import{R as O}from"./index-CP0Rg2Sk.js";import{M as P,C as A}from"./mixin-D3UDm--6.js";import{H as f}from"./hls-CiLLo4G9.js";const x=t=>class extends t{static shadowRootOptions={...t.shadowRootOptions};static getTemplateHTML=(e,s={})=>{const{src:h,...T}=e;return`
+import{R as O}from"./index-Qtxa7-VB.js";import{M as P,C as A}from"./mixin-D3UDm--6.js";import{H as f}from"./hls-CiLLo4G9.js";const x=t=>class extends t{static shadowRootOptions={...t.shadowRootOptions};static getTemplateHTML=(e,s={})=>{const{src:h,...T}=e;return`
         <script type="application/json" id="config">
           ${JSON.stringify(s.config||{})}
         <\/script>
