@@ -1,7 +1,12 @@
 import { Slider } from "@/components/ui/slider"
-export default function sliderForGrading({ value, handleChange }) {
+export default function sliderForGrading({
+  value,
+  handleChange,
+  randomHoldIndex,
+}) {
   return (
     <Slider
+      randomHoldIndex={randomHoldIndex}
       value={[value]}
       min={0}
       max={60}

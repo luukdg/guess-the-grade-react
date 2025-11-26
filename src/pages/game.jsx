@@ -6,12 +6,12 @@ import Streak from "@/components/UI/scoreStreak"
 
 function Game() {
   const [lives, setLives] = useState(3)
-  const [outcome, setOutcome] = useState("game") // store score or result if needed
+  const [outcome, setOutcome] = useState("game")
   const [streak, setStreak] = useState(0)
   const [guess, setGuess] = useState(null)
   const [numericGuess, setNumericGuess] = useState([68, 71])
   const [firebaseId, setFirebaseId] = useState(null)
-
+  const [randomHoldIndex] = useState(() => Math.floor(Math.random() * 6))
   const showScoreAndLives = lives > 0
 
   return (
@@ -43,6 +43,7 @@ function Game() {
             setFirebaseId={setFirebaseId}
             outcome={outcome}
             setOutcome={setOutcome}
+            randomHoldIndex={randomHoldIndex}
           />
         )}
         {outcome === "result" && (

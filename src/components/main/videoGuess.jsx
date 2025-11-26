@@ -10,7 +10,6 @@ import { ButtonGroup } from "@/components/ui/button-group"
 import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react"
 import SliderForGrading from "../UI/sliderForGrading"
 import { useSettings } from "@/functions/settingsContext"
-import { useGradeScale } from "@/functions/gradeScaleContext"
 
 const VideoGuess = ({
   finish,
@@ -18,15 +17,16 @@ const VideoGuess = ({
   numericGuess,
   setNumericGuess,
   setFirebaseId,
+  randomHoldIndex,
 }) => {
-  const { videoType, always2x, autoPlay, mute, loop } = useSettings()
+  const { videoType, always2x, autoPlay, mute, loop, gradeScale } =
+    useSettings()
   const [videoId, setVideoId] = useState(null) // saves the youtubeLink
   const [videoArray, setVideoArray] = useState([]) // array of videos fetched
   const [value, setValue] = useState(30) // slider state
   const [muted, setMuted] = useState(() => (!mute ? false : true))
   const [isPlaying, setIsPlaying] = useState(false) // video play state
   const [speed, setSpeed] = useState(() => (always2x ? 2 : 1))
-  const { gradeScale } = useGradeScale()
 
   // Resets the grade value after submitting
   const handleChange = (newValue) => {
@@ -36,7 +36,10 @@ const VideoGuess = ({
 
   // Function to fetch a new video
   const fetchNewVideo = async () => {
-    const { youtubeLink, ticketId } = await getData(gradeScale, videoType.value)
+    const { youtubeLink, ticketId } = await getData(
+      gradeScale.value,
+      videoType.value,
+    )
     if (videoArray.includes(youtubeLink)) {
       return await fetchNewVideo()
     } else {
@@ -69,7 +72,9 @@ const VideoGuess = ({
   }
 
   const chooseGradeConverter = (num) => {
-    return !gradeScale ? convertToFont(num) : convertToVSale(num)
+    return gradeScale.value === "font-scale"
+      ? convertToFont(num)
+      : convertToVSale(num)
   }
 
   const speeds = [1, 2]
@@ -161,6 +166,7 @@ const VideoGuess = ({
             value={value}
             setValue={setValue}
             handleChange={handleChange}
+            randomHoldIndex={randomHoldIndex}
           />
         </div>
         <div className="flex flex-col items-center justify-center gap-2">

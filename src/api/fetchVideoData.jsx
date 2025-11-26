@@ -34,7 +34,7 @@ export async function getData(useGradeScale, videoType) {
   const ticketId = randomDoc.id
 
   // convert the ACTUAL grade based on useGradeScale
-  if (!useGradeScale) {
+  if (useGradeScale === "font-scale") {
     currentGrade = convertToFont(data.numericGrade)
   } else {
     currentGrade = convertToVSale(data.numericGrade)
