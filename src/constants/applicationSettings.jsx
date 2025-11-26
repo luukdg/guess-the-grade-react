@@ -1,7 +1,7 @@
 export const location = [
+  { value: "all", label: "All" },
   { value: "indoor", label: "Indoor" },
   { value: "outdoor", label: "Outdoor" },
-  { value: "all", label: "All" },
 ]
 
 export const gradeScale = [

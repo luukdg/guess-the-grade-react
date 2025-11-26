@@ -26,13 +26,14 @@ import {
 } from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input"
 import { Check, ChevronsUpDown } from "lucide-react"
-import { grades } from "@/constants/gradeValues"
+import { grades, gradesVScale } from "@/constants/gradeValues"
 import { uploadNewVideo } from "@/api/uploadNewVideo"
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
 import { Upload, SearchCheck } from "lucide-react"
 import { boulderLocation } from "@/constants/gradeValues"
 import UrlParser from "js-video-url-parser"
+import { useSettings } from "@/functions/settingsContext"
 
 // Zod schema for form validation
 const profileFormSchema = z.object({
@@ -68,6 +69,7 @@ const profileFormSchema = z.object({
 
 // useStates and useForm variables
 export default function UploadSection() {
+  const { gradeScale } = useSettings()
   const [firstOpen, setFirstOpen] = useState(false)
   const [SecondOpen, setSecondOpen] = useState(false)
   const form = useForm({
@@ -79,6 +81,9 @@ export default function UploadSection() {
     },
     mode: "onChange",
   })
+
+  // Use appropriate grade scale based on settings
+  const gradesToUse = gradeScale.value === "v-scale" ? gradesVScale : grades
 
   // Toaster notification on submit
   async function onSubmit(data) {
@@ -141,7 +146,7 @@ export default function UploadSection() {
                         !field.value ? "text-muted-foreground" : ""
                       }`}
                     >
-                      {field.value && grades.includes(field.value)
+                      {field.value && gradesToUse.includes(field.value)
                         ? field.value
                         : "Choose a grade..."}
 
@@ -156,7 +161,7 @@ export default function UploadSection() {
                     <Command>
                       <CommandList>
                         <CommandGroup>
-                          {grades.map((grade) => (
+                          {gradesToUse.map((grade) => (
                             <CommandItem
                               key={grade}
                               value={grade}

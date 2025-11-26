@@ -38,7 +38,7 @@ function SettingsPage() {
             />
           </div>
           <div className="flex w-full flex-row justify-between">
-            <Label htmlFor="location">Default location preference:</Label>
+            <Label htmlFor="location">Default video type:</Label>
             <ComboBoxResponsive
               id="location"
               inputArray={location}
