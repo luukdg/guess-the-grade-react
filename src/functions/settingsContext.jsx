@@ -4,9 +4,19 @@ import { createContext, useState, useContext } from "react"
 const SettingsContext = createContext()
 
 export const SettingsProvider = ({ children }) => {
-  const [autoPlay, setAutoplay] = useState(true)
-  const [mute, setMute] = useState(true)
-  const [loop, setLoop] = useState(true)
+  const [autoPlay, setAutoplay] = useState(() => {
+    const stored = localStorage.getItem("AutoPlay")
+    return stored ? JSON.parse(stored) : true
+  })
+  const [mute, setMute] = useState(() => {
+    const stored = localStorage.getItem("Mute")
+    return stored ? JSON.parse(stored) : true
+  })
+
+  const [loop, setLoop] = useState(() => {
+    const stored = localStorage.getItem("Loop")
+    return stored ? JSON.parse(stored) : true
+  })
 
   const [always2x, setAlways2x] = useState(() => {
     const stored = localStorage.getItem("Always2x")
@@ -84,8 +94,3 @@ export const SettingsProvider = ({ children }) => {
 }
 
 export const useSettings = () => useContext(SettingsContext)
-
-export const updateSpeed = (value) => {
-  setSpeed(value)
-  localStorage.setItem("Speed", JSON.stringify(value))
-}

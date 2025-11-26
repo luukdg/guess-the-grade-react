@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+
 import { useEffect, useState } from "react"
 import ReactPlayer from "react-player"
 import { getData } from "../../api/fetchVideoData"
