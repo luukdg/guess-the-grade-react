@@ -32,7 +32,10 @@ function NavigationMenuItem({ className, ...props }) {
   return (
     <NavigationMenuPrimitive.Item
       data-slot="navigation-menu-item"
-      className={cn("relative flex w-1/4 justify-center", className)}
+      className={cn(
+        "relative flex h-full w-1/4 items-center justify-center",
+        className,
+      )}
       {...props}
     />
   )

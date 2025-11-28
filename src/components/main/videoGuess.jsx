@@ -22,7 +22,7 @@ const VideoGuess = ({
   const [value, setValue] = useState(30) // slider state
 
   // Resets the grade value after submitting
-  const handleChange = (newValue) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue) // slider state
     setNumericGuess(getGrade(newValue)) // numericGuess state
   }
@@ -57,7 +57,7 @@ const VideoGuess = ({
   }
 
   return (
-    <div className="flex h-full w-full flex-col gap-4">
+    <div className="flex h-full w-full flex-col gap-2">
       {/* Video player with boulder video */}
 
       <VideoPlayer
@@ -69,11 +69,11 @@ const VideoGuess = ({
       <div className="flex flex-1 flex-col justify-center">
         <div className="align-center flex w-full items-center justify-center gap-2">
           Guess:{" "}
-          <strong className="font-archivo-black text-xl">
+          <strong className="font-archivo-black text-lg">
             {chooseGradeConverter(numericGuess)}
           </strong>
         </div>
-        <div className="flex h-15">
+        <div className="mx-3 mb-1 flex h-10 items-center justify-center">
           <SliderForGrading
             value={value}
             setValue={setValue}

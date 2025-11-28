@@ -1,18 +1,30 @@
-import { Slider } from "@/components/ui/slider"
-export default function sliderForGrading({
-  value,
-  handleChange,
-  randomHoldIndex,
-}) {
+import Slider from "@mui/material/Slider"
+
+export default function SliderForGrading({ value, handleChange }) {
   return (
-    <Slider
-      randomHoldIndex={randomHoldIndex}
-      value={[value]}
-      min={0}
-      max={60}
-      step={10}
-      className="w-[100%]"
-      onValueChange={(valArray) => handleChange(valArray[0])} // pass the number
-    />
+    <>
+      <Slider
+        aria-label="Custom marks"
+        value={value}
+        valueLabelDisplay="off"
+        step={10}
+        marks
+        min={0}
+        max={60}
+        onChange={handleChange}
+        sx={{
+          color: "var(--primary)",
+          height: 8,
+          "& .MuiSlider-rail": {
+            opacity: 0.5,
+            backgroundColor: "var(--muted-foreground)",
+          },
+          "& .MuiSlider-mark": {
+            backgroundColor: "var(--secondary-foreground)",
+            height: 6,
+          },
+        }}
+      />
+    </>
   )
 }

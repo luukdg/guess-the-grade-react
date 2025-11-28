@@ -17,7 +17,7 @@ function SettingsPage() {
         <Separator className="border-muted mb-4 w-full border-t" />
         <div className="mb-6 flex flex-col gap-2">
           <div className="mb-3 flex-col">
-            <h1 className="text-xl font-bold">Playback:</h1>
+            <h1 className="text-base font-bold">Playback:</h1>
             <p className="text-sm text-(--muted-foreground)">
               Change your playback functions.
             </p>
@@ -26,7 +26,7 @@ function SettingsPage() {
         </div>
         <div className="mb-6 flex flex-col gap-2">
           <div className="mb-3 flex-col">
-            <h1 className="text-xl font-bold">Bouldering:</h1>
+            <h1 className="text-base font-bold">Bouldering:</h1>
             <p className="text-sm text-(--muted-foreground)">
               Change your bouldering preferences.
             </p>
@@ -50,7 +50,7 @@ function SettingsPage() {
         </div>
         <div className="flex flex-col gap-2">
           <div className="mb-3 flex-col">
-            <h1 className="text-xl font-bold">App:</h1>
+            <h1 className="text-base font-bold">App:</h1>
             <p className="text-sm text-(--muted-foreground)">
               Change your app preferences.
             </p>

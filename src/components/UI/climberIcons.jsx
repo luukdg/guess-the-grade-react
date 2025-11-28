@@ -10,7 +10,7 @@ export function ClimberIcons({ lives }) {
   for (let i = 0; i < lives; i++) {
     icons.push(
       <img
-        className="w-10"
+        className="w-6"
         key={i}
         src={theme === "dark" ? climberIcon : ClimberIconLight}
         alt=""
