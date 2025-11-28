@@ -1,4 +1,5 @@
 import { createContext, useState, useContext } from "react"
+import { set } from "zod"
 
 // Creates a global boolean to check if the V-scale converter is necessary
 const SettingsContext = createContext()
@@ -34,6 +35,8 @@ export const SettingsProvider = ({ children }) => {
       ? JSON.parse(stored)
       : { value: "font-scale", label: "Font-scale" }
   })
+
+  const [openControls, setOpenControls] = useState(true)
 
   const updateAutoPlay = (value) => {
     setAutoplay(value)
@@ -86,6 +89,8 @@ export const SettingsProvider = ({ children }) => {
         setVideoType,
         updateVideoType,
         updateGradeScale,
+        openControls,
+        setOpenControls,
       }}
     >
       {children}

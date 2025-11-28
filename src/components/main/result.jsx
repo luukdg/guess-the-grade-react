@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { currentGrade } from "../../api/fetchVideoData"
 import { isGradeCorrect } from "../../functions/isGradeCorrect"
 import CheckGrade from "../UI/guessReponse"
@@ -7,6 +7,7 @@ import { motion } from "motion/react"
 import { Button } from "@/components/ui/button"
 import GameOverButtons from "../UI/gameOverButtons"
 import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage"
+import ReactPlayer from "react-player"
 
 const Result = ({
   guess,
@@ -18,6 +19,7 @@ const Result = ({
   nextVideo,
 }) => {
   const isCorrect = isGradeCorrect(guess)
+  const [openVideo, setOpenVideo] = useState(false)
 
   useEffect(() => {
     saveStreakToLocalStorage(streak)
@@ -25,7 +27,6 @@ const Result = ({
 
   return (
     <div className="align-self relative flex h-full w-full flex-col items-center justify-center">
-      {/* Results message */}
       <motion.div
         className="mb-6 flex flex-col gap-3"
         initial={{ opacity: 0, y: -20 }}
@@ -55,6 +56,41 @@ const Result = ({
 
       {/* Comparison bar */}
       <ComparePickedGrade currentGrade={currentGrade} guess={guess} />
+
+      <Button onClick={() => setOpenVideo(true)} variant="outline">
+        Watch video again
+      </Button>
+
+      {openVideo && (
+        <motion.div className="absolute flex h-3/4 items-center justify-center overflow-hidden">
+          <ReactPlayer
+            src={"`https://www.youtube.com/shorts/kA8rgiunRfM`"}
+            playing={true}
+            muted={true}
+            controls={false}
+            config={{
+              youtube: {
+                modestbranding: 1,
+                rel: 0,
+                showinfo: 0,
+              },
+            }}
+            style={{
+              aspectRatio: "9/16",
+              height: "100%",
+              width: "100%",
+            }}
+          />
+          <Button
+            className="absolute top-1"
+            variant="default"
+            size="lg"
+            onClick={() => setOpenVideo(false)}
+          >
+            Close
+          </Button>
+        </motion.div>
+      )}
 
       {/* Buttons at the bottom */}
       <div className="absolute bottom-0 flex w-full flex-row gap-4">

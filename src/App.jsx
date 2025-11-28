@@ -14,7 +14,7 @@ function App() {
     <Router>
       <SettingsProvider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <div className="flex h-full w-full flex-col items-center justify-center px-5 pt-5">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-2 px-5 pt-5">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/game" element={<Game />} />

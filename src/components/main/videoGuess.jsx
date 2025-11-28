@@ -7,9 +7,17 @@ import { getGrade } from "../../functions/GetGradeLabel"
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
-import { PauseIcon, PlayIcon, Volume2, VolumeOff } from "lucide-react"
+import {
+  PauseIcon,
+  PlayIcon,
+  Volume2,
+  VolumeOff,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react"
 import SliderForGrading from "../UI/sliderForGrading"
 import { useSettings } from "@/functions/settingsContext"
+import { AnimatePresence, motion } from "motion/react"
 
 const VideoGuess = ({
   finish,
@@ -19,8 +27,16 @@ const VideoGuess = ({
   setFirebaseId,
   randomHoldIndex,
 }) => {
-  const { videoType, always2x, autoPlay, mute, loop, gradeScale } =
-    useSettings()
+  const {
+    videoType,
+    always2x,
+    autoPlay,
+    mute,
+    loop,
+    gradeScale,
+    openControls,
+    setOpenControls,
+  } = useSettings()
   const [videoId, setVideoId] = useState(null) // saves the youtubeLink
   const [videoArray, setVideoArray] = useState([]) // array of videos fetched
   const [value, setValue] = useState(30) // slider state
@@ -122,39 +138,62 @@ const VideoGuess = ({
           }}
         ></div>
         <div className="absolute bottom-2 flex w-full flex-col items-center gap-4">
-          <ButtonGroup>
-            <Button
-              onClick={() => setMuted(!muted)}
-              size="sm"
-              variant="outline"
-            >
-              {muted ? <VolumeOff /> : <Volume2 />}
-            </Button>
-            <Button
-              onClick={() => setIsPlaying(!isPlaying)}
-              size="sm"
-              variant="outline"
-            >
-              {isPlaying ? <PauseIcon /> : <PlayIcon />}
-            </Button>
-            {speeds.map((s) => (
-              <Button
-                key={s}
-                onClick={() => setSpeed(s)}
-                size="sm"
-                variant={speed === s ? "default" : "outline"}
+          <AnimatePresence initial={false}>
+            {openControls && (
+              <motion.div
+                initial={{ y: 45 }}
+                animate={{ y: 0 }}
+                exit={{ y: 45 }}
+                key="box"
               >
-                {s}x
-              </Button>
-            ))}
-            <Button
-              onClick={() => setIsPlaying(!isPlaying)}
-              size="sm"
-              variant="outline"
-            >
-              Report
-            </Button>
-          </ButtonGroup>
+                <ButtonGroup>
+                  <Button
+                    onClick={() => setMuted(!muted)}
+                    size="sm"
+                    variant="outline"
+                  >
+                    {muted ? <VolumeOff /> : <Volume2 />}
+                  </Button>
+                  <Button
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    size="sm"
+                    variant="outline"
+                  >
+                    {isPlaying ? <PauseIcon /> : <PlayIcon />}
+                  </Button>
+                  {speeds.map((s) => (
+                    <Button
+                      key={s}
+                      onClick={() => setSpeed(s)}
+                      size="sm"
+                      variant={speed === s ? "default" : "outline"}
+                    >
+                      {s}x
+                    </Button>
+                  ))}
+                  <Button
+                    className="m-0 p-2"
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    size="sm"
+                    variant="outline"
+                  >
+                    <p className="text-xs">Report</p>
+                  </Button>
+                </ButtonGroup>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        {/* Button to remove video controls */}
+        <div className="absolute right-2 bottom-2">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+            onClick={() => setOpenControls((prev) => !prev)}
+          >
+            {openControls ? <ChevronDown /> : <ChevronUp />}
+          </Button>
         </div>
       </div>
       <div className="flex flex-1 flex-col justify-center">
