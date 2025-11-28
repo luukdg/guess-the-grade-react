@@ -34,6 +34,7 @@ import { Upload, SearchCheck } from "lucide-react"
 import { boulderLocation } from "@/constants/gradeValues"
 import UrlParser from "js-video-url-parser"
 import { useSettings } from "@/functions/settingsContext"
+import { Separator } from "@radix-ui/react-separator"
 
 // Zod schema for form validation
 const profileFormSchema = z.object({
@@ -108,6 +109,7 @@ export default function UploadSection() {
         <Upload className="text-(--muted-foreground)" />
       </div>
 
+      <Separator className="border-muted mb-4 w-full border-t" />
       <div className="flex h-full flex-col gap-6">
         <Form {...form}>
           <form

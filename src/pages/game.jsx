@@ -18,11 +18,11 @@ function Game() {
     <>
       <div className="align-self flex h-full w-full flex-1 flex-col items-center justify-center gap-4">
         <div className="flex w-full flex-row items-center justify-center">
-          <p>Score: </p>
+          <p className="font-bold">Score: </p>
           <Streak streak={streak} />
           {showScoreAndLives && (
             <>
-              <p>Lives:</p>
+              <p className="font-bold">Lives:</p>
               <ClimberIcons lives={lives} />
             </>
           )}

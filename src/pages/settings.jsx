@@ -4,6 +4,7 @@ import { ComboBoxResponsive } from "@/components/UI/SettingsPopover"
 import { location, gradeScale } from "@/constants/applicationSettings"
 import { LightModeToggle } from "@/components/UI/lightModeToggle"
 import { VideoSettings } from "@/components/UI/videoSettings"
+import { Separator } from "@radix-ui/react-separator"
 
 function SettingsPage() {
   return (
@@ -13,6 +14,7 @@ function SettingsPage() {
           <h1>Settings</h1>
           <Settings className="text-(--muted-foreground)" />
         </div>
+        <Separator className="border-muted mb-4 w-full border-t" />
         <div className="mb-6 flex flex-col gap-2">
           <div className="mb-3 flex-col">
             <h1 className="text-xl font-bold">Playback:</h1>

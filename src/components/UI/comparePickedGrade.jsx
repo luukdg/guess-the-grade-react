@@ -12,7 +12,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
 
   return (
     <>
-      <div className="relative w-full pb-12">
+      <div className="font-archivo-black relative w-full pb-5">
         <motion.div
           initial={{ left: `calc(${(startingValue + 0.5) * (100 / 7)}%)` }}
           animate={{
