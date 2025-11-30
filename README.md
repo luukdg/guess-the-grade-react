@@ -16,7 +16,7 @@ https://luukdg.github.io/guess-the-grade-react/
 
 ## Screenshot
 
-<img src="./public/mockup.jpg" alt="Logo" height="600"/>
+<img src="./public/mockup1.jpg" alt="Logo" height="600"/>
 
 ## Features
 
