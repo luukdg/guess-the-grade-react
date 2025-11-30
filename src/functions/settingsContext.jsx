@@ -1,5 +1,4 @@
 import { createContext, useState, useContext } from "react"
-import { set } from "zod"
 
 // Creates a global boolean to check if the V-scale converter is necessary
 const SettingsContext = createContext()
