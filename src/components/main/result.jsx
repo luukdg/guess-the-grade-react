@@ -109,7 +109,10 @@ const Result = ({
               transition={{ duration: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
               className="absolute z-1 mb-15 flex aspect-[9/16] h-3/4 bg-black shadow-lg"
             >
-              <VideoPlayer innerClassName="absolute h-full w-full" />
+              <VideoPlayer
+                innerClassName="h-full w-full"
+                className="relative"
+              />
             </motion.div>
           </>
         )}
