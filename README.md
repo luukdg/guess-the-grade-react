@@ -14,8 +14,6 @@ It’s designed with **Progressive Web App (PWA)** principles in mind, with the 
 👉 **Try it here:**  
 https://luukdg.github.io/guess-the-grade-react/
 
-## Screenshot
-
 <img src="./public/mockup1.jpg" alt="Logo" height="600"/>
 
 ## Features
