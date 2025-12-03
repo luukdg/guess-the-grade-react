@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import SliderForGrading from "../UI/sliderForGrading"
 import { useSettings } from "@/functions/settingsContext"
 import { VideoPlayer } from "../video/videoPlayer"
+import { updateUserGuess } from "@/api/updateUserGuess"
 
 const VideoGuess = ({
   finish,
@@ -15,6 +16,7 @@ const VideoGuess = ({
   numericGuess,
   setNumericGuess,
   setFirebaseId,
+  firebaseId,
   randomHoldIndex,
 }) => {
   const { videoType, gradeScale, setVideoId } = useSettings()
@@ -47,7 +49,7 @@ const VideoGuess = ({
     const convertedGuess = chooseGradeConverter(numericGuess)
     setGuess(convertedGuess)
     finish("result")
-    // updateUserGuess(firebaseId, numericGuess);
+    updateUserGuess(firebaseId, numericGuess)
   }
 
   const chooseGradeConverter = (num) => {

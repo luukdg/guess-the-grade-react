@@ -28,7 +28,7 @@ export function VideoPlayer({ className = "", innerClassName = "" }) {
     videoId,
   } = useSettings()
   const [muted, setMuted] = useState(() => (!mute ? false : true))
-  const [isPlaying, setIsPlaying] = useState(false) // video play state
+  const [isPlaying, setIsPlaying] = useState(autoPlay) // video play state
   const [speed, setSpeed] = useState(() => (always2x ? 2 : 1))
 
   useEffect(() => {
@@ -47,12 +47,13 @@ export function VideoPlayer({ className = "", innerClassName = "" }) {
           {videoId && (
             <ReactPlayer
               src={`https://www.youtube.com/shorts/${videoId}`}
-              onReady={autoPlay ? () => setIsPlaying(true) : null}
+              // onReady={autoPlay ? () => setIsPlaying(true) : null}
               playing={isPlaying}
               muted={muted}
               controls={false}
               loop={loop}
               playbackRate={speed}
+              onStart={() => setIsPlaying(true)}
               config={{
                 youtube: {
                   modestbranding: 1,
@@ -94,14 +95,14 @@ export function VideoPlayer({ className = "", innerClassName = "" }) {
                   <Button
                     onClick={() => setMuted(!muted)}
                     size="sm"
-                    variant="outline"
+                    variant="default"
                   >
                     {muted ? <VolumeOff /> : <Volume2 />}
                   </Button>
                   <Button
                     onClick={() => setIsPlaying(!isPlaying)}
                     size="sm"
-                    variant="outline"
+                    variant="default"
                   >
                     {isPlaying ? <PauseIcon /> : <PlayIcon />}
                   </Button>
@@ -110,7 +111,7 @@ export function VideoPlayer({ className = "", innerClassName = "" }) {
                       key={s}
                       onClick={() => setSpeed(s)}
                       size="sm"
-                      variant={speed === s ? "default" : "outline"}
+                      variant={speed === s ? "secondary" : "default"}
                     >
                       {s}x
                     </Button>
@@ -119,7 +120,7 @@ export function VideoPlayer({ className = "", innerClassName = "" }) {
                     className="m-0 p-2"
                     onClick={() => setIsPlaying(!isPlaying)}
                     size="sm"
-                    variant="outline"
+                    variant="default"
                   >
                     <p className="text-xs">Report</p>
                   </Button>
@@ -131,12 +132,12 @@ export function VideoPlayer({ className = "", innerClassName = "" }) {
         {/* Button to remove video controls */}
         <div className="absolute right-2 bottom-2">
           <Button
-            variant="outline"
+            variant="default"
             size="icon"
             className="rounded-full"
             onClick={() => setOpenControls((prev) => !prev)}
           >
-            {openControls ? <ChevronDown /> : <ChevronUp />}
+            {openControls ? <ChevronUp /> : <ChevronDown />}
           </Button>
         </div>
       </div>
