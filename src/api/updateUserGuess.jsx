@@ -1,4 +1,4 @@
-import { doc, updateDoc, increment, getDoc } from "firebase/firestore"
+import { doc, increment, getDoc, setDoc } from "firebase/firestore"
 import { db } from "../../firebase/firebaseConfig.js"
 
 export async function updateUserGuess(firebaseId, numericGuess) {
@@ -8,16 +8,22 @@ export async function updateUserGuess(firebaseId, numericGuess) {
     const videoRef = doc(db, "videos", firebaseId)
     const docSnap = await getDoc(videoRef)
 
-    let targetRef = videoRef
-
     if (!docSnap.exists()) {
-      targetRef = doc(db, "outdoor", firebaseId)
+      console.error("Document does not exist!")
+      return
     }
 
-    await updateDoc(targetRef, {
-      [`guesses.${rangeKey}`]: increment(1),
-    })
+    await setDoc(
+      videoRef,
+      {
+        guesses: { [rangeKey]: increment(1) },
+        views: increment(1),
+      },
+      { merge: true },
+    )
+
+    console.log("User guess and views updated successfully.")
   } catch (e) {
-    console.error("Error updating document:", e)
+    console.error("Error updating document in updateUserGuess:", e)
   }
 }

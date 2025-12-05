@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore"
+import { collection, getDocs, where, query } from "firebase/firestore"
 import { db } from "../../firebase/firebaseConfig.js"
 import { convertToFont, convertToVSale } from "../functions/gradeConverter.jsx"
 
@@ -7,38 +7,39 @@ export let currentGrade = null
 
 // Calling for a random video
 export async function getData(useGradeScale, videoType) {
-  let indoorSnapshot
-  let outdoorSnapshot
-  let docs
+  const collectionRedRef = collection(db, "videos")
+  let q
 
   if (videoType === "indoor") {
-    indoorSnapshot = await getDocs(collection(db, "videos"))
-    docs = indoorSnapshot.docs
+    q = query(collectionRedRef, where("location", "==", "indoor"))
   } else if (videoType === "outdoor") {
-    outdoorSnapshot = await getDocs(collection(db, "outdoor"))
-    docs = outdoorSnapshot.docs
+    q = query(collectionRedRef, where("location", "==", "outdoor"))
   } else {
-    indoorSnapshot = await getDocs(collection(db, "videos"))
-    outdoorSnapshot = await getDocs(collection(db, "outdoor"))
-    docs = [...indoorSnapshot.docs, ...outdoorSnapshot.docs]
+    q = query(collectionRedRef)
   }
 
-  if (docs.length === 0) return null
+  const querySnapshot = await getDocs(q)
 
-  // Pick random video
-  const randomIndex = Math.floor(Math.random() * docs.length)
+  const videos = querySnapshot.docs
 
-  const randomDoc = docs[randomIndex]
-  const data = randomDoc.data()
+  if (videos.length > 0) {
+    // Generate a random index within the bounds of the array
+    const randomIndex = Math.floor(Math.random() * videos.length)
 
-  const ticketId = randomDoc.id
+    // Get the random document
+    const randomDoc = videos[randomIndex]
+    const selectedVideo = randomDoc.data()
 
-  // convert the ACTUAL grade based on useGradeScale
-  if (useGradeScale === "font-scale") {
-    currentGrade = convertToFont(data.numericGrade)
-  } else {
-    currentGrade = convertToVSale(data.numericGrade)
+    const ticketId = randomDoc.id
+    const youtubeLink = selectedVideo.youtubeLink
+    const grade = selectedVideo.numericGrade
+
+    // convert the ACTUAL grade based on useGradeScale
+    if (useGradeScale === "font-scale") {
+      currentGrade = convertToFont(grade)
+    } else {
+      currentGrade = convertToVSale(grade)
+    }
+    return { youtubeLink: youtubeLink, ticketId: ticketId }
   }
-
-  return { youtubeLink: data.youtubeLink, ticketId: ticketId }
 }

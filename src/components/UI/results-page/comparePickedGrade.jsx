@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react"
-import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import { isGradeCorrect } from "../../../functions/isGradeCorrect"
 import { motion } from "motion/react"
-import { gradeMap } from "../../constants/gradeMap"
+import { gradeMap } from "../../../constants/gradeMap"
 
 export default function ComparePickedGrade({ currentGrade, guess }) {
   const isCorrect = isGradeCorrect(guess)
@@ -12,7 +12,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
 
   return (
     <>
-      <div className="relative w-full pb-12">
+      <div className="font-archivo-black relative w-full pb-5">
         <motion.div
           initial={{ left: `calc(${(startingValue + 0.5) * (100 / 7)}%)` }}
           animate={{

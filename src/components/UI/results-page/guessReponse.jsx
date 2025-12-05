@@ -1,9 +1,30 @@
-import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import { isGradeCorrect } from "../../../functions/isGradeCorrect"
 import { useEffect } from "react"
 
 const messages = {
-  correct: ["Perfect!", "Spot on!", "You nailed it!"],
-  incorrect: ["Close one!", "Almost there!", "Not quite!"],
+  correct: [
+    "Send it!",
+    "Flawless ascent!",
+    "You crushed it!",
+    "Top out like a pro!",
+    "Hold after hold, perfect!",
+    "That’s a clean send!",
+    "Smooth moves, well done!",
+    "Crux conquered!",
+    "Dyno master!",
+    "Perfect beta execution!",
+  ],
+  incorrect: [
+    "So close, almost a send!",
+    "Good try, keep your beta tight!",
+    "Almost topped out, keep pushing!",
+    "Slipped the crux, but don’t give up!",
+    "Close one! Adjust your footwork next time.",
+    "Foot slip, but nice attempt!",
+    "Crux got you this time, reset and go!",
+    "Not a send yet, but great effort!",
+    "Almost perfect, tweak that sequence!",
+  ],
 }
 
 const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)]

@@ -12,7 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useSettings } from "@/functions/settingsContext"
+import { useSettings } from "@/context/settingsContext"
 
 export function ComboBoxResponsive({ inputArray, localStorageType }) {
   const [open, setOpen] = useState(false)
