@@ -41,7 +41,7 @@ export function Report({ firebaseId, openToaster }) {
       reset()
       setOpen(false)
       setReport(true)
-      openToaster("Thanks you for reporting.")
+      openToaster("Thank you for reporting.")
     } catch (e) {
       console.log(e)
       openToaster("Sorry, something went wrong.")
