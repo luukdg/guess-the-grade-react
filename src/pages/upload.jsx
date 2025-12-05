@@ -97,7 +97,7 @@ export default function UploadSection() {
       form.reset()
     } catch (err) {
       console.log(err)
-      toast("Sorry, something went wrong")
+      toast("Sorry, something went wrong.")
     }
   }
 

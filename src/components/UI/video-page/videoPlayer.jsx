@@ -22,6 +22,7 @@ export function VideoPlayer({
   className = "",
   innerClassName = "",
   firebaseId,
+  openToaster,
 }) {
   const {
     always2x,
@@ -121,7 +122,7 @@ export function VideoPlayer({
                       {s}x
                     </Button>
                   ))}
-                  <Report firebaseId={firebaseId} />
+                  <Report firebaseId={firebaseId} openToaster={openToaster} />
                 </ButtonGroup>
               </motion.div>
             )}

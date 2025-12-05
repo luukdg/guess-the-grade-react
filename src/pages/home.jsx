@@ -34,6 +34,7 @@ function Home() {
         <h2 className="text-center font-bold">Latest features:</h2>
         <Separator className="border-muted my-4 w-full border-t" />
         <ul className="list-disc pl-5 text-sm text-(--muted-foreground)">
+          <li>Added a report function.</li>
           <li>Added a playback feature after guessing the grade.</li>
           <li>Added the option to hide video controls.</li>
           <li>

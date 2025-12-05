@@ -9,6 +9,8 @@ import SliderForGrading from "../UI/video-page/sliderForGrading"
 import { useSettings } from "@/context/settingsContext"
 import { VideoPlayer } from "../UI/video-page/videoPlayer"
 import { updateUserGuess } from "@/api/updateUserGuess"
+import { toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner"
 
 const VideoGuess = ({
   finish,
@@ -58,12 +60,17 @@ const VideoGuess = ({
       : convertToVSale(num)
   }
 
+  function openToaster(message) {
+    toast(message)
+  }
+
   return (
     <div className="flex h-full w-full flex-col gap-2">
+      <Toaster position="top-center" />
       {/* Video player with boulder video */}
-
       <VideoPlayer
         firebaseId={firebaseId}
+        openToaster={openToaster}
         className="relative flex h-full items-center justify-center overflow-hidden"
         innerClassName="absolute aspect-[9/16] h-full w-full bg-black"
       />

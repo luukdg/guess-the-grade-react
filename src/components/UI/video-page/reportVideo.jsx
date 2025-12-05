@@ -21,7 +21,7 @@ const reportFormSchema = z.object({
   issue: z.string().nonempty({ message: "You must enter something." }),
 })
 
-export function Report({ firebaseId }) {
+export function Report({ firebaseId, openToaster }) {
   const [open, setOpen] = useState(false)
   const [report, setReport] = useState(false)
   const {
@@ -41,8 +41,10 @@ export function Report({ firebaseId }) {
       reset()
       setOpen(false)
       setReport(true)
+      openToaster("Thanks you for reporting.")
     } catch (e) {
       console.log(e)
+      openToaster("Sorry, something went wrong.")
     }
   }
 
@@ -88,10 +90,9 @@ export function Report({ firebaseId }) {
       ) : (
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Notice</DialogTitle>
+            <DialogTitle>You&apos;ve already reported this video.</DialogTitle>
             <DialogDescription>
-              You&apos;ve already reported this video. Each video can only be
-              reported once.
+              Each video can only be reported once.
             </DialogDescription>
           </DialogHeader>
 
