@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import gradeLogo from "/logo.svg"
 import gradeLogoLight from "/logo-light.svg"
-import { HighScore } from "../components/UI/highScoreButton"
-import { useTheme } from "@/components/themeProvider"
+import { HighScore } from "../components/UI/home-page/highScoreButton"
+import { useTheme } from "@/context/themeProvider"
 import { Separator } from "@radix-ui/react-separator"
 
 function Home() {

@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { useTheme } from "../themeProvider"
+import { useTheme } from "../../../context/themeProvider"
 
 export function LightModeToggle() {
   const { theme, setTheme } = useTheme()

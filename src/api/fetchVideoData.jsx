@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, where, query } from "firebase/firestore"
+import { collection, getDocs, where, query } from "firebase/firestore"
 import { db } from "../../firebase/firebaseConfig.js"
 import { convertToFont, convertToVSale } from "../functions/gradeConverter.jsx"
 
@@ -30,7 +30,7 @@ export async function getData(useGradeScale, videoType) {
     const randomDoc = videos[randomIndex]
     const selectedVideo = randomDoc.data()
 
-    const ticketId = selectedVideo.id
+    const ticketId = randomDoc.id
     const youtubeLink = selectedVideo.youtubeLink
     const grade = selectedVideo.numericGrade
 

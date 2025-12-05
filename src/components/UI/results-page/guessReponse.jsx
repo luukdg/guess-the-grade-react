@@ -1,4 +1,4 @@
-import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import { isGradeCorrect } from "../../../functions/isGradeCorrect"
 import { useEffect } from "react"
 
 const messages = {

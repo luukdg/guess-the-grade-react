@@ -1,8 +1,8 @@
 import { useState } from "react"
-import VideoGuess from "@/components/main/videoGuess"
-import Result from "@/components/main/result"
-import { ClimberIcons } from "@/components/UI/climberIcons"
-import Streak from "@/components/UI/scoreStreak"
+import VideoGuess from "@/components/main-components/videoGuess"
+import Result from "@/components/main-components/result"
+import { ClimberIcons } from "@/components/UI/results-page/climberIcons"
+import Streak from "@/components/UI/video-page/scoreStreak"
 
 function Game() {
   const [lives, setLives] = useState(3)

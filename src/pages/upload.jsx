@@ -16,7 +16,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/UI/upload-page/form"
 import {
   Drawer,
   DrawerContent,
@@ -33,7 +33,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { Upload, SearchCheck } from "lucide-react"
 import { boulderLocation } from "@/constants/gradeValues"
 import UrlParser from "js-video-url-parser"
-import { useSettings } from "@/functions/settingsContext"
+import { useSettings } from "@/context/settingsContext"
 import { Separator } from "@radix-ui/react-separator"
 
 // Zod schema for form validation

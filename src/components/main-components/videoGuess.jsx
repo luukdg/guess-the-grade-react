@@ -5,9 +5,9 @@ import { getData } from "../../api/fetchVideoData"
 import { getGrade } from "../../functions/GetGradeLabel"
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter"
 import { Button } from "@/components/ui/button"
-import SliderForGrading from "../UI/sliderForGrading"
-import { useSettings } from "@/functions/settingsContext"
-import { VideoPlayer } from "../video/videoPlayer"
+import SliderForGrading from "../UI/video-page/sliderForGrading"
+import { useSettings } from "@/context/settingsContext"
+import { VideoPlayer } from "../UI/video-page/videoPlayer"
 import { updateUserGuess } from "@/api/updateUserGuess"
 
 const VideoGuess = ({
@@ -63,6 +63,7 @@ const VideoGuess = ({
       {/* Video player with boulder video */}
 
       <VideoPlayer
+        firebaseId={firebaseId}
         className="relative flex h-full items-center justify-center overflow-hidden"
         innerClassName="absolute aspect-[9/16] h-full w-full bg-black"
       />

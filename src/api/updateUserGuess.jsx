@@ -1,4 +1,4 @@
-import { doc, updateDoc, increment, getDoc, setDoc } from "firebase/firestore"
+import { doc, increment, getDoc, setDoc } from "firebase/firestore"
 import { db } from "../../firebase/firebaseConfig.js"
 
 export async function updateUserGuess(firebaseId, numericGuess) {

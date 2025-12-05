@@ -1,6 +1,6 @@
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { useSettings } from "@/functions/settingsContext"
+import { useSettings } from "@/context/settingsContext"
 
 export function VideoSettings() {
   const {

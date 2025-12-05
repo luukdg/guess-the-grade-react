@@ -1,9 +1,9 @@
 import { Label } from "@/components/ui/label"
 import { Settings } from "lucide-react"
-import { ComboBoxResponsive } from "@/components/UI/SettingsPopover"
+import { ComboBoxResponsive } from "@/components/UI/settings-page/SettingsPopover"
 import { location, gradeScale } from "@/constants/applicationSettings"
-import { LightModeToggle } from "@/components/UI/lightModeToggle"
-import { VideoSettings } from "@/components/UI/videoSettings"
+import { LightModeToggle } from "@/components/UI/settings-page/lightModeToggle"
+import { VideoSettings } from "@/components/UI/settings-page/videoSettings"
 import { Separator } from "@radix-ui/react-separator"
 
 function SettingsPage() {

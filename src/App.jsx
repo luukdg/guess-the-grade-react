@@ -1,13 +1,13 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom"
 import Home from "./pages/home"
-import VideoGuess from "./components/main/videoGuess"
-import Result from "./components/main/result"
+import VideoGuess from "./components/main-components/videoGuess"
+import Result from "./components/main-components/result"
 import Game from "./pages/game"
 import Upload from "./pages/upload"
 import SettingsPage from "./pages/settings"
-import { SettingsProvider } from "./functions/settingsContext"
-import { ThemeProvider } from "./components/themeProvider"
-import NavigationMenuMobile from "@/components/main/navigationBar"
+import { SettingsProvider } from "./context/settingsContext"
+import { ThemeProvider } from "./context/themeProvider"
+import NavigationMenuMobile from "@/components/main-components/navigationBar"
 
 function App() {
   return (

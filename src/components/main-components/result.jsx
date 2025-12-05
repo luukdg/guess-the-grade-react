@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import { currentGrade } from "../../api/fetchVideoData"
 import { isGradeCorrect } from "../../functions/isGradeCorrect"
-import CheckGrade from "../UI/guessReponse"
-import ComparePickedGrade from "../UI/comparePickedGrade"
+import CheckGrade from "../UI/results-page/guessReponse"
+import ComparePickedGrade from "../UI/results-page/comparePickedGrade"
 import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
-import GameOverButtons from "../UI/gameOverButtons"
+import GameOverButtons from "../UI/results-page/gameOverButtons"
 import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage"
-import { VideoPlayer } from "../video/videoPlayer"
+import { VideoPlayer } from "../UI/video-page/videoPlayer"
 import { Youtube } from "lucide-react"
 
 const Result = ({

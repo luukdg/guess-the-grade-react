@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react"
-import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import { isGradeCorrect } from "../../../functions/isGradeCorrect"
 import { motion } from "motion/react"
-import { gradeMap } from "../../constants/gradeMap"
+import { gradeMap } from "../../../constants/gradeMap"
 
 export default function ComparePickedGrade({ currentGrade, guess }) {
   const isCorrect = isGradeCorrect(guess)

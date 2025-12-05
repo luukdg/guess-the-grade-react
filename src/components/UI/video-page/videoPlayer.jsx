@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import ReactPlayer from "react-player"
-import { useSettings } from "@/functions/settingsContext"
+import { useSettings } from "@/context/settingsContext"
 import { AnimatePresence, motion } from "motion/react"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
+import { Report } from "./reportVideo"
 import {
   PauseIcon,
   PlayIcon,
@@ -17,7 +18,11 @@ import {
 
 const speeds = [1, 2]
 
-export function VideoPlayer({ className = "", innerClassName = "" }) {
+export function VideoPlayer({
+  className = "",
+  innerClassName = "",
+  firebaseId,
+}) {
   const {
     always2x,
     autoPlay,
@@ -116,14 +121,7 @@ export function VideoPlayer({ className = "", innerClassName = "" }) {
                       {s}x
                     </Button>
                   ))}
-                  <Button
-                    className="m-0 p-2"
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    size="sm"
-                    variant="default"
-                  >
-                    <p className="text-xs">Report</p>
-                  </Button>
+                  <Report firebaseId={firebaseId} />
                 </ButtonGroup>
               </motion.div>
             )}
