@@ -12,6 +12,8 @@ import { updateUserGuess } from "@/api/updateUserGuess"
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
 
+export let currentGrade = null
+
 const VideoGuess = ({
   finish,
   setGuess,
@@ -20,9 +22,12 @@ const VideoGuess = ({
   setFirebaseId,
   firebaseId,
   randomHoldIndex,
+  currentIndex,
+  setCurrentIndex,
+  videos,
+  setVideos,
 }) => {
   const { videoType, gradeScale, setVideoId } = useSettings()
-
   const [value, setValue] = useState(30) // slider state
 
   // Resets the grade value after submitting
@@ -31,19 +36,25 @@ const VideoGuess = ({
     setNumericGuess(getGrade(newValue)) // numericGuess state
   }
 
-  // Function to fetch a new video
-  const fetchNewVideo = async () => {
-    const { youtubeLink, ticketId } = await getData(
-      gradeScale.value,
-      videoType.value,
-    )
-    setFirebaseId(ticketId)
-    setVideoId(youtubeLink)
+  // Function to fetch 10 videos
+  const fetchVideos = async () => {
+    if (videos.length === 0 || videos.length === currentIndex) {
+      const newVideos = await getData(gradeScale.value, videoType.value)
+      setVideos(newVideos)
+      setCurrentIndex(0)
+      setVideoId(newVideos[0].youtubeLink)
+      setFirebaseId(newVideos[0].ticketId)
+      currentGrade = newVideos[0].grade
+    } else {
+      setVideoId(videos[currentIndex].youtubeLink)
+      setFirebaseId(videos[currentIndex].ticketId)
+      currentGrade = videos[currentIndex].grade
+    }
   }
 
-  // Load first video on mount
+  // Load video on mount
   useEffect(() => {
-    fetchNewVideo()
+    fetchVideos()
   }, [])
 
   // Submit guess and refresh video

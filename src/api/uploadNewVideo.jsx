@@ -29,6 +29,7 @@ export async function uploadNewVideo(data) {
         "80-83": 0,
       },
       timeUploaded: today,
+      rand: Math.random(),
     })
     console.log("Document written with ID: ", docRef.id)
   } catch (e) {

@@ -1,4 +1,4 @@
-import { currentGrade } from "../api/fetchVideoData"
+import { currentGrade } from "@/components/main-components/videoGuess"
 
 // Checks if a match is found between the player's guess and the actual grade
 export function isGradeCorrect(playerGuess) {

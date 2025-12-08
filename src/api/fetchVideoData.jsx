@@ -1,45 +1,74 @@
-import { collection, getDocs, where, query } from "firebase/firestore"
+import { collection, getDocs, where, query, limit } from "firebase/firestore"
 import { db } from "../../firebase/firebaseConfig.js"
 import { convertToFont, convertToVSale } from "../functions/gradeConverter.jsx"
 
-// Variable to store the actual grade of the current video
-export let currentGrade = null
-
-// Calling for a random video
 export async function getData(useGradeScale, videoType) {
-  const collectionRedRef = collection(db, "videos")
+  const videosRef = collection(db, "videos")
+  const r = Math.random()
   let q
 
   if (videoType === "indoor") {
-    q = query(collectionRedRef, where("location", "==", "indoor"))
+    q = query(
+      videosRef,
+      where("location", "==", "indoor"),
+      where("rand", ">=", r),
+      limit(10),
+    )
   } else if (videoType === "outdoor") {
-    q = query(collectionRedRef, where("location", "==", "outdoor"))
+    q = query(
+      videosRef,
+      where("location", "==", "outdoor"),
+      where("rand", ">=", r),
+      limit(10),
+    )
   } else {
-    q = query(collectionRedRef)
+    q = query(videosRef, where("rand", ">=", r), limit(10))
   }
 
-  const querySnapshot = await getDocs(q)
+  let snap = await getDocs(q)
 
-  const videos = querySnapshot.docs
-
-  if (videos.length > 0) {
-    // Generate a random index within the bounds of the array
-    const randomIndex = Math.floor(Math.random() * videos.length)
-
-    // Get the random document
-    const randomDoc = videos[randomIndex]
-    const selectedVideo = randomDoc.data()
-
-    const ticketId = randomDoc.id
-    const youtubeLink = selectedVideo.youtubeLink
-    const grade = selectedVideo.numericGrade
-
-    // convert the ACTUAL grade based on useGradeScale
-    if (useGradeScale === "font-scale") {
-      currentGrade = convertToFont(grade)
+  if (snap.empty || snap.docs.length < 10) {
+    if (videoType === "indoor") {
+      q = query(
+        videosRef,
+        where("location", "==", "indoor"),
+        where("rand", "<", r),
+        limit(10),
+      )
+    } else if (videoType === "outdoor") {
+      q = query(
+        videosRef,
+        where("location", "==", "outdoor"),
+        where("rand", "<", r),
+        limit(10),
+      )
     } else {
-      currentGrade = convertToVSale(grade)
+      q = query(videosRef, where("rand", "<", r), limit(10))
     }
-    return { youtubeLink: youtubeLink, ticketId: ticketId }
+
+    const fallbackSnap = await getDocs(q)
+
+    snap = { docs: [...snap.docs, ...fallbackSnap.docs].slice(0, 10) }
   }
+
+  if (snap.docs.length === 0) return []
+
+  const videos = []
+  for (let i = 0; i < snap.docs.length; i++) {
+    const data = snap.docs[i].data()
+    const grade = data.numericGrade
+    const convertedGrade =
+      useGradeScale === "font-scale"
+        ? convertToFont(grade)
+        : convertToVSale(grade)
+
+    videos.push({
+      youtubeLink: data.youtubeLink,
+      grade: convertedGrade,
+      ticketId: snap.docs[i].id,
+    })
+  }
+
+  console.log(videos)
+  return videos
 }
