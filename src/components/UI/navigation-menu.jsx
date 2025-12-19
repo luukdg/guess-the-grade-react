@@ -9,7 +9,10 @@ function NavigationMenu({ className, children, viewport = true, ...props }) {
     <NavigationMenuPrimitive.Root
       data-slot="navigation-menu"
       data-viewport={viewport}
-      className={cn("group/navigation-menu relative flex", className)}
+      className={cn(
+        "group/navigation-menu border-border relative flex border-t-1",
+        className,
+      )}
       {...props}
     >
       {children}

@@ -43,11 +43,11 @@ export default function CheckGrade({ guess, lives, setLives, setStreak }) {
 
   // Update state when component renders
   useEffect(() => {
-    if (guess == null) return
+    if (guess == null || infinite) return
 
     if (correct) {
       setStreak((prev) => prev + 1)
-    } else if (!infinite) {
+    } else {
       setLives((prev) => prev - 1)
     }
   }, [correct])

@@ -17,7 +17,6 @@ export const grades = [
   "7b+",
   "7c",
   "7c+",
-  "8a",
 ]
 
 export const gradesVScale = [
@@ -33,12 +32,6 @@ export const gradesVScale = [
   "V9",
   "V10",
   "V11",
-  "V12",
-  "V13",
-  "V14",
-  "V15",
-  "V16",
-  "V17",
 ]
 
 export const boulderLocation = [
