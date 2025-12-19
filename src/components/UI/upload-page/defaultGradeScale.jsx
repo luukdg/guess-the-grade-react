@@ -27,7 +27,6 @@ export function DefaultGradeScale() {
   function saveVideoTypeToLocalStorage(videoType) {
     setVideoType(videoType)
     localStorage.setItem("VideoType", JSON.stringify(videoType))
-    console.log("VideoType saved to localStorage, value:", videoType)
   }
 
   return (

@@ -4,15 +4,13 @@ export function saveStreakToLocalStorage(streak) {
   if (stored < streak) {
     try {
       localStorage.setItem("Streak", streak)
-      console.log("Streak saved to localStorage, value:", streak)
     } catch (error) {
-      console.error("Error saving to localStorage", error)
+      console.log(error)
     }
   }
 }
 
 export function retrieveStreak() {
   const stored = localStorage.getItem("Streak")
-  console.log("Streak retrieved from localStorage")
   return stored
 }

@@ -5,8 +5,12 @@ import { location, gradeScale } from "@/constants/applicationSettings"
 import { LightModeToggle } from "@/components/UI/settings-page/lightModeToggle"
 import { VideoSettings } from "@/components/UI/settings-page/videoSettings"
 import { Separator } from "@radix-ui/react-separator"
+import { Switch } from "@/components/ui/switch"
+import { useSettings } from "@/context/settingsContext"
 
 function SettingsPage() {
+  const { infinite, updateInfinite } = useSettings()
+
   return (
     <>
       <div className="flex h-full w-full flex-col">
@@ -26,9 +30,9 @@ function SettingsPage() {
         </div>
         <div className="mb-6 flex flex-col gap-2">
           <div className="mb-3 flex-col">
-            <h1 className="text-base font-bold">Bouldering:</h1>
+            <h1 className="text-base font-bold">Game:</h1>
             <p className="text-sm text-(--muted-foreground)">
-              Change your bouldering preferences.
+              Change your game preferences.
             </p>
           </div>
           <div className="flex w-full flex-row justify-between">
@@ -45,6 +49,14 @@ function SettingsPage() {
               id="location"
               inputArray={location}
               localStorageType={"location"}
+            />
+          </div>
+          <div className="flex w-full flex-row justify-between">
+            <Label htmlFor="infinite">Disable lives (infinite mode):</Label>
+            <Switch
+              id="infinite"
+              checked={infinite}
+              onCheckedChange={updateInfinite}
             />
           </div>
         </div>

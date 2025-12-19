@@ -1,5 +1,6 @@
 import { isGradeCorrect } from "../../../functions/isGradeCorrect"
 import { useEffect } from "react"
+import { useSettings } from "@/context/settingsContext"
 
 const messages = {
   correct: [
@@ -31,6 +32,7 @@ const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
 export default function CheckGrade({ guess, lives, setLives, setStreak }) {
   const correct = isGradeCorrect(guess)
+  const { infinite } = useSettings()
 
   const message =
     guess == null
@@ -45,7 +47,7 @@ export default function CheckGrade({ guess, lives, setLives, setStreak }) {
 
     if (correct) {
       setStreak((prev) => prev + 1)
-    } else {
+    } else if (!infinite) {
       setLives((prev) => prev - 1)
     }
   }, [correct])

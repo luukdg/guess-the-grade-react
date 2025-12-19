@@ -69,6 +69,5 @@ export async function getData(useGradeScale, videoType) {
     })
   }
 
-  console.log(videos)
   return videos
 }

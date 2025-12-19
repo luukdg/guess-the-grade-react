@@ -3,8 +3,10 @@ import VideoGuess from "@/components/main-components/videoGuess"
 import Result from "@/components/main-components/result"
 import { ClimberIcons } from "@/components/UI/results-page/climberIcons"
 import Streak from "@/components/UI/video-page/scoreStreak"
+import { useSettings } from "@/context/settingsContext"
 
 function Game() {
+  const { infinite } = useSettings()
   const [lives, setLives] = useState(3)
   const [outcome, setOutcome] = useState("game")
   const [streak, setStreak] = useState(0)
@@ -22,7 +24,7 @@ function Game() {
         <div className="flex w-full flex-row items-center justify-center">
           <p className="font-bold">Score: </p>
           <Streak streak={streak} />
-          {showScoreAndLives && (
+          {!infinite && showScoreAndLives && (
             <>
               <p className="font-bold">Lives:</p>
               <ClimberIcons lives={lives} />

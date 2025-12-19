@@ -4,10 +4,16 @@ import { createContext, useState, useContext } from "react"
 const SettingsContext = createContext()
 
 export const SettingsProvider = ({ children }) => {
+  const [infinite, setInfinite] = useState(() => {
+    const stored = localStorage.getItem("Infinite")
+    return stored ? JSON.parse(stored) : false
+  })
+
   const [autoPlay, setAutoplay] = useState(() => {
     const stored = localStorage.getItem("AutoPlay")
     return stored ? JSON.parse(stored) : true
   })
+
   const [mute, setMute] = useState(() => {
     const stored = localStorage.getItem("Mute")
     return stored ? JSON.parse(stored) : true
@@ -68,6 +74,11 @@ export const SettingsProvider = ({ children }) => {
     localStorage.setItem("gradeScale", JSON.stringify(value))
   }
 
+  const updateInfinite = (value) => {
+    setInfinite(value)
+    localStorage.setItem("Infinite", JSON.stringify(value))
+  }
+
   return (
     <SettingsContext.Provider
       value={{
@@ -93,6 +104,9 @@ export const SettingsProvider = ({ children }) => {
         setOpenControls,
         videoId,
         setVideoId,
+        infinite,
+        setInfinite,
+        updateInfinite,
       }}
     >
       {children}
