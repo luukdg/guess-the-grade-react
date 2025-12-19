@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { currentGrade } from "../../api/fetchVideoData"
+import { currentGrade } from "./videoGuess"
 import { isGradeCorrect } from "../../functions/isGradeCorrect"
 import CheckGrade from "../UI/results-page/guessReponse"
 import ComparePickedGrade from "../UI/results-page/comparePickedGrade"
@@ -18,13 +18,15 @@ const Result = ({
   setStreak,
   restart,
   nextVideo,
+  setCurrentIndex,
 }) => {
   const isCorrect = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
 
   useEffect(() => {
     saveStreakToLocalStorage(streak)
-  }, [lives, streak])
+    setCurrentIndex((prev) => prev + 1)
+  }, [])
 
   return (
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden">

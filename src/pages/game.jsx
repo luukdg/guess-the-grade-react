@@ -12,6 +12,8 @@ function Game() {
   const [numericGuess, setNumericGuess] = useState([68, 71])
   const [firebaseId, setFirebaseId] = useState(null)
   const [randomHoldIndex] = useState(() => Math.floor(Math.random() * 6))
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [videos, setVideos] = useState([]) // video array
   const showScoreAndLives = lives > 0
 
   return (
@@ -44,6 +46,10 @@ function Game() {
             outcome={outcome}
             setOutcome={setOutcome}
             randomHoldIndex={randomHoldIndex}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            videos={videos}
+            setVideos={setVideos}
           />
         )}
         {outcome === "result" && (
@@ -68,6 +74,7 @@ function Game() {
             }}
             firebaseId={firebaseId}
             setFirebaseId={setFirebaseId}
+            setCurrentIndex={setCurrentIndex}
           />
         )}
       </div>
