@@ -54,7 +54,7 @@ function Home() {
           className="w-full"
           onClick={() => navigate("/game")}
         >
-          Start a Game
+          Start game
         </Button>
       </div>
     </div>

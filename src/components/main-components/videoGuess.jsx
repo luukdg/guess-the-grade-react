@@ -38,6 +38,7 @@ const VideoGuess = ({
 
   // Function to fetch 10 videos
   const fetchVideos = async () => {
+    // Only fetch video's when there are no videos or when the video array has reached it's end
     if (videos.length === 0 || videos.length === currentIndex) {
       const newVideos = await getData(gradeScale.value, videoType.value)
       setVideos(newVideos)
