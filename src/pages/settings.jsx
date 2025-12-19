@@ -9,7 +9,8 @@ import { Switch } from "@/components/ui/switch"
 import { useSettings } from "@/context/settingsContext"
 
 function SettingsPage() {
-  const { infinite, updateInfinite } = useSettings()
+  const { infinite, updateInfinite, submitOnDrag, updateSubmitOnDrag } =
+    useSettings()
 
   return (
     <>
@@ -57,6 +58,14 @@ function SettingsPage() {
               id="infinite"
               checked={infinite}
               onCheckedChange={updateInfinite}
+            />
+          </div>
+          <div className="flex w-full flex-row justify-between">
+            <Label htmlFor="submitOnDrag">Submit on drag:</Label>
+            <Switch
+              id="submitOnDrag"
+              checked={submitOnDrag}
+              onCheckedChange={updateSubmitOnDrag}
             />
           </div>
         </div>

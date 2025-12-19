@@ -34,13 +34,10 @@ function Home() {
         <h2 className="text-center font-bold">Latest features:</h2>
         <Separator className="border-muted my-4 w-full border-t" />
         <ul className="list-disc pl-5 text-sm text-(--muted-foreground)">
+          <li>Added a submit on drag.</li>
           <li>Added a infinite mode (no lives).</li>
           <li>Added a report function.</li>
-          <li>Added a playback feature after guessing the grade.</li>
-          <li>Added the option to hide video controls.</li>
-          <li>
-            Added the ability to switch between dark and light mode in settings.
-          </li>
+          <li>Added 'watch again' after guessing the grade.</li>
         </ul>
         <div className="mt-2 flex w-full items-center justify-center">
           <Button onClick={handleClick} variant="link">

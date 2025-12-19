@@ -1,6 +1,14 @@
 import Slider from "@mui/material/Slider"
+import { useSettings } from "@/context/settingsContext"
 
-export default function SliderForGrading({ value, handleChange }) {
+export default function SliderForGrading({
+  value,
+  handleChange,
+  handleSubmit,
+}) {
+  const { submitOnDrag } = useSettings()
+  const test = true
+
   return (
     <>
       <Slider
@@ -12,6 +20,11 @@ export default function SliderForGrading({ value, handleChange }) {
         min={0}
         max={60}
         onChange={handleChange}
+        onChangeCommitted={() => {
+          if (submitOnDrag) {
+            handleSubmit()
+          }
+        }}
         sx={{
           color: "var(--primary)",
           height: 8,

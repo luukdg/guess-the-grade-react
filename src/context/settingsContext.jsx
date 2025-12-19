@@ -4,6 +4,11 @@ import { createContext, useState, useContext } from "react"
 const SettingsContext = createContext()
 
 export const SettingsProvider = ({ children }) => {
+  const [submitOnDrag, setSubmitOnDrag] = useState(() => {
+    const stored = localStorage.getItem("SubmitOnDrag")
+    return stored ? JSON.parse(stored) : false
+  })
+
   const [infinite, setInfinite] = useState(() => {
     const stored = localStorage.getItem("Infinite")
     return stored ? JSON.parse(stored) : false
@@ -79,6 +84,11 @@ export const SettingsProvider = ({ children }) => {
     localStorage.setItem("Infinite", JSON.stringify(value))
   }
 
+  const updateSubmitOnDrag = (value) => {
+    setSubmitOnDrag(value)
+    localStorage.setItem("SubmitOnDrag", JSON.stringify(value))
+  }
+
   return (
     <SettingsContext.Provider
       value={{
@@ -107,6 +117,9 @@ export const SettingsProvider = ({ children }) => {
         infinite,
         setInfinite,
         updateInfinite,
+        submitOnDrag,
+        setSubmitOnDrag,
+        updateSubmitOnDrag,
       }}
     >
       {children}

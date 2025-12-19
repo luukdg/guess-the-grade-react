@@ -27,7 +27,7 @@ const VideoGuess = ({
   videos,
   setVideos,
 }) => {
-  const { videoType, gradeScale, setVideoId } = useSettings()
+  const { videoType, gradeScale, setVideoId, submitOnDrag } = useSettings()
   const [value, setValue] = useState(30) // slider state
 
   // Resets the grade value after submitting
@@ -101,19 +101,22 @@ const VideoGuess = ({
             setValue={setValue}
             handleChange={handleChange}
             randomHoldIndex={randomHoldIndex}
+            handleSubmit={handleSubmit}
           />
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
-          <Button
-            size="lg"
-            variant="default"
-            className="w-full"
-            onClick={() => {
-              handleSubmit()
-            }}
-          >
-            Check your guess
-          </Button>
+          {!submitOnDrag && (
+            <Button
+              size="lg"
+              variant="default"
+              className="w-full"
+              onClick={() => {
+                handleSubmit()
+              }}
+            >
+              Check your guess
+            </Button>
+          )}
         </div>
       </div>
     </div>
