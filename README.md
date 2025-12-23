@@ -12,7 +12,7 @@ It’s designed with **Progressive Web App (PWA)** principles in mind, with the 
 ## Live Demo
 
 👉 **Try it here:**  
-https://luukdg.github.io/guess-the-grade-react/
+https://guess-the-grade-1a830.web.app/
 
 <img src="./public/mockup1.jpg" alt="Logo" height="600"/>
 
