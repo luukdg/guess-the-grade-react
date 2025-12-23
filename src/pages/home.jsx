@@ -13,7 +13,7 @@ import { useState } from "react"
 function Home() {
   const navigate = useNavigate()
   const { theme } = useTheme()
-  const [activateSnow, setActivateSnow] = useState(false)
+  const [activateSnow, setActivateSnow] = useState(true)
 
   return (
     <div className="align-self relative flex h-full w-full flex-1 flex-col items-center justify-center px-3 pt-3">

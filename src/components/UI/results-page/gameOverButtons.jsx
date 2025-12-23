@@ -16,7 +16,7 @@ export default function GameOverButtons({ restart }) {
       </Button>
       <Button
         size="default"
-        variant="destructive"
+        variant="default"
         className="flex-1"
         onClick={restart}
       >

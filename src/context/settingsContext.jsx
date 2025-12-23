@@ -4,6 +4,11 @@ import { createContext, useState, useContext } from "react"
 const SettingsContext = createContext()
 
 export const SettingsProvider = ({ children }) => {
+  const [firstTime, setFirstTime] = useState(() => {
+    const stored = localStorage.getItem("FirstTimeMessage")
+    return stored ? JSON.parse(stored) : true
+  })
+
   const [submitOnDrag, setSubmitOnDrag] = useState(() => {
     const stored = localStorage.getItem("SubmitOnDrag")
     return stored ? JSON.parse(stored) : false
@@ -48,6 +53,11 @@ export const SettingsProvider = ({ children }) => {
 
   const [videoId, setVideoId] = useState(null)
   const [openControls, setOpenControls] = useState(true)
+
+  const updateFirstTime = (value) => {
+    setFirstTime(value)
+    localStorage.setItem("FirstTimeMessage", JSON.stringify(value))
+  }
 
   const updateAutoPlay = (value) => {
     setAutoplay(value)
@@ -120,6 +130,9 @@ export const SettingsProvider = ({ children }) => {
         submitOnDrag,
         setSubmitOnDrag,
         updateSubmitOnDrag,
+        firstTime,
+        setFirstTime,
+        updateFirstTime,
       }}
     >
       {children}

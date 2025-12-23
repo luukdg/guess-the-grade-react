@@ -4,9 +4,10 @@ import Result from "@/components/main-components/result"
 import { ClimberIcons } from "@/components/UI/results-page/climberIcons"
 import Streak from "@/components/UI/video-page/scoreStreak"
 import { useSettings } from "@/context/settingsContext"
+import { FirstTimeMessage } from "@/components/UI/home-page/firstTimeMessage"
 
 function Game() {
-  const { infinite } = useSettings()
+  const { infinite, firstTime } = useSettings()
   const [lives, setLives] = useState(3)
   const [outcome, setOutcome] = useState("game")
   const [streak, setStreak] = useState(0)
@@ -21,6 +22,7 @@ function Game() {
   return (
     <>
       <div className="align-self flex h-full w-full flex-1 flex-col items-center justify-center gap-2 px-3 pt-3">
+        {firstTime && <FirstTimeMessage />}
         {!infinite && (
           <div className="flex w-full flex-row items-center justify-center">
             <p className="font-bold">Score: </p>
