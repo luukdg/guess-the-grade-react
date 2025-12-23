@@ -7,15 +7,15 @@ export default function GameOverButtons({ restart }) {
   return (
     <>
       <Button
-        size="lg"
-        variant="default"
+        size="default"
+        variant="outline"
         className="flex-1"
         onClick={() => navigate("/")}
       >
         Home
       </Button>
       <Button
-        size="lg"
+        size="default"
         variant="destructive"
         className="flex-1"
         onClick={restart}

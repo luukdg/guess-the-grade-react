@@ -20,7 +20,7 @@ function Game() {
 
   return (
     <>
-      <div className="align-self flex h-full w-full flex-1 flex-col items-center justify-center gap-2">
+      <div className="align-self flex h-full w-full flex-1 flex-col items-center justify-center gap-2 px-3 pt-3">
         {!infinite && (
           <div className="flex w-full flex-row items-center justify-center">
             <p className="font-bold">Score: </p>

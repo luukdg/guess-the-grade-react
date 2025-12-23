@@ -83,7 +83,7 @@ const VideoGuess = ({
       <VideoPlayer
         firebaseId={firebaseId}
         openToaster={openToaster}
-        className="relative flex h-full items-center justify-center overflow-hidden"
+        className="border-border relative flex h-full items-center justify-center overflow-hidden border-1"
         innerClassName="absolute aspect-[9/16] h-full w-full bg-black"
       />
 
@@ -95,7 +95,7 @@ const VideoGuess = ({
             {chooseGradeConverter(numericGuess)}
           </strong>
         </div>
-        <div className="mx-3 mb-1 flex h-10 items-center justify-center">
+        <div className="mx-3 mt-1 flex h-10 items-center justify-center">
           <SliderForGrading
             value={value}
             setValue={setValue}
@@ -104,10 +104,10 @@ const VideoGuess = ({
             handleSubmit={handleSubmit}
           />
         </div>
-        <div className="flex flex-col items-center justify-center gap-2">
+        <div className="flex flex-col items-center justify-center gap-2 pt-2 pb-1">
           {!submitOnDrag && (
             <Button
-              size="lg"
+              size="default"
               variant="default"
               className="w-full"
               onClick={() => {

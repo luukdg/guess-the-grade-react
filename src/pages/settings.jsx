@@ -14,7 +14,7 @@ function SettingsPage() {
 
   return (
     <>
-      <div className="flex h-full w-full flex-col">
+      <div className="border-border flex h-full w-full flex-col overflow-y-auto px-3 pt-3">
         <div className="mb-5 flex w-full items-center justify-center gap-2 text-xl font-bold">
           <h1>Settings</h1>
           <Settings className="text-(--muted-foreground)" />
@@ -76,7 +76,7 @@ function SettingsPage() {
               Change your app preferences.
             </p>
           </div>
-          <div className="flex w-full flex-row justify-between">
+          <div className="flex w-full flex-row justify-between pb-5">
             <LightModeToggle />
           </div>
         </div>

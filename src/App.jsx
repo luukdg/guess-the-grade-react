@@ -14,7 +14,7 @@ function App() {
     <Router>
       <SettingsProvider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2 px-3 pt-3">
+          <div className="flex h-full w-full flex-col">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/game" element={<Game />} />
@@ -23,7 +23,7 @@ function App() {
               <Route path="/videoGuess" element={<VideoGuess />} />
               <Route path="/result" element={<Result />} />
             </Routes>
-            <div className="flex w-full justify-center">
+            <div className="mt-2 flex w-full justify-center">
               <NavigationMenuMobile />
             </div>
           </div>

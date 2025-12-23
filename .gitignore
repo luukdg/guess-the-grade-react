@@ -1,3 +1,26 @@
+# Android build files
+app/build/
+build/
+*.apk
+*.aab
+*.keystore
+
+# Gradle
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# IDE settings (if using Android Studio)
+.idea/
+*.iml
+local.properties
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+
 # Logs
 logs
 *.log

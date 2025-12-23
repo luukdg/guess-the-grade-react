@@ -73,12 +73,12 @@ const Result = ({
         </Button>
 
         {/* Buttons at the bottom */}
-        <div className="absolute bottom-0 flex w-full flex-row gap-4">
+        <div className="absolute bottom-0 flex w-full flex-row gap-4 pb-1">
           {lives === 0 ? (
             <GameOverButtons restart={restart} />
           ) : (
             <Button
-              size="lg"
+              size="default"
               variant="default"
               className="w-full"
               onClick={() => nextVideo()}

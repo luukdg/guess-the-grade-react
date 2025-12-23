@@ -102,7 +102,7 @@ export default function UploadSection() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col overflow-y-auto">
+    <div className="flex h-full w-full flex-col overflow-y-auto px-3 pt-3">
       <Toaster position="top-center" />
       <div className="mb-5 flex w-full items-center justify-center gap-2 text-xl font-bold">
         <h1>Upload</h1>
@@ -280,10 +280,10 @@ export default function UploadSection() {
           </p>
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-full pb-1">
         <Button
           className="w-full"
-          size="lg"
+          size="default"
           variant="default"
           type="submit"
           form="video-form"
