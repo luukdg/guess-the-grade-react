@@ -7,10 +7,12 @@ import { VideoSettings } from "@/components/UI/settings-page/videoSettings"
 import { Separator } from "@radix-ui/react-separator"
 import { Switch } from "@/components/ui/switch"
 import { useSettings } from "@/context/settingsContext"
+import { useNavigate } from "react-router-dom"
 
 function SettingsPage() {
   const { infinite, updateInfinite, submitOnDrag, updateSubmitOnDrag } =
     useSettings()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -78,6 +80,14 @@ function SettingsPage() {
           </div>
           <div className="flex w-full flex-row justify-between pb-5">
             <LightModeToggle />
+          </div>
+        </div>
+        <div className="mb-3 flex h-full items-end justify-center text-xs font-bold text-(--muted-foreground)">
+          <div
+            className="cursor-pointer hover:text-(--primary)"
+            onClick={() => navigate("/privacy")}
+          >
+            Privacy policy
           </div>
         </div>
       </div>

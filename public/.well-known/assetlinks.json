@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "app.web.guess_the_grade_1a830.twa",
       "sha256_cert_fingerprints": [
-        "64:A3:9D:F1:09:64:46:95:AC:E7:BB:A9:36:08:9F:09:0E:44:05:B9:33:7B:C5:A8:49:15:45:DD:B8:4B:A8:26"
+        "64:A3:9D:F1:09:64:46:95:AC:E7:BB:A9:36:08:9F:09:0E:44:05:B9:33:7B:C5:A8:49:15:45:DD:B8:4B:A8:26",
+        "9B:45:3B:01:0E:AB:42:05:1C:AE:04:2F:56:7F:B3:CF:2D:D6:4B:B5:4E:B3:9E:DE:64:44:A0:13:50:EF:B3:84"
       ]
     }
   }

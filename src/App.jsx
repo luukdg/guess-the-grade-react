@@ -5,6 +5,7 @@ import Result from "./components/main-components/result"
 import Game from "./pages/game"
 import Upload from "./pages/upload"
 import SettingsPage from "./pages/settings"
+import Privacy from "./pages/privacy"
 import { SettingsProvider } from "./context/settingsContext"
 import { ThemeProvider } from "./context/themeProvider"
 import NavigationMenuMobile from "@/components/main-components/navigationBar"
@@ -22,6 +23,7 @@ function App() {
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/videoGuess" element={<VideoGuess />} />
               <Route path="/result" element={<Result />} />
+              <Route path="/privacy" element={<Privacy />} />
             </Routes>
             <div className="mt-2 flex w-full justify-center">
               <NavigationMenuMobile />
