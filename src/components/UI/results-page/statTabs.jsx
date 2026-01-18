@@ -20,12 +20,12 @@ const TabsDemo = ({ videos, currentIndex, currentGrade, guess }) => {
       value: "statistics",
       content: (
         <>
-          <VideoStats videos={videos} currentIndex={currentIndex} /> View the
-          distribution of{" "}
-          <span className="text-foreground font-semibold">
-            everyone&apos;s{" "}
-          </span>
-          guesses in the chart.
+          <VideoStats
+            videos={videos}
+            currentIndex={currentIndex}
+            currentGrade={currentGrade}
+            guess={guess}
+          />
         </>
       ),
     },
@@ -34,22 +34,19 @@ const TabsDemo = ({ videos, currentIndex, currentGrade, guess }) => {
   return (
     <div className="w-full max-w-md">
       <Tabs defaultValue="explore">
-        <div className="border-muted rounded-xl border border-1 px-3 py-3">
+        {tabs.map((tab) => (
+          <TabsContent key={tab.value} value={tab.value}>
+            <div className="text-muted-foreground text-sm">{tab.content}</div>
+          </TabsContent>
+        ))}
+
+        <TabsList>
           {tabs.map((tab) => (
-            <TabsContent key={tab.value} value={tab.value}>
-              <div className="text-muted-foreground text-sm">{tab.content}</div>
-            </TabsContent>
+            <TabsTrigger key={tab.value} value={tab.value}>
+              {tab.name}
+            </TabsTrigger>
           ))}
-          <div className="pt-3">
-            <TabsList>
-              {tabs.map((tab) => (
-                <TabsTrigger key={tab.value} value={tab.value}>
-                  {tab.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
-        </div>
+        </TabsList>
       </Tabs>
     </div>
   )

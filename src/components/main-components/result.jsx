@@ -31,8 +31,14 @@ const Result = ({
   }, [])
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <div className="align-self relative flex h-full w-full flex-col items-center justify-center">
+    <div className="relative flex h-full w-full flex-col items-center justify-center gap-2">
+      <div className="flex w-full items-center justify-end">
+        <Button onClick={() => setOpenVideo(true)} variant="outline" size="sm">
+          <Youtube />
+          Watch again
+        </Button>
+      </div>
+      <div className="flex h-full w-full flex-col justify-center">
         <motion.div
           className="mb-6 flex flex-col items-center gap-3"
           initial={{ opacity: 0, y: -20 }}
@@ -73,11 +79,6 @@ const Result = ({
             guess={guess}
             setOpenVideo={setOpenVideo}
           />
-
-          <Button onClick={() => setOpenVideo(true)} variant="outline">
-            <Youtube />
-            Watch again
-          </Button>
         </motion.div>
       </div>
 
