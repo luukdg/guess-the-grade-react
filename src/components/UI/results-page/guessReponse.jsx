@@ -53,7 +53,7 @@ export default function CheckGrade({ guess, lives, setLives, setStreak }) {
   }, [correct])
 
   return (
-    <h1 className="text-center text-4xl font-bold">
+    <h1 className="text-center text-3xl font-bold">
       {lives === 0 ? "Game Over!" : message}
     </h1>
   ) // show message in DOM

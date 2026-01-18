@@ -12,7 +12,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
 
   return (
     <>
-      <div className="font-archivo-black relative w-full pb-5">
+      <div className="font-archivo-black relative w-full text-white">
         <motion.div
           initial={{ left: `calc(${(startingValue + 0.5) * (100 / 7)}%)` }}
           animate={{
@@ -23,7 +23,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
             stiffness: 500,
             damping: 30,
           }}
-          className="absolute -top-8 text-green-400"
+          className="absolute -top-6 text-green-400"
           style={{
             transform: "translateX(-50%)",
           }}
@@ -40,7 +40,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
             stiffness: 500,
             damping: 30,
           }}
-          className="absolute -top-8"
+          className="absolute -top-6"
           style={{
             transform: "translateX(-50%)",
           }}
@@ -56,7 +56,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
           animate={{ opacity: 100 }}
           className="border-box flex h-12 w-full flex-row overflow-hidden rounded-md text-sm/3.5 font-bold"
         >
-          <div className="flex w-[calc(100%/7)] items-center justify-center bg-gray-200/10 p-1 text-center">
+          <div className="bg-chart-1/40 flex w-[calc(100%/7)] items-center justify-center p-1 text-center">
             <p
               className={
                 actualValue === 0 || userValue === 0
@@ -67,7 +67,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
               5a 5c+
             </p>
           </div>
-          <div className="flex w-[calc(100%/7)] items-center justify-center bg-gray-200/20 p-1 text-center">
+          <div className="bg-chart-1/50 flex w-[calc(100%/7)] items-center justify-center p-1 text-center">
             <p
               className={
                 actualValue === 1 || userValue === 1
@@ -78,7 +78,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
               6a 6a+
             </p>
           </div>
-          <div className="flex w-[calc(100%/7)] items-center justify-center bg-gray-200/30 p-1 text-center">
+          <div className="bg-chart-1/60 flex w-[calc(100%/7)] items-center justify-center p-1 text-center">
             <p
               className={
                 actualValue === 2 || userValue === 2
@@ -89,7 +89,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
               6b 6b+
             </p>
           </div>
-          <div className="flex w-[calc(100%/7)] items-center justify-center bg-gray-200/40 p-1 text-center">
+          <div className="bg-chart-1/70 flex w-[calc(100%/7)] items-center justify-center p-1 text-center">
             <p
               className={
                 actualValue === 3 || userValue === 3
@@ -100,7 +100,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
               6c 6c+
             </p>
           </div>
-          <div className="flex w-[calc(100%/7)] items-center justify-center bg-gray-200/50 p-1 text-center">
+          <div className="bg-chart-1/80 flex w-[calc(100%/7)] items-center justify-center p-1 text-center">
             <p
               className={
                 actualValue === 4 || userValue === 4
@@ -111,7 +111,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
               7a 7a+
             </p>
           </div>
-          <div className="flex w-[calc(100%/7)] items-center justify-center bg-gray-200/60 p-1 text-center">
+          <div className="bg-chart-1/90 flex w-[calc(100%/7)] items-center justify-center p-1 text-center">
             <p
               className={
                 actualValue === 5 || userValue === 5
@@ -122,7 +122,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
               7b 7b+
             </p>
           </div>
-          <div className="flex w-[calc(100%/7)] items-center justify-center bg-gray-200/70 p-1 text-center">
+          <div className="bg-chart-1 flex w-[calc(100%/7)] items-center justify-center p-1 text-center">
             <p
               className={
                 actualValue === 6 || userValue === 6

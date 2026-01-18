@@ -2,13 +2,13 @@ import { useEffect, useState } from "react"
 import { currentGrade } from "./videoGuess"
 import { isGradeCorrect } from "../../functions/isGradeCorrect"
 import CheckGrade from "../UI/results-page/guessReponse"
-import ComparePickedGrade from "../UI/results-page/comparePickedGrade"
 import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
 import GameOverButtons from "../UI/results-page/gameOverButtons"
 import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage"
 import { VideoPlayer } from "../UI/video-page/videoPlayer"
 import { Youtube } from "lucide-react"
+import TabsDemo from "../UI/results-page/statTabs"
 
 const Result = ({
   guess,
@@ -19,6 +19,8 @@ const Result = ({
   restart,
   nextVideo,
   setCurrentIndex,
+  currentIndex,
+  videos,
 }) => {
   const isCorrect = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
@@ -29,10 +31,10 @@ const Result = ({
   }, [])
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+    <div className="flex h-full w-full flex-col items-center justify-center">
       <div className="align-self relative flex h-full w-full flex-col items-center justify-center">
         <motion.div
-          className="mb-6 flex flex-col gap-3"
+          className="mb-6 flex flex-col items-center gap-3"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
@@ -47,7 +49,7 @@ const Result = ({
             streak={streak}
             setStreak={setStreak}
           />
-          <div className="mb-6 text-center text-xl">
+          <div className="mb-3 text-center text-lg">
             You guessed{" "}
             <strong
               className={
@@ -64,29 +66,34 @@ const Result = ({
             </strong>
             .
           </div>
-        </motion.div>
-        {/* Comparison bar */}
-        <ComparePickedGrade currentGrade={currentGrade} guess={guess} />
-        <Button onClick={() => setOpenVideo(true)} variant="outline">
-          <Youtube />
-          Watch again
-        </Button>
+          <TabsDemo
+            videos={videos}
+            currentIndex={currentIndex}
+            currentGrade={currentGrade}
+            guess={guess}
+            setOpenVideo={setOpenVideo}
+          />
 
-        {/* Buttons at the bottom */}
-        <div className="absolute bottom-0 flex w-full flex-row gap-4 pb-1">
-          {lives === 0 ? (
-            <GameOverButtons restart={restart} />
-          ) : (
-            <Button
-              size="default"
-              variant="default"
-              className="w-full"
-              onClick={() => nextVideo()}
-            >
-              Next video
-            </Button>
-          )}
-        </div>
+          <Button onClick={() => setOpenVideo(true)} variant="outline">
+            <Youtube />
+            Watch again
+          </Button>
+        </motion.div>
+      </div>
+
+      <div className="flex w-full gap-4 pb-2">
+        {lives === 0 ? (
+          <GameOverButtons restart={restart} />
+        ) : (
+          <Button
+            size="default"
+            variant="default"
+            className="w-full"
+            onClick={() => nextVideo()}
+          >
+            Next video
+          </Button>
+        )}
       </div>
 
       <AnimatePresence>

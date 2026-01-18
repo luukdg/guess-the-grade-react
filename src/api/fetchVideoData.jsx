@@ -66,6 +66,7 @@ export async function getData(useGradeScale, videoType) {
       youtubeLink: data.youtubeLink,
       grade: convertedGrade,
       ticketId: snap.docs[i].id,
+      guesses: data.guesses || [],
     })
   }
 
