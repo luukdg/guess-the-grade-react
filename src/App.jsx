@@ -25,7 +25,7 @@ function App() {
               <Route path="/result" element={<Result />} />
               <Route path="/privacy" element={<Privacy />} />
             </Routes>
-            <div className="mt-2 flex w-full justify-center">
+            <div className="flex w-full justify-center">
               <NavigationMenuMobile />
             </div>
           </div>

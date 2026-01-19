@@ -21,8 +21,6 @@ export async function updateUserGuess(firebaseId, numericGuess) {
       },
       { merge: true },
     )
-
-    console.log("User guess and views updated successfully.")
   } catch (e) {
     console.error("Error updating document in updateUserGuess:", e)
   }

@@ -37,7 +37,6 @@ export function Report({ firebaseId, openToaster }) {
   const onSubmit = async (data) => {
     try {
       await submitReport(firebaseId, data.issue, videoId)
-      console.log("Reported issue:", data.issue)
       reset()
       setOpen(false)
       setReport(true)
@@ -51,7 +50,7 @@ export function Report({ firebaseId, openToaster }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="default" className="rounded-l-none">
+        <Button size="sm" variant="default">
           Report
         </Button>
       </DialogTrigger>

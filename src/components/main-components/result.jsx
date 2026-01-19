@@ -1,14 +1,25 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+
 import { useEffect, useState } from "react"
 import { currentGrade } from "./videoGuess"
 import { isGradeCorrect } from "../../functions/isGradeCorrect"
 import CheckGrade from "../UI/results-page/guessReponse"
-import ComparePickedGrade from "../UI/results-page/comparePickedGrade"
 import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
 import GameOverButtons from "../UI/results-page/gameOverButtons"
 import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage"
 import { VideoPlayer } from "../UI/video-page/videoPlayer"
 import { Youtube } from "lucide-react"
+import StatTabs from "../UI/results-page/statTabs"
+import { ChevronRight } from "lucide-react"
+import { Report } from "../UI/video-page/reportVideo"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel"
 
 const Result = ({
   guess,
@@ -19,74 +30,140 @@ const Result = ({
   restart,
   nextVideo,
   setCurrentIndex,
+  currentIndex,
+  videos,
+  firebaseId,
 }) => {
   const isCorrect = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
+  const [api, setApi] = useState(null)
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (!api) return
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
 
   useEffect(() => {
     saveStreakToLocalStorage(streak)
     setCurrentIndex((prev) => prev + 1)
   }, [])
 
-  return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
-      <div className="align-self relative flex h-full w-full flex-col items-center justify-center">
-        <motion.div
-          className="mb-6 flex flex-col gap-3"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.25,
-            ease: [0.34, 1.56, 0.64, 1],
-          }}
-        >
-          <CheckGrade
-            guess={guess}
-            lives={lives}
-            setLives={setLives}
-            streak={streak}
-            setStreak={setStreak}
-          />
-          <div className="mb-6 text-center text-xl">
-            You guessed{" "}
-            <strong
-              className={
-                isCorrect
-                  ? "font-archivo-black text-green-400"
-                  : "font-archivo-black text-red-400"
-              }
-            >
-              {guess}
-            </strong>
-            , and the correct grade was{" "}
-            <strong className="font-archivo-black text-green-400">
-              {currentGrade}
-            </strong>
-            .
-          </div>
-        </motion.div>
-        {/* Comparison bar */}
-        <ComparePickedGrade currentGrade={currentGrade} guess={guess} />
-        <Button onClick={() => setOpenVideo(true)} variant="outline">
-          <Youtube />
-          Watch again
-        </Button>
+  // Show report message
+  function openToaster(message) {
+    toast(message)
+  }
 
-        {/* Buttons at the bottom */}
-        <div className="absolute bottom-0 flex w-full flex-row gap-4 pb-1">
-          {lives === 0 ? (
-            <GameOverButtons restart={restart} />
-          ) : (
-            <Button
-              size="default"
-              variant="default"
-              className="w-full"
-              onClick={() => nextVideo()}
-            >
-              Next video
-            </Button>
-          )}
-        </div>
+  return (
+    <div className="flex h-full w-full flex-col items-center gap-2">
+      <Toaster position="top-center" />
+      {/* Pagination dots */}
+      <div className="flex h-2 w-full items-center justify-center gap-2">
+        {Array.from({ length: count }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => api && api.scrollTo(i)}
+            className={`h-2 w-2 rounded-full transition ${
+              i === current ? "bg-primary" : "bg-primary/40"
+            }`}
+          />
+        ))}
+      </div>
+      <div className="h-full w-screen overflow-hidden">
+        <Carousel
+          setApi={setApi}
+          className="h-full w-full"
+          opts={{ align: "start" }}
+        >
+          <CarouselContent className="h-full">
+            <CarouselItem className="flex h-full w-screen flex-col">
+              <div
+                className="text-muted-foreground hover:text-foreground flex w-full cursor-pointer items-center justify-end pr-2 text-xs"
+                onClick={() => api && api.scrollTo(1)}
+              >
+                See stats
+                <ChevronRight size={20} />
+              </div>
+              <motion.div
+                className="flex h-full w-full flex-col items-center justify-center gap-2 px-3"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.34, 1.56, 0.64, 1],
+                }}
+              >
+                <CheckGrade
+                  guess={guess}
+                  lives={lives}
+                  setLives={setLives}
+                  streak={streak}
+                  setStreak={setStreak}
+                />
+                <div className="mb-3 text-center text-lg">
+                  You guessed{" "}
+                  <strong
+                    className={
+                      isCorrect
+                        ? "font-archivo-black text-green-400"
+                        : "font-archivo-black text-red-400"
+                    }
+                  >
+                    {guess}
+                  </strong>
+                  , and the correct grade was{" "}
+                  <strong className="font-archivo-black text-green-400">
+                    {currentGrade}
+                  </strong>
+                  .
+                </div>
+
+                <div className="flex flex-row gap-2">
+                  <Button
+                    onClick={() => setOpenVideo(true)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Youtube />
+                    Watch again
+                  </Button>
+                  <Report firebaseId={firebaseId} openToaster={openToaster} />
+                </div>
+              </motion.div>
+            </CarouselItem>
+            <CarouselItem className="h-full w-screen">
+              <StatTabs
+                videos={videos}
+                currentIndex={currentIndex}
+                currentGrade={currentGrade}
+                guess={guess}
+                setOpenVideo={setOpenVideo}
+              />
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      <div className="flex h-11 w-full gap-2 pb-2">
+        {lives === 0 ? (
+          <GameOverButtons restart={restart} />
+        ) : (
+          <Button
+            size="default"
+            variant="default"
+            className="w-full"
+            onClick={() => nextVideo()}
+          >
+            Next video
+          </Button>
+        )}
       </div>
 
       <AnimatePresence>
@@ -103,12 +180,14 @@ const Result = ({
             ></motion.div>
 
             {/* VideoPlayer (underneath) */}
-
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
+              transition={{
+                duration: 0.2,
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
               className="absolute z-1 mb-15 flex aspect-[9/16] h-3/4 bg-black shadow-lg"
             >
               <VideoPlayer

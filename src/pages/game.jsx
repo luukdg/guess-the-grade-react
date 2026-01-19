@@ -21,10 +21,10 @@ function Game() {
 
   return (
     <>
-      <div className="align-self flex h-full w-full flex-1 flex-col items-center justify-center gap-2 px-3 pt-3">
+      <div className="flex h-full w-full flex-col gap-2 px-3 pt-3">
         {firstTime && <FirstTimeMessage />}
         {!infinite && (
-          <div className="flex w-full flex-row items-center justify-center">
+          <div className="flex h-8 w-full flex-row items-center justify-center">
             <p className="font-bold">Score: </p>
             <Streak streak={streak} />
             {showScoreAndLives && (
@@ -81,6 +81,8 @@ function Game() {
             firebaseId={firebaseId}
             setFirebaseId={setFirebaseId}
             setCurrentIndex={setCurrentIndex}
+            videos={videos}
+            currentIndex={currentIndex}
           />
         )}
       </div>

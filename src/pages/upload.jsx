@@ -280,7 +280,7 @@ export default function UploadSection() {
           </p>
         </div>
       </div>
-      <div className="w-full pb-1">
+      <div className="w-full pb-2">
         <Button
           className="w-full"
           size="default"
