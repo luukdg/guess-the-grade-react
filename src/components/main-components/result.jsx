@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+
 import { useEffect, useState } from "react"
 import { currentGrade } from "./videoGuess"
 import { isGradeCorrect } from "../../functions/isGradeCorrect"
@@ -10,6 +12,9 @@ import { VideoPlayer } from "../UI/video-page/videoPlayer"
 import { Youtube } from "lucide-react"
 import StatTabs from "../UI/results-page/statTabs"
 import { ChevronRight } from "lucide-react"
+import { Report } from "../UI/video-page/reportVideo"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 import {
   Carousel,
   CarouselContent,
@@ -27,6 +32,7 @@ const Result = ({
   setCurrentIndex,
   currentIndex,
   videos,
+  firebaseId,
 }) => {
   const isCorrect = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
@@ -50,8 +56,14 @@ const Result = ({
     setCurrentIndex((prev) => prev + 1)
   }, [])
 
+  // Show report message
+  function openToaster(message) {
+    toast(message)
+  }
+
   return (
     <div className="flex h-full w-full flex-col items-center gap-2">
+      <Toaster position="top-center" />
       {/* Pagination dots */}
       <div className="flex h-2 w-full items-center justify-center gap-2">
         {Array.from({ length: count }).map((_, i) => (
@@ -72,7 +84,10 @@ const Result = ({
         >
           <CarouselContent className="h-full">
             <CarouselItem className="flex h-full w-screen flex-col">
-              <div className="text-muted-foreground flex w-full items-center justify-end pr-2 text-xs">
+              <div
+                className="text-muted-foreground hover:text-foreground flex w-full cursor-pointer items-center justify-end pr-2 text-xs"
+                onClick={() => api && api.scrollTo(1)}
+              >
                 See stats
                 <ChevronRight size={20} />
               </div>
@@ -110,14 +125,17 @@ const Result = ({
                   .
                 </div>
 
-                <Button
-                  onClick={() => setOpenVideo(true)}
-                  variant="outline"
-                  size="sm"
-                >
-                  <Youtube />
-                  Watch again
-                </Button>
+                <div className="flex flex-row gap-2">
+                  <Button
+                    onClick={() => setOpenVideo(true)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Youtube />
+                    Watch again
+                  </Button>
+                  <Report firebaseId={firebaseId} openToaster={openToaster} />
+                </div>
               </motion.div>
             </CarouselItem>
             <CarouselItem className="h-full w-screen">

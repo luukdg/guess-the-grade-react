@@ -50,7 +50,7 @@ export function Report({ firebaseId, openToaster }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="default" className="rounded-l-none">
+        <Button size="sm" variant="default">
           Report
         </Button>
       </DialogTrigger>
