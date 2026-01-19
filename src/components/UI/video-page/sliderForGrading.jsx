@@ -38,7 +38,7 @@ export default function SliderForGrading({
           "& .MuiSlider-mark": {
             backgroundColor: "var(--background)",
             height: 10,
-            width: 5,
+            width: 3,
           },
         }}
       />

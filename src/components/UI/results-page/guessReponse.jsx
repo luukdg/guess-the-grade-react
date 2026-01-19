@@ -1,6 +1,7 @@
 import { isGradeCorrect } from "../../../functions/isGradeCorrect"
 import { useEffect } from "react"
 import { useSettings } from "@/context/settingsContext"
+import { memo } from "react"
 
 const messages = {
   correct: [
@@ -30,7 +31,7 @@ const messages = {
 
 const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
-export default function CheckGrade({ guess, lives, setLives, setStreak }) {
+export default memo(function CheckGrade({ guess, lives, setLives, setStreak }) {
   const correct = isGradeCorrect(guess)
   const { infinite } = useSettings()
 
@@ -53,8 +54,8 @@ export default function CheckGrade({ guess, lives, setLives, setStreak }) {
   }, [correct])
 
   return (
-    <h1 className="text-center text-3xl font-bold">
+    <h1 className="text-center text-4xl font-bold">
       {lives === 0 ? "Game Over!" : message}
     </h1>
-  ) // show message in DOM
-}
+  )
+})

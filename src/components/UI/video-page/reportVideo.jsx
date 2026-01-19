@@ -37,7 +37,6 @@ export function Report({ firebaseId, openToaster }) {
   const onSubmit = async (data) => {
     try {
       await submitReport(firebaseId, data.issue, videoId)
-      console.log("Reported issue:", data.issue)
       reset()
       setOpen(false)
       setReport(true)

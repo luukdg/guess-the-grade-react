@@ -63,10 +63,12 @@ export function VideoStats({ videos, currentIndex, currentGrade, guess }) {
     <Card>
       <CardHeader>
         <CardTitle>Grade chart</CardTitle>
-        <CardDescription>Distribution of everyone's guesses.</CardDescription>
+        <CardDescription>
+          Distribution of everyone&apos;s guesses.
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="w-full">
+        <ChartContainer config={chartConfig} className="h-full w-full">
           <BarChart accessibilityLayer data={mergedData}>
             <CartesianGrid vertical={false} />
             <XAxis

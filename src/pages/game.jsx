@@ -21,10 +21,10 @@ function Game() {
 
   return (
     <>
-      <div className="flex h-full w-full flex-col gap-2 overflow-x-auto px-3 pt-3">
+      <div className="flex h-full w-full flex-col gap-2 px-3 pt-3">
         {firstTime && <FirstTimeMessage />}
         {!infinite && (
-          <div className="flex w-full flex-row items-center justify-center">
+          <div className="flex h-8 w-full flex-row items-center justify-center">
             <p className="font-bold">Score: </p>
             <Streak streak={streak} />
             {showScoreAndLives && (

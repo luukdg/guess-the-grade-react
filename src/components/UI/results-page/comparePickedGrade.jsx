@@ -33,11 +33,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
               animate={{
                 left: `calc(${(actualValue + 0.5) * (100 / 7)}%)`,
               }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 30,
-              }}
+              transition={{ duration: 0 }}
               className="absolute -top-6 text-green-400"
               style={{
                 transform: "translateX(-50%)",
@@ -50,11 +46,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
               animate={{
                 left: `calc(${(userValue + 0.5) * (100 / 7)}%)`,
               }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 30,
-              }}
+              transition={{ duration: 0 }}
               className="absolute -top-6"
               style={{
                 transform: "translateX(-50%)",
@@ -67,7 +59,7 @@ export default function ComparePickedGrade({ currentGrade, guess }) {
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              transition={{ duration: 0 }}
               animate={{ opacity: 100 }}
               className="border-box flex h-12 w-full flex-row overflow-hidden rounded-md text-sm/3.5 font-bold"
             >

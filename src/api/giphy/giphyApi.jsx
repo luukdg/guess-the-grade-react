@@ -20,7 +20,6 @@ export default function GetGif() {
       } catch (err) {
         console.error("Error fetching GIF:", err)
         setError("Failed to load GIF 😢")
-        console.log(apiKey)
       }
     }
 

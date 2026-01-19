@@ -9,7 +9,6 @@ export function LightModeToggle() {
 
   const handleToggle = (checked) => {
     setTheme(checked ? "light" : "dark")
-    console.log(checked)
   }
   return (
     <>
