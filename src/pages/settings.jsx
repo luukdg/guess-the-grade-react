@@ -8,6 +8,8 @@ import { Separator } from "@radix-ui/react-separator"
 import { Switch } from "@/components/ui/switch"
 import { useSettings } from "@/context/settingsContext"
 import { useNavigate } from "react-router-dom"
+import { googleAuth } from "@/api/googleAuth"
+import { Button } from "@/components/ui/button"
 
 function SettingsPage() {
   const { infinite, updateInfinite, submitOnDrag, updateSubmitOnDrag } =
@@ -82,6 +84,11 @@ function SettingsPage() {
             <LightModeToggle />
           </div>
         </div>
+
+        <div className="flex w-full justify-center">
+          <Button onClick={googleAuth}>Login with Google (test)</Button>
+        </div>
+
         <div className="mb-3 flex h-full items-end justify-center text-xs font-bold text-(--muted-foreground)">
           <div
             className="cursor-pointer hover:text-(--primary)"
