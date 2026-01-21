@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc } from "firebase/firestore"
 import { db } from "../../firebase/firebaseConfig"
 
-export class FirestoreStore {
+export class FirestoreAdapter {
   constructor(uid) {
     if (!uid) {
       throw new Error("FirestoreStore requires a uid")

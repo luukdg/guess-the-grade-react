@@ -1,4 +1,4 @@
-export class LocalStorageStore {
+export class LocalStorageAdapter {
   key = "settings"
 
   async load() {

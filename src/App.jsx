@@ -9,26 +9,34 @@ import Privacy from "./pages/privacy"
 import { SettingsProvider } from "./context/settingsContext"
 import { ThemeProvider } from "./context/themeProvider"
 import NavigationMenuMobile from "@/components/main-components/navigationBar"
+import { useAuth } from "./context/loginContext"
+import SplashScreen from "./components/UI/home-page/SplashScreen"
 
 function App() {
+  const { authLoading } = useAuth()
+
   return (
     <Router>
       <SettingsProvider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <div className="flex h-full w-full flex-col">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/game" element={<Game />} />
-              <Route path="/upload" element={<Upload />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/videoGuess" element={<VideoGuess />} />
-              <Route path="/result" element={<Result />} />
-              <Route path="/privacy" element={<Privacy />} />
-            </Routes>
-            <div className="flex w-full justify-center">
-              <NavigationMenuMobile />
+          {authLoading ? (
+            <SplashScreen />
+          ) : (
+            <div className="flex h-full w-full flex-col">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/game" element={<Game />} />
+                <Route path="/upload" element={<Upload />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/videoGuess" element={<VideoGuess />} />
+                <Route path="/result" element={<Result />} />
+                <Route path="/privacy" element={<Privacy />} />
+              </Routes>
+              <div className="flex w-full justify-center">
+                <NavigationMenuMobile />
+              </div>
             </div>
-          </div>
+          )}
         </ThemeProvider>
       </SettingsProvider>
     </Router>

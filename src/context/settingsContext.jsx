@@ -1,11 +1,15 @@
-import { createContext, useState, useContext, useEffect, useRef } from "react"
-import { LocalStorageStore } from "./localStorageAdapter"
+/* eslint-disable react-hooks/rules-of-hooks */
 
-// Creates a global boolean to check if the V-scale converter is necessary
+import { createContext, useState, useContext, useEffect, useRef } from "react"
+import { LocalStorageAdapter } from "./localStorageAdapter"
+import { FirestoreAdapter } from "./fireStoreAdapter"
+import { useAuth } from "./loginContext"
+import { debounce } from "lodash"
+
 const SettingsContext = createContext()
 
 export const SettingsProvider = ({ children }) => {
-  const [user, setUser] = useState(false)
+  const { user, authLoading } = useAuth()
   const storeRef = useRef(null)
 
   const defaultSettings = {
@@ -27,27 +31,53 @@ export const SettingsProvider = ({ children }) => {
 
   // Initialize store and load settings
   useEffect(() => {
-    storeRef.current = new LocalStorageStore()
+    if (authLoading) return
+
+    if (user && user.uid) {
+      storeRef.current = new FirestoreAdapter(user.uid)
+    } else {
+      storeRef.current = new LocalStorageAdapter()
+    }
 
     storeRef.current.load().then((data) => {
       if (data) setSettings({ ...defaultSettings, ...data })
     })
-  }, []) // no need to depend on user yet
+
+    console.log(storeRef.current)
+  }, [user, authLoading])
 
   // Migrate guest data to Firestore when user logs in
   useEffect(() => {
     if (!user) return
+    if (!storeRef.current) return
 
-    const localStore = new LocalStorageStore()
-    localStore.load().then((data) => {
-      if (data) storeRef.current.save(data)
+    const localStore = new LocalStorageAdapter()
+    localStore.load().then((guestData) => {
+      // Only migrate if Firestore is empty
+      storeRef.current.load().then((fireData) => {
+        if (!fireData && guestData) {
+          storeRef.current.save(guestData)
+        }
+      })
     })
   }, [user])
 
+  // Debounced save function
+  const saveSettingsDebounced = debounce(async (data) => {
+    if (storeRef.current) {
+      await storeRef.current.save(data)
+      console.log("Settings saved")
+    }
+  }, 2000)
+
+  // Update setting function
   function updateSetting(key, value) {
+    if (settings[key] === value) return // skip if no change
     const newSettings = { ...settings, [key]: value }
     setSettings(newSettings)
-    if (storeRef.current) storeRef.current.save(newSettings)
+
+    // Debounced save
+    saveSettingsDebounced(newSettings)
   }
 
   return (
@@ -60,6 +90,7 @@ export const SettingsProvider = ({ children }) => {
         openControls,
         setOpenControls,
         storeRef,
+        user,
       }}
     >
       {children}

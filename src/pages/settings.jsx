@@ -8,11 +8,12 @@ import { Separator } from "@radix-ui/react-separator"
 import { Switch } from "@/components/ui/switch"
 import { useSettings } from "@/context/settingsContext"
 import { useNavigate } from "react-router-dom"
-import { googleAuth } from "@/api/googleAuth"
+import { useAuth } from "@/context/loginContext"
 import { Button } from "@/components/ui/button"
 
 function SettingsPage() {
   const { settings, updateSetting } = useSettings()
+  const { loginWithGoogle, logout } = useAuth()
   const navigate = useNavigate()
 
   return (
@@ -86,8 +87,9 @@ function SettingsPage() {
           </div>
         </div>
 
-        <div className="flex w-full justify-center">
-          <Button onClick={googleAuth}>Login with Google (test)</Button>
+        <div className="flex w-full justify-center gap-2">
+          <Button onClick={loginWithGoogle}>Login with Google</Button>
+          <Button onClick={logout}>Logout</Button>
         </div>
 
         <div className="mb-3 flex h-full items-end justify-center text-xs font-bold text-(--muted-foreground)">
