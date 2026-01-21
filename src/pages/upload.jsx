@@ -70,7 +70,7 @@ const profileFormSchema = z.object({
 
 // useStates and useForm variables
 export default function UploadSection() {
-  const { gradeScale } = useSettings()
+  const { settings } = useSettings()
   const [firstOpen, setFirstOpen] = useState(false)
   const [SecondOpen, setSecondOpen] = useState(false)
   const form = useForm({
@@ -84,7 +84,8 @@ export default function UploadSection() {
   })
 
   // Use appropriate grade scale based on settings
-  const gradesToUse = gradeScale.value === "v-scale" ? gradesVScale : grades
+  const gradesToUse =
+    settings.gradeScale.value === "v-scale" ? gradesVScale : grades
 
   // Toaster notification on submit
   async function onSubmit(data) {

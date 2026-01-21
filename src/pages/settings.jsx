@@ -12,8 +12,7 @@ import { googleAuth } from "@/api/googleAuth"
 import { Button } from "@/components/ui/button"
 
 function SettingsPage() {
-  const { infinite, updateInfinite, submitOnDrag, updateSubmitOnDrag } =
-    useSettings()
+  const { settings, updateSetting } = useSettings()
   const navigate = useNavigate()
 
   return (
@@ -60,16 +59,18 @@ function SettingsPage() {
             <Label htmlFor="infinite">Disable lives (infinite mode):</Label>
             <Switch
               id="infinite"
-              checked={infinite}
-              onCheckedChange={updateInfinite}
+              checked={settings.infinite}
+              onCheckedChange={(checked) => updateSetting("infinite", checked)}
             />
           </div>
           <div className="flex w-full flex-row justify-between">
             <Label htmlFor="submitOnDrag">Submit on drag:</Label>
             <Switch
               id="submitOnDrag"
-              checked={submitOnDrag}
-              onCheckedChange={updateSubmitOnDrag}
+              checked={settings.SubmitOnDrag}
+              onCheckedChange={(checked) =>
+                updateSetting("submitOnDrag", checked)
+              }
             />
           </div>
         </div>

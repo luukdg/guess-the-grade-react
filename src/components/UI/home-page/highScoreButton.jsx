@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { retrieveStreak } from "@/api/localStorage/streakLocalStorage"
 import { Trophy } from "lucide-react"
 import {
   AlertDialog,
@@ -12,12 +11,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import GetGif from "@/api/giphy/giphyApi"
+import { useSettings } from "@/context/settingsContext"
 
 export function HighScore() {
-  const currentStreak = retrieveStreak()
+  const { settings } = useSettings()
 
   // Show different message with no high score
-  if (currentStreak === null || currentStreak === "0") {
+  if (settings.streak === null || settings.streak === "0") {
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -45,14 +45,16 @@ export function HighScore() {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="default" size="sm">
-          <Trophy /> {currentStreak}
+          <Trophy /> {settings.streak}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Your high score: {currentStreak}</AlertDialogTitle>
+          <AlertDialogTitle>
+            Your high score: {settings.streak}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            {currentStreak} correct answers! Nice one, you deserve a gif for
+            {settings.streak} correct answers! Nice one, you deserve a gif for
             that.
           </AlertDialogDescription>
         </AlertDialogHeader>

@@ -24,27 +24,19 @@ export function VideoPlayer({
   firebaseId,
   openToaster,
 }) {
-  const {
-    always2x,
-    autoPlay,
-    mute,
-    loop,
-    openControls,
-    setOpenControls,
-    videoId,
-  } = useSettings()
-  const [muted, setMuted] = useState(() => (!mute ? false : true))
-  const [isPlaying, setIsPlaying] = useState(autoPlay) // video play state
-  const [speed, setSpeed] = useState(() => (always2x ? 2 : 1))
+  const { openControls, setOpenControls, videoId, settings } = useSettings()
+  const [muted, setMuted] = useState(() => (!settings.mute ? false : true))
+  const [isPlaying, setIsPlaying] = useState(settings.autoPlay) // video play state
+  const [speed, setSpeed] = useState(() => (settings.always2x ? 2 : 1))
 
   useEffect(() => {
-    if (mute) {
+    if (settings.mute) {
       setMuted(true)
     }
-    if (always2x) {
+    if (settings.always2x) {
       setSpeed(2)
     }
-  }, [always2x, mute])
+  }, [settings.always2x, settings.mute])
 
   return (
     <>
@@ -57,7 +49,7 @@ export function VideoPlayer({
               playing={isPlaying}
               muted={muted}
               controls={false}
-              loop={loop}
+              loop={settings.loop}
               playbackRate={speed}
               onStart={() => setIsPlaying(true)}
               config={{

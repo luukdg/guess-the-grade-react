@@ -3,40 +3,39 @@ import { Label } from "@/components/ui/label"
 import { useSettings } from "@/context/settingsContext"
 
 export function VideoSettings() {
-  const {
-    autoPlay,
-    updateAutoPlay,
-    mute,
-    updateMute,
-    loop,
-    updateLoop,
-    always2x,
-    updateAlways2x,
-  } = useSettings()
+  const { settings, updateSetting } = useSettings()
   return (
     <>
       <div className="flex w-full flex-row justify-between">
         <Label htmlFor="autoplay">Autoplay videos on load:</Label>
         <Switch
           id="autoplay"
-          checked={autoPlay}
-          onCheckedChange={updateAutoPlay}
+          checked={settings.autoPlay}
+          onCheckedChange={(value) => updateSetting("autoPlay", value)}
         />
       </div>
       <div className="flex w-full flex-row justify-between">
         <Label htmlFor="mute">Mute videos by default:</Label>
-        <Switch id="mute" checked={mute} onCheckedChange={updateMute} />
+        <Switch
+          id="mute"
+          checked={settings.mute}
+          onCheckedChange={(value) => updateSetting("mute", value)}
+        />
       </div>
       <div className="flex w-full flex-row justify-between">
         <Label htmlFor="loop">Loop video automatically:</Label>
-        <Switch id="loop" checked={loop} onCheckedChange={updateLoop} />
+        <Switch
+          id="loop"
+          checked={settings.loop}
+          onCheckedChange={(value) => updateSetting("loop", value)}
+        />
       </div>
       <div className="flex w-full flex-row justify-between">
         <Label htmlFor="speed">Play videos at 2x speed by default:</Label>
         <Switch
           id="speed"
-          checked={always2x}
-          onCheckedChange={updateAlways2x}
+          checked={settings.always2x}
+          onCheckedChange={(value) => updateSetting("always2x", value)}
         />
       </div>
     </>

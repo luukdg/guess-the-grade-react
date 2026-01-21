@@ -27,7 +27,7 @@ const VideoGuess = ({
   videos,
   setVideos,
 }) => {
-  const { videoType, gradeScale, setVideoId, submitOnDrag } = useSettings()
+  const { setVideoId, settings } = useSettings()
   const [value, setValue] = useState(30) // slider state
 
   // Resets the grade value after submitting
@@ -40,7 +40,10 @@ const VideoGuess = ({
   const fetchVideos = async () => {
     // Only fetch video's when there are no videos or when the video array has reached it's end
     if (videos.length === 0 || videos.length === currentIndex) {
-      const newVideos = await getData(gradeScale.value, videoType.value)
+      const newVideos = await getData(
+        settings.gradeScale.value,
+        settings.videoType.value,
+      )
       setVideos(newVideos)
       setCurrentIndex(0)
       setVideoId(newVideos[0].youtubeLink)
@@ -67,7 +70,7 @@ const VideoGuess = ({
   }
 
   const chooseGradeConverter = (num) => {
-    return gradeScale.value === "font-scale"
+    return settings.gradeScale.value === "font-scale"
       ? convertToFont(num)
       : convertToVSale(num)
   }
@@ -105,7 +108,7 @@ const VideoGuess = ({
           />
         </div>
         <div className="flex flex-col items-center justify-center gap-2 pt-2 pb-2">
-          {!submitOnDrag && (
+          {!settings.submitOnDrag && (
             <Button
               size="default"
               variant="default"

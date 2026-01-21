@@ -7,7 +7,6 @@ import CheckGrade from "../UI/results-page/guessReponse"
 import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
 import GameOverButtons from "../UI/results-page/gameOverButtons"
-import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage"
 import { VideoPlayer } from "../UI/video-page/videoPlayer"
 import { Youtube } from "lucide-react"
 import StatTabs from "../UI/results-page/statTabs"
@@ -20,6 +19,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
+import { useSettings } from "@/context/settingsContext"
 
 const Result = ({
   guess,
@@ -39,6 +39,7 @@ const Result = ({
   const [api, setApi] = useState(null)
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
+  const { settings, updateSetting } = useSettings()
 
   useEffect(() => {
     if (!api) return
@@ -52,7 +53,10 @@ const Result = ({
   }, [api])
 
   useEffect(() => {
-    saveStreakToLocalStorage(streak)
+    if (streak > settings.streak) {
+      updateSetting("streak", streak)
+    }
+
     setCurrentIndex((prev) => prev + 1)
   }, [])
 

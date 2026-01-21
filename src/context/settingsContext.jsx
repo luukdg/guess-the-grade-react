@@ -1,138 +1,55 @@
-import { createContext, useState, useContext } from "react"
+import { createContext, useState, useContext, useEffect, useRef } from "react"
+import { LocalStorageStore } from "./localStorageAdapter"
 
 // Creates a global boolean to check if the V-scale converter is necessary
 const SettingsContext = createContext()
 
 export const SettingsProvider = ({ children }) => {
-  const [firstTime, setFirstTime] = useState(() => {
-    const stored = localStorage.getItem("FirstTimeMessage")
-    return stored ? JSON.parse(stored) : true
-  })
-
-  const [submitOnDrag, setSubmitOnDrag] = useState(() => {
-    const stored = localStorage.getItem("SubmitOnDrag")
-    return stored ? JSON.parse(stored) : false
-  })
-
-  const [infinite, setInfinite] = useState(() => {
-    const stored = localStorage.getItem("Infinite")
-    return stored ? JSON.parse(stored) : false
-  })
-
-  const [autoPlay, setAutoplay] = useState(() => {
-    const stored = localStorage.getItem("AutoPlay")
-    return stored ? JSON.parse(stored) : true
-  })
-
-  const [mute, setMute] = useState(() => {
-    const stored = localStorage.getItem("Mute")
-    return stored ? JSON.parse(stored) : true
-  })
-
-  const [loop, setLoop] = useState(() => {
-    const stored = localStorage.getItem("Loop")
-    return stored ? JSON.parse(stored) : true
-  })
-
-  const [always2x, setAlways2x] = useState(() => {
-    const stored = localStorage.getItem("Always2x")
-    return stored ? JSON.parse(stored) : false
-  })
-
-  const [videoType, setVideoType] = useState(() => {
-    const stored = localStorage.getItem("VideoType")
-    return stored ? JSON.parse(stored) : { value: "all", label: "All" }
-  })
-
-  const [gradeScale, setGradeScale] = useState(() => {
-    const stored = localStorage.getItem("gradeScale")
-    return stored
-      ? JSON.parse(stored)
-      : { value: "font-scale", label: "Font-scale" }
-  })
-
+  const defaultSettings = {
+    streak: 0,
+    firstTime: true,
+    submitOnDrag: false,
+    infinite: false,
+    autoPlay: true,
+    mute: true,
+    loop: true,
+    always2x: false,
+    videoType: { value: "all", label: "All" },
+    gradeScale: { value: "font-scale", label: "Font-scale" },
+  }
+  const storeRef = useRef(null)
+  const [settings, setSettings] = useState(defaultSettings)
   const [videoId, setVideoId] = useState(null)
   const [openControls, setOpenControls] = useState(true)
 
-  const updateFirstTime = (value) => {
-    setFirstTime(value)
-    localStorage.setItem("FirstTimeMessage", JSON.stringify(value))
+  function updateSetting(key, value) {
+    const newSettings = { ...settings, [key]: value }
+    setSettings(newSettings)
+
+    if (storeRef.current) {
+      storeRef.current.save(newSettings)
+    }
   }
 
-  const updateAutoPlay = (value) => {
-    setAutoplay(value)
-    localStorage.setItem("AutoPlay", JSON.stringify(value))
-  }
+  useEffect(() => {
+    const store = new LocalStorageStore()
+    storeRef.current = store
 
-  const updateMute = (value) => {
-    setMute(value)
-    localStorage.setItem("Mute", JSON.stringify(value))
-  }
-
-  const updateLoop = (value) => {
-    setLoop(value)
-    localStorage.setItem("Loop", JSON.stringify(value))
-  }
-
-  const updateAlways2x = (value) => {
-    setAlways2x(value)
-    localStorage.setItem("Always2x", JSON.stringify(value))
-  }
-
-  const updateVideoType = (value) => {
-    setVideoType(value)
-    localStorage.setItem("VideoType", JSON.stringify(value))
-  }
-
-  const updateGradeScale = (value) => {
-    setGradeScale(value)
-    localStorage.setItem("gradeScale", JSON.stringify(value))
-  }
-
-  const updateInfinite = (value) => {
-    setInfinite(value)
-    localStorage.setItem("Infinite", JSON.stringify(value))
-  }
-
-  const updateSubmitOnDrag = (value) => {
-    setSubmitOnDrag(value)
-    localStorage.setItem("SubmitOnDrag", JSON.stringify(value))
-  }
+    store.load().then((data) => {
+      if (data) setSettings({ ...defaultSettings, ...data })
+    })
+  }, [])
 
   return (
     <SettingsContext.Provider
       value={{
-        loop,
-        setLoop,
-        updateLoop,
-        gradeScale,
-        setGradeScale,
-        autoPlay,
-        setAutoplay,
-        updateAutoPlay,
-        mute,
-        setMute,
-        updateMute,
-        always2x,
-        setAlways2x,
-        updateAlways2x,
-        videoType,
-        setVideoType,
-        updateVideoType,
-        updateGradeScale,
-        openControls,
-        setOpenControls,
+        settings,
+        updateSetting,
         videoId,
         setVideoId,
-        infinite,
-        setInfinite,
-        updateInfinite,
-        submitOnDrag,
-        setSubmitOnDrag,
-        updateSubmitOnDrag,
-        firstTime,
-        setFirstTime,
-        updateFirstTime,
+        openControls,
+        setOpenControls,
+        storeRef,
       }}
     >
       {children}
