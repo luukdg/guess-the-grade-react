@@ -11,6 +11,7 @@ import { ThemeProvider } from "./context/themeProvider"
 import NavigationMenuMobile from "@/components/main-components/navigationBar"
 import { useAuth } from "./context/loginContext"
 import SplashScreen from "./components/UI/home-page/SplashScreen"
+import Profile from "./pages/profile"
 
 function App() {
   const { authLoading } = useAuth()
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/videoGuess" element={<VideoGuess />} />
                 <Route path="/result" element={<Result />} />
                 <Route path="/privacy" element={<Privacy />} />
+                <Route path="/profile" element={<Profile />} />
               </Routes>
               <div className="flex w-full justify-center">
                 <NavigationMenuMobile />

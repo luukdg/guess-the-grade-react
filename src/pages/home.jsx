@@ -22,6 +22,7 @@ function Home() {
             src={user?.photoURL || "/default-profile.avif"}
             alt={user?.displayName || "Default Profile"}
             referrerPolicy="no-referrer"
+            onClick={() => navigate("/profile")}
           />
         </div>
       </div>

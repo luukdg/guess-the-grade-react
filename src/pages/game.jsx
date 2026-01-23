@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import VideoGuess from "@/components/main-components/videoGuess"
 import Result from "@/components/main-components/result"
 import { ClimberIcons } from "@/components/UI/results-page/climberIcons"
@@ -7,7 +7,7 @@ import { useSettings } from "@/context/settingsContext"
 import { FirstTimeMessage } from "@/components/UI/home-page/firstTimeMessage"
 
 function Game() {
-  const { infinite, firstTime } = useSettings()
+  const { infinite, firstTime, incrementSetting } = useSettings()
   const [lives, setLives] = useState(3)
   const [outcome, setOutcome] = useState("game")
   const [streak, setStreak] = useState(0)
@@ -17,7 +17,17 @@ function Game() {
   const [randomHoldIndex] = useState(() => Math.floor(Math.random() * 6))
   const [currentIndex, setCurrentIndex] = useState(0)
   const [videos, setVideos] = useState([]) // video array
-  const showScoreAndLives = lives > 0
+  const gameFinished = lives > 0
+  const [correctGuess, setCorrectGuess] = useState(0)
+
+  useEffect(() => {
+    if (gameFinished) {
+      incrementSetting("correctGuesses", correctGuess)
+      incrementSetting("totalGames", 1)
+    }
+
+    console.log(correctGuess)
+  }, [correctGuess])
 
   return (
     <>
@@ -27,7 +37,7 @@ function Game() {
           <div className="flex h-8 w-full flex-row items-center justify-center">
             <p className="font-bold">Score: </p>
             <Streak streak={streak} />
-            {showScoreAndLives && (
+            {gameFinished && (
               <>
                 <p className="font-bold">Lives:</p>
                 <ClimberIcons lives={lives} />
@@ -83,6 +93,7 @@ function Game() {
             setCurrentIndex={setCurrentIndex}
             videos={videos}
             currentIndex={currentIndex}
+            setCorrectGuess={setCorrectGuess}
           />
         )}
       </div>

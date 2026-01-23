@@ -13,7 +13,12 @@ export const SettingsProvider = ({ children }) => {
   const storeRef = useRef(null)
 
   const defaultSettings = {
+    totalGames: 0,
+    correctGuesses: 0,
+    accuracy: 0,
     streak: 0,
+    averageScore: 0,
+    playTime: 0,
     firstTime: true,
     submitOnDrag: false,
     infinite: false,
@@ -80,6 +85,16 @@ export const SettingsProvider = ({ children }) => {
     saveSettingsDebounced(newSettings)
   }
 
+  // Update game statistics
+  function incrementSetting(key, amount = 1) {
+    setSettings((prev) => {
+      const newValue = (prev[key] ?? 0) + amount
+      const newSettings = { ...prev, [key]: newValue }
+      saveSettingsDebounced(newSettings)
+      return newSettings
+    })
+  }
+
   return (
     <SettingsContext.Provider
       value={{
@@ -91,6 +106,7 @@ export const SettingsProvider = ({ children }) => {
         setOpenControls,
         storeRef,
         user,
+        incrementSetting,
       }}
     >
       {children}

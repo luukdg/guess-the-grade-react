@@ -33,6 +33,7 @@ const Result = ({
   currentIndex,
   videos,
   firebaseId,
+  setCorrectGuess,
 }) => {
   const isCorrect = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
@@ -110,6 +111,7 @@ const Result = ({
                   setLives={setLives}
                   streak={streak}
                   setStreak={setStreak}
+                  setCorrectGuess={setCorrectGuess}
                 />
                 <div className="mb-3 text-center text-lg">
                   You guessed{" "}

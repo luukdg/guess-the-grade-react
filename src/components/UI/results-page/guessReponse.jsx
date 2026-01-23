@@ -31,7 +31,13 @@ const messages = {
 
 const randomMessage = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
-export default memo(function CheckGrade({ guess, lives, setLives, setStreak }) {
+export default memo(function CheckGrade({
+  guess,
+  lives,
+  setLives,
+  setStreak,
+  setCorrectGuess,
+}) {
   const correct = isGradeCorrect(guess)
   const { infinite } = useSettings()
 
@@ -48,6 +54,7 @@ export default memo(function CheckGrade({ guess, lives, setLives, setStreak }) {
 
     if (correct) {
       setStreak((prev) => prev + 1)
+      setCorrectGuess((prev) => prev + 1)
     } else {
       setLives((prev) => prev - 1)
     }
