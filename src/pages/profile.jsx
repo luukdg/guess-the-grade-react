@@ -97,16 +97,6 @@ function Profile() {
               </CardDescription>
             </CardHeader>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-archivo-black">
-                Average score:
-              </CardTitle>
-              <CardDescription className="text-primary text-2xl">
-                {settings.averageScore}
-              </CardDescription>
-            </CardHeader>
-          </Card>
         </div>
       </div>
       <div className="flex w-full flex-col justify-end pb-2">

@@ -1,12 +1,25 @@
 import { useState, useEffect, createContext, useContext } from "react"
 import { onAuthStateChanged, signInWithPopup } from "firebase/auth"
 import { auth, googleProvider } from "../../firebase/firebaseConfig"
+import { checkForUpdate } from "@/api/fetchAppVersion.jsx"
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null) // null = not logged in
   const [authLoading, setAuthLoading] = useState(true)
+  const [versionReady, setVersionReady] = useState(true)
+
+  // Check for app updates on mount
+  useEffect(() => {
+    async function run() {
+      const ok = await checkForUpdate()
+      if (ok) setVersionReady(false)
+      console.log("App is up to date")
+    }
+
+    run()
+  }, [])
 
   // Track login state automatically
   useEffect(() => {
@@ -36,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, loginWithGoogle, logout, authLoading }}
+      value={{ user, loginWithGoogle, logout, authLoading, versionReady }}
     >
       {children}
     </AuthContext.Provider>

@@ -26,7 +26,7 @@ export default function NavigationMenuMobile() {
               to={item.href}
               className={({ isActive }) =>
                 cn(
-                  "data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground text-muted-foreground flex w-screen flex-col items-center gap-1 rounded-none p-2 py-3 text-xs transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-5",
+                  "data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground text-muted-foreground flex w-screen flex-col items-center gap-1 rounded-none p-2 py-5 text-xs transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-5",
                   "transition-colors outline-none",
                   isActive &&
                     "bg-accent text-accent-foreground focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-accent-foreground focus-visible:ring-[3px]",

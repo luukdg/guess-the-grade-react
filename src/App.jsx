@@ -15,13 +15,15 @@ import Profile from "./pages/profile"
 import Leaderboard from "./pages/leaderboard"
 
 function App() {
-  const { authLoading } = useAuth()
+  const { authLoading, versionReady } = useAuth()
+
+  const isAppReady = authLoading && versionReady
 
   return (
     <Router>
       <SettingsProvider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          {authLoading ? (
+          {isAppReady ? (
             <SplashScreen />
           ) : (
             <div className="flex h-full w-full flex-col">
