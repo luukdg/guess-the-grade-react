@@ -8,12 +8,13 @@ import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
 import GameOverButtons from "../UI/results-page/gameOverButtons"
 import { VideoPlayer } from "../UI/video-page/videoPlayer"
-import { Youtube } from "lucide-react"
+import { Youtube, ChartNoAxesColumn } from "lucide-react"
 import StatTabs from "../UI/results-page/statTabs"
 import { ChevronRight } from "lucide-react"
 import { Report } from "../UI/video-page/reportVideo"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
+import { ButtonGroup } from "@/components/ui/button-group"
 import {
   Carousel,
   CarouselContent,
@@ -124,15 +125,25 @@ const Result = ({
                 </div>
 
                 <div className="flex flex-row gap-2">
-                  <Button
-                    onClick={() => setOpenVideo(true)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    <Youtube />
-                    Watch again
-                  </Button>
-                  <Report firebaseId={firebaseId} openToaster={openToaster} />
+                  <ButtonGroup>
+                    <Button
+                      onClick={() => setOpenVideo(true)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Youtube />
+                      Watch again
+                    </Button>
+                    <Report firebaseId={firebaseId} openToaster={openToaster} />
+                    <Button
+                      onClick={() => api && api.scrollTo(1)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <ChartNoAxesColumn />
+                      Stats
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </motion.div>
             </CarouselItem>
@@ -149,12 +160,12 @@ const Result = ({
         </Carousel>
       </div>
 
-      <div className="flex h-11 w-full gap-2 pb-2">
+      <div className="flex h-12 w-full gap-2 pb-2">
         {!gameFinished ? (
           <GameOverButtons restart={restart} />
         ) : (
           <Button
-            size="default"
+            size="lg"
             variant="default"
             className="w-full"
             onClick={() => nextVideo()}
@@ -186,7 +197,7 @@ const Result = ({
                 duration: 0.2,
                 ease: [0.34, 1.56, 0.64, 1],
               }}
-              className="absolute z-1 mb-15 flex aspect-[9/16] h-3/4 bg-black shadow-lg"
+              className="absolute top-15 z-1 mb-15 flex aspect-[9/16] h-3/4 bg-black shadow-lg"
             >
               <VideoPlayer
                 innerClassName="h-full w-full"

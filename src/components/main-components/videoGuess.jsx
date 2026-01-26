@@ -107,10 +107,10 @@ const VideoGuess = ({
             handleSubmit={handleSubmit}
           />
         </div>
-        <div className="flex flex-col items-center justify-center gap-2 pt-2 pb-2">
+        <div className="flex flex-col items-center justify-center pt-2 pb-2">
           {!settings.submitOnDrag && (
             <Button
-              size="default"
+              size="lg"
               variant="default"
               className="w-full"
               onClick={() => {

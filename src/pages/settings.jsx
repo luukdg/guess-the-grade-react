@@ -17,7 +17,7 @@ function SettingsPage() {
   return (
     <>
       <div className="border-border flex h-full w-full flex-col overflow-y-auto px-3 pt-3">
-        <div className="mb-5 flex w-full items-center justify-center gap-2 text-xl font-bold">
+        <div className="mb-3 flex w-full items-center justify-center gap-2 text-xl font-bold">
           <h1>Settings</h1>
           <Settings className="text-(--muted-foreground)" />
         </div>
@@ -66,7 +66,7 @@ function SettingsPage() {
             <Label htmlFor="submitOnDrag">Submit on drag:</Label>
             <Switch
               id="submitOnDrag"
-              checked={settings.SubmitOnDrag}
+              checked={settings.submitOnDrag}
               onCheckedChange={(checked) =>
                 updateSetting("submitOnDrag", checked)
               }

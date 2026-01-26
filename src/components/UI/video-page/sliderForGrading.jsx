@@ -7,7 +7,7 @@ export default function SliderForGrading({
   handleChange,
   handleSubmit,
 }) {
-  const { submitOnDrag } = useSettings()
+  const { settings } = useSettings()
 
   return (
     <>
@@ -21,7 +21,7 @@ export default function SliderForGrading({
         max={60}
         onChange={handleChange}
         onChangeCommitted={() => {
-          if (submitOnDrag) {
+          if (settings.submitOnDrag) {
             handleSubmit()
           }
         }}

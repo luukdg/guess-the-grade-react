@@ -12,6 +12,7 @@ import NavigationMenuMobile from "@/components/main-components/navigationBar"
 import { useAuth } from "./context/loginContext"
 import SplashScreen from "./components/UI/home-page/SplashScreen"
 import Profile from "./pages/profile"
+import Leaderboard from "./pages/leaderboard"
 
 function App() {
   const { authLoading } = useAuth()
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/result" element={<Result />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
               </Routes>
               <div className="flex w-full justify-center">
                 <NavigationMenuMobile />

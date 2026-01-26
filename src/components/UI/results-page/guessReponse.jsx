@@ -39,7 +39,7 @@ export default memo(function CheckGrade({
   gameFinished,
 }) {
   const correct = isGradeCorrect(guess)
-  const { infinite, updateGameStatsLocal } = useSettings()
+  const { settings, updateGameStatsLocal } = useSettings()
 
   const message =
     guess == null
@@ -50,15 +50,15 @@ export default memo(function CheckGrade({
 
   // Update state when component renders
   useEffect(() => {
-    if (guess == null || infinite) return
+    if (guess == null || settings.infinite) return
 
     if (correct) {
       setStreak((prev) => prev + 1)
+      updateGameStatsLocal({ correct: true, gameFinished })
     } else {
       setLives((prev) => prev - 1)
+      updateGameStatsLocal({ correct: false, gameFinished })
     }
-
-    updateGameStatsLocal({ correct, gameFinished })
   }, [correct, gameFinished])
 
   return (

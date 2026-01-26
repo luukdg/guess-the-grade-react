@@ -9,9 +9,6 @@ import { debounce } from "lodash"
 const SettingsContext = createContext()
 
 export const SettingsProvider = ({ children }) => {
-  const { user, authLoading } = useAuth()
-  const storeRef = useRef(null)
-
   const defaultSettings = {
     totalGames: 0,
     currentStreak: 0,
@@ -31,9 +28,11 @@ export const SettingsProvider = ({ children }) => {
     gradeScale: { value: "font-scale", label: "Font-scale" },
   }
 
-  const [settings, setSettings] = useState(defaultSettings)
-  const [videoId, setVideoId] = useState(null)
-  const [openControls, setOpenControls] = useState(true)
+  const { user, authLoading } = useAuth() // Get user from auth context
+  const [videoId, setVideoId] = useState(null) // Saves the current video ID being played
+  const [openControls, setOpenControls] = useState(true) // Video controls visibility
+  const storeRef = useRef(null) // Reference to the storage adapter
+  const [settings, setSettings] = useState(defaultSettings) // Settings state
 
   // Initialize store and load settings
   useEffect(() => {
@@ -50,19 +49,19 @@ export const SettingsProvider = ({ children }) => {
     })
 
     console.log(storeRef.current)
+    console.log("Settings loaded:", settings)
   }, [user, authLoading])
 
   // Migrate guest data to Firestore when user logs in
   useEffect(() => {
-    if (!user) return
-    if (!storeRef.current) return
+    if (!user || !storeRef.current) return
 
     const localStore = new LocalStorageAdapter()
+
     localStore.load().then((guestData) => {
-      // Only migrate if Firestore is empty
       storeRef.current.load().then((fireData) => {
         if (!fireData && guestData) {
-          storeRef.current.save(guestData)
+          storeRef.current.save(guestData, user)
         }
       })
     })
@@ -70,10 +69,15 @@ export const SettingsProvider = ({ children }) => {
 
   // Debounced save function
   const saveSettingsDebounced = debounce(async (data) => {
-    if (storeRef.current) {
+    if (!storeRef.current) return
+
+    if (user) {
+      await storeRef.current.save(data, user)
+    } else {
       await storeRef.current.save(data)
-      console.log("Settings saved: ", data)
     }
+
+    console.log("Settings saved:", data)
   }, 2000)
 
   // Update setting function
@@ -86,29 +90,25 @@ export const SettingsProvider = ({ children }) => {
     saveSettingsDebounced(newSettings)
   }
 
+  // Update game stats locally
   function updateGameStatsLocal({ correct, gameFinished }) {
     setSettings((prev) => {
-      const currentStreak = correct ? prev.currentStreak + 1 : 0
+      const currentStreak = correct
+        ? prev.currentStreak + 1
+        : prev.currentStreak
+      console.log("correct =", correct, "prev streak =", prev.currentStreak)
+
       const maxStreak = Math.max(prev.maxStreak, currentStreak)
+      const correctGuesses = prev.correctGuesses + (correct ? 1 : 0) // increment correct guesses if the answer is correct
+      const videosWatched = prev.videosWatched + 1 // increment videos watched
+      const accuracy = Math.round((correctGuesses / videosWatched) * 100) // calculate accuracy
 
-      // increment correct guesses if the answer is correct
-      const correctGuesses = prev.correctGuesses + (correct ? 1 : 0)
-
-      // increment videos watched
-      const videosWatched = prev.videosWatched + 1
-
-      // calculate accuracy
-      const accuracy = Math.round((correctGuesses / videosWatched) * 100)
-
-      console.log(gameFinished ? "Game ongoing." : "Game finished.")
-
-      // increment total games played
       let totalGames = prev.totalGames
       let averageScore = prev.averageScore
 
       if (!gameFinished) {
-        totalGames = prev.totalGames + 1
-        averageScore = correctGuesses / totalGames
+        totalGames = prev.totalGames + 1 // increment total games played
+        averageScore = correctGuesses / totalGames // Calcualate average score
         console.log("New total games:", totalGames)
         console.log("New average score:", averageScore)
       }
@@ -142,6 +142,7 @@ export const SettingsProvider = ({ children }) => {
       ...prev,
       currentStreak: 0,
     }))
+    console.log("I AM RESETTING THE STREAK")
   }
 
   return (

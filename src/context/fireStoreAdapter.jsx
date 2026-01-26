@@ -15,7 +15,19 @@ export class FirestoreAdapter {
     return snap.exists() ? snap.data().settings : null
   }
 
-  async save(data) {
-    await setDoc(this.docRef, { settings: data }, { merge: true })
+  async save(data, profile = null) {
+    const payload = {
+      settings: data,
+    }
+
+    if (profile) {
+      payload.profile = {
+        displayName: profile.displayName,
+        photoURL: profile.photoURL,
+        email: profile.email,
+      }
+    }
+
+    await setDoc(this.docRef, payload, { merge: true })
   }
 }

@@ -2,9 +2,9 @@ import { Separator } from "@radix-ui/react-separator"
 import { useNavigate } from "react-router-dom"
 import { User, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useAuth } from "@/context/loginContext"
 import { useEffect } from "react"
 import { useSettings } from "@/context/settingsContext"
+import { LogOutAlert } from "@/components/UI/logoutAlert"
 import {
   Card,
   CardDescription,
@@ -15,7 +15,6 @@ import {
 function Profile() {
   const navigate = useNavigate()
   const { user, settings } = useSettings()
-  const { loginWithGoogle, logout } = useAuth()
 
   useEffect(() => {
     console.log("Profile page: ", user)
@@ -23,8 +22,8 @@ function Profile() {
 
   return (
     <div className="border-border flex h-full w-full flex-col overflow-y-auto px-3 pt-3">
-      <div className="relative mb-5 flex w-full items-center justify-center gap-2 text-xl font-bold">
-        <div className="absolute top-0 left-0">
+      <div className="relative mb-3 flex w-full items-center justify-center gap-2 text-xl font-bold">
+        <div className="bottom--1 absolute left-0">
           <Button variant="outline" onClick={() => navigate(-1)}>
             <ArrowLeft />
           </Button>
@@ -33,7 +32,7 @@ function Profile() {
         <User />
       </div>
       <Separator className="border-muted mb-4 w-full border-t" />
-      <div className="h-full w-full">
+      <div className="flex h-full w-full flex-col">
         <div className="mb-5 flex flex-row items-center justify-between">
           <div>
             <h1 className="text-base font-bold">
@@ -84,7 +83,17 @@ function Profile() {
             <CardHeader>
               <CardTitle className="font-archivo-black">Best streak:</CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.maxStreak}
+                {parseFloat(settings.maxStreak.toFixed(2))}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-archivo-black">
+                Average score:
+              </CardTitle>
+              <CardDescription className="text-primary text-2xl">
+                {settings.averageScore}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -99,24 +108,20 @@ function Profile() {
             </CardHeader>
           </Card>
         </div>
+      </div>
+      <div className="flex w-full flex-col justify-end pb-2">
         <Separator className="border-muted my-4 w-full border-t" />
-        <div className="mb-2 flex w-full flex-row gap-2">
+        <div className="flex w-full gap-2">
           <Button
             onClick={() => navigate("/settings")}
             variant="outline"
+            size="lg"
             className="flex-1"
           >
             Settings
           </Button>
-          {user ? (
-            <Button className="flex-1" onClick={logout}>
-              Log out
-            </Button>
-          ) : (
-            <Button className="flex-1" onClick={loginWithGoogle}>
-              Login with Google
-            </Button>
-          )}
+
+          <LogOutAlert />
         </div>
       </div>
     </div>

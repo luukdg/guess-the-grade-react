@@ -4,11 +4,9 @@ import Result from "@/components/main-components/result"
 import { ClimberIcons } from "@/components/UI/results-page/climberIcons"
 import Streak from "@/components/UI/video-page/scoreStreak"
 import { useSettings } from "@/context/settingsContext"
-import { FirstTimeMessage } from "@/components/UI/home-page/firstTimeMessage"
 
 function Game() {
-  const { infinite, firstTime, flushStatsToFirebase, resetCurrentStreak } =
-    useSettings()
+  const { flushStatsToFirebase, resetCurrentStreak, settings } = useSettings()
   const [lives, setLives] = useState(3)
   const [outcome, setOutcome] = useState("game")
   const [streak, setStreak] = useState(0)
@@ -33,8 +31,7 @@ function Game() {
   return (
     <>
       <div className="flex h-full w-full flex-col gap-2 px-3 pt-3">
-        {firstTime && <FirstTimeMessage />}
-        {!infinite && (
+        {!settings.infinite && (
           <div className="flex h-8 w-full flex-row items-center justify-center">
             <p className="font-bold">Score: </p>
             <Streak streak={streak} />
@@ -87,6 +84,7 @@ function Game() {
               setStreak(0)
               setGuess(null)
               setOutcome("game")
+              resetCurrentStreak()
             }}
             firebaseId={firebaseId}
             setFirebaseId={setFirebaseId}
