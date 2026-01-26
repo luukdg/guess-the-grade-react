@@ -7,7 +7,8 @@ import { useSettings } from "@/context/settingsContext"
 import { FirstTimeMessage } from "@/components/UI/home-page/firstTimeMessage"
 
 function Game() {
-  const { infinite, firstTime, incrementSetting } = useSettings()
+  const { infinite, firstTime, flushStatsToFirebase, resetCurrentStreak } =
+    useSettings()
   const [lives, setLives] = useState(3)
   const [outcome, setOutcome] = useState("game")
   const [streak, setStreak] = useState(0)
@@ -15,19 +16,19 @@ function Game() {
   const [numericGuess, setNumericGuess] = useState([68, 71])
   const [firebaseId, setFirebaseId] = useState(null)
   const [randomHoldIndex] = useState(() => Math.floor(Math.random() * 6))
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0) // current video index
   const [videos, setVideos] = useState([]) // video array
   const gameFinished = lives > 0
-  const [correctGuess, setCorrectGuess] = useState(0)
 
   useEffect(() => {
-    if (gameFinished) {
-      incrementSetting("correctGuesses", correctGuess)
-      incrementSetting("totalGames", 1)
+    if (!gameFinished) {
+      flushStatsToFirebase()
     }
+  }, [gameFinished])
 
-    console.log(correctGuess)
-  }, [correctGuess])
+  useEffect(() => {
+    resetCurrentStreak()
+  }, [])
 
   return (
     <>
@@ -50,8 +51,6 @@ function Game() {
           <VideoGuess
             lives={lives}
             setLives={setLives}
-            streak={streak}
-            setStreak={setStreak}
             finish={(result) => setOutcome(result)}
             guess={guess}
             setGuess={setGuess}
@@ -70,12 +69,13 @@ function Game() {
         )}
         {outcome === "result" && (
           <Result
+            gameFinished={gameFinished}
+            streak={streak}
+            setStreak={setStreak}
             guess={guess}
             setGuess={setGuess}
             lives={lives}
             setLives={setLives}
-            streak={streak}
-            setStreak={setStreak}
             result={outcome}
             nextVideo={() => {
               setOutcome("game")
@@ -93,7 +93,6 @@ function Game() {
             setCurrentIndex={setCurrentIndex}
             videos={videos}
             currentIndex={currentIndex}
-            setCorrectGuess={setCorrectGuess}
           />
         )}
       </div>

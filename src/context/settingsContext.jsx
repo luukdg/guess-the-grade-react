@@ -14,11 +14,12 @@ export const SettingsProvider = ({ children }) => {
 
   const defaultSettings = {
     totalGames: 0,
+    currentStreak: 0,
+    videosWatched: 0,
     correctGuesses: 0,
     accuracy: 0,
-    streak: 0,
+    maxStreak: 0,
     averageScore: 0,
-    playTime: 0,
     firstTime: true,
     submitOnDrag: false,
     infinite: false,
@@ -71,7 +72,7 @@ export const SettingsProvider = ({ children }) => {
   const saveSettingsDebounced = debounce(async (data) => {
     if (storeRef.current) {
       await storeRef.current.save(data)
-      console.log("Settings saved")
+      console.log("Settings saved: ", data)
     }
   }, 2000)
 
@@ -85,14 +86,62 @@ export const SettingsProvider = ({ children }) => {
     saveSettingsDebounced(newSettings)
   }
 
-  // Update game statistics
-  function incrementSetting(key, amount = 1) {
+  function updateGameStatsLocal({ correct, gameFinished }) {
     setSettings((prev) => {
-      const newValue = (prev[key] ?? 0) + amount
-      const newSettings = { ...prev, [key]: newValue }
-      saveSettingsDebounced(newSettings)
-      return newSettings
+      const currentStreak = correct ? prev.currentStreak + 1 : 0
+      const maxStreak = Math.max(prev.maxStreak, currentStreak)
+
+      // increment correct guesses if the answer is correct
+      const correctGuesses = prev.correctGuesses + (correct ? 1 : 0)
+
+      // increment videos watched
+      const videosWatched = prev.videosWatched + 1
+
+      // calculate accuracy
+      const accuracy = Math.round((correctGuesses / videosWatched) * 100)
+
+      console.log(gameFinished ? "Game ongoing." : "Game finished.")
+
+      // increment total games played
+      let totalGames = prev.totalGames
+      let averageScore = prev.averageScore
+
+      if (!gameFinished) {
+        totalGames = prev.totalGames + 1
+        averageScore = correctGuesses / totalGames
+        console.log("New total games:", totalGames)
+        console.log("New average score:", averageScore)
+      }
+
+      console.log("Correct guesses:", correctGuesses)
+      console.log("Total videos:", videosWatched)
+      console.log("New accuracy:", accuracy)
+      console.log("Current streak:", currentStreak)
+      console.log("Max streak:", maxStreak)
+
+      return {
+        ...prev,
+        currentStreak,
+        maxStreak,
+        correctGuesses,
+        videosWatched,
+        accuracy,
+        averageScore,
+        totalGames,
+      }
     })
+  }
+
+  function flushStatsToFirebase() {
+    if (!storeRef.current) return
+    saveSettingsDebounced(settings)
+  }
+
+  function resetCurrentStreak() {
+    setSettings((prev) => ({
+      ...prev,
+      currentStreak: 0,
+    }))
   }
 
   return (
@@ -100,13 +149,15 @@ export const SettingsProvider = ({ children }) => {
       value={{
         settings,
         updateSetting,
+        updateGameStatsLocal,
+        flushStatsToFirebase,
+        resetCurrentStreak,
         videoId,
         setVideoId,
         openControls,
         setOpenControls,
         storeRef,
         user,
-        incrementSetting,
       }}
     >
       {children}

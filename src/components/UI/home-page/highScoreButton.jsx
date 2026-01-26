@@ -17,7 +17,7 @@ export function HighScore() {
   const { settings } = useSettings()
 
   // Show different message with no high score
-  if (settings.streak === null || settings.streak === "0") {
+  if (settings.maxStreak === null || settings.maxStreak === "0") {
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -45,17 +45,17 @@ export function HighScore() {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="default" size="sm">
-          <Trophy /> {settings.streak}
+          <Trophy /> {settings.maxStreak}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Your high score: {settings.streak}
+            Your high score: {settings.maxStreak}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            {settings.streak} correct answers! Nice one, you deserve a gif for
-            that.
+            {settings.maxStreak} correct answers! Nice one, you deserve a gif
+            for that.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <GetGif />

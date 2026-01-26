@@ -36,10 +36,10 @@ export default memo(function CheckGrade({
   lives,
   setLives,
   setStreak,
-  setCorrectGuess,
+  gameFinished,
 }) {
   const correct = isGradeCorrect(guess)
-  const { infinite } = useSettings()
+  const { infinite, updateGameStatsLocal } = useSettings()
 
   const message =
     guess == null
@@ -54,11 +54,12 @@ export default memo(function CheckGrade({
 
     if (correct) {
       setStreak((prev) => prev + 1)
-      setCorrectGuess((prev) => prev + 1)
     } else {
       setLives((prev) => prev - 1)
     }
-  }, [correct])
+
+    updateGameStatsLocal({ correct, gameFinished })
+  }, [correct, gameFinished])
 
   return (
     <h1 className="text-center text-4xl font-bold">

@@ -19,13 +19,11 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import { useSettings } from "@/context/settingsContext"
 
 const Result = ({
   guess,
   lives,
   setLives,
-  streak,
   setStreak,
   restart,
   nextVideo,
@@ -33,14 +31,13 @@ const Result = ({
   currentIndex,
   videos,
   firebaseId,
-  setCorrectGuess,
+  gameFinished,
 }) => {
   const isCorrect = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
   const [api, setApi] = useState(null)
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
-  const { settings, updateSetting } = useSettings()
 
   useEffect(() => {
     if (!api) return
@@ -54,10 +51,6 @@ const Result = ({
   }, [api])
 
   useEffect(() => {
-    if (streak > settings.streak) {
-      updateSetting("streak", streak)
-    }
-
     setCurrentIndex((prev) => prev + 1)
   }, [])
 
@@ -106,12 +99,11 @@ const Result = ({
                 }}
               >
                 <CheckGrade
+                  gameFinished={gameFinished}
                   guess={guess}
                   lives={lives}
                   setLives={setLives}
-                  streak={streak}
                   setStreak={setStreak}
-                  setCorrectGuess={setCorrectGuess}
                 />
                 <div className="mb-3 text-center text-lg">
                   You guessed{" "}
@@ -158,7 +150,7 @@ const Result = ({
       </div>
 
       <div className="flex h-11 w-full gap-2 pb-2">
-        {lives === 0 ? (
+        {!gameFinished ? (
           <GameOverButtons restart={restart} />
         ) : (
           <Button

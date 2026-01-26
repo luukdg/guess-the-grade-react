@@ -55,10 +55,10 @@ function Profile() {
           <Card>
             <CardHeader>
               <CardTitle className="font-archivo-black">
-                Amount of games played:
+                Videos watched:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.totalGames}
+                {settings.videosWatched}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -76,7 +76,7 @@ function Profile() {
             <CardHeader>
               <CardTitle className="font-archivo-black">Accuracy:</CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.accuracy}
+                {settings.accuracy}%
               </CardDescription>
             </CardHeader>
           </Card>
@@ -84,7 +84,7 @@ function Profile() {
             <CardHeader>
               <CardTitle className="font-archivo-black">Best streak:</CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.streak}
+                {settings.maxStreak}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -95,14 +95,6 @@ function Profile() {
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
                 {settings.averageScore}
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-archivo-black">Playtime:</CardTitle>
-              <CardDescription className="text-primary text-2xl">
-                {settings.playTime}
               </CardDescription>
             </CardHeader>
           </Card>
