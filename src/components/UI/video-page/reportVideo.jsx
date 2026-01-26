@@ -22,7 +22,7 @@ const reportFormSchema = z.object({
   issue: z.string().nonempty({ message: "You must enter something." }),
 })
 
-export function Report({ firebaseId, openToaster }) {
+export function Report({ firebaseId, openToaster, variant }) {
   const [open, setOpen] = useState(false)
   const [report, setReport] = useState(false)
   const {
@@ -51,7 +51,7 @@ export function Report({ firebaseId, openToaster }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
+        <Button variant={variant} size="sm">
           <Flag />
           Report
         </Button>

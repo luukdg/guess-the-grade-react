@@ -134,7 +134,11 @@ const Result = ({
                       <Youtube />
                       Watch again
                     </Button>
-                    <Report firebaseId={firebaseId} openToaster={openToaster} />
+                    <Report
+                      variant="outline"
+                      firebaseId={firebaseId}
+                      openToaster={openToaster}
+                    />
                     <Button
                       onClick={() => api && api.scrollTo(1)}
                       variant="outline"
