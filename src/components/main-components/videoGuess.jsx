@@ -45,6 +45,7 @@ const VideoGuess = ({
         settings.videoType.value,
       )
       setVideos(newVideos)
+      console.log(newVideos)
       setCurrentIndex(0)
       setVideoId(newVideos[0].youtubeLink)
       setFirebaseId(newVideos[0].ticketId)

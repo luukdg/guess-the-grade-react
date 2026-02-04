@@ -34,7 +34,7 @@ const Result = ({
   firebaseId,
   gameFinished,
 }) => {
-  const isCorrect = isGradeCorrect(guess)
+  const { isCorrect } = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
   const [api, setApi] = useState(null)
   const [current, setCurrent] = useState(0)

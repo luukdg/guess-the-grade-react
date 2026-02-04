@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom"
 
 const navigationMenuItems = [
   { title: "Home", href: "/", icon: Home },
-  { title: "Play", href: "/game", icon: Play },
+  { title: "Play", href: "/selectGame", icon: Play },
   { title: "Leaderboard", href: "/leaderboard", icon: Trophy },
   { title: "Upload", href: "/upload", icon: Upload },
   { title: "Settings", href: "/settings", icon: Settings },
@@ -23,6 +23,7 @@ export default function NavigationMenuMobile() {
           <NavigationMenuItem key={item.title}>
             <NavLink
               // change "py-3" for padding and "size-5" for icon size
+              end={false}
               to={item.href}
               className={({ isActive }) =>
                 cn(

@@ -35,6 +35,8 @@ import { boulderLocation } from "@/constants/gradeValues"
 import UrlParser from "js-video-url-parser"
 import { useSettings } from "@/context/settingsContext"
 import { Separator } from "@radix-ui/react-separator"
+import { DatePickerInput } from "@/components/UI/upload-page/datePicker"
+import { uploadNewBOTD } from "@/api/uploadNewBOTD"
 
 // Zod schema for form validation
 const profileFormSchema = z.object({
@@ -66,19 +68,24 @@ const profileFormSchema = z.object({
     ),
   grade: z.string().nonempty({ message: "You must select a grade." }),
   location: z.string().nonempty({ message: "You must select a location." }),
+  credits: z
+    .string()
+    .nonempty({ message: "You must give credits to someone." }),
 })
 
 // useStates and useForm variables
 export default function UploadSection() {
-  const { settings } = useSettings()
+  const { settings, user } = useSettings()
   const [firstOpen, setFirstOpen] = useState(false)
   const [SecondOpen, setSecondOpen] = useState(false)
+  const [ticketId, setTicketId] = useState(null) // Only for admin
   const form = useForm({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
       youtubeLink: "",
       grade: "",
       location: "",
+      credits: "",
     },
     mode: "onChange",
   })
@@ -90,14 +97,42 @@ export default function UploadSection() {
   // Toaster notification on submit
   async function onSubmit(data) {
     try {
+      const isAdmin = user?.email === "luukdegraaf1993@gmail.com"
+
+      // Admin must select a BOTD date
+      if (isAdmin) {
+        if (!ticketId) {
+          toast("Selecteer een datum", {
+            description: "Kies eerst een datum voor Boulder of the Day.",
+          })
+          return
+        }
+
+        await uploadNewBOTD({
+          ...data,
+          ticketId,
+        })
+
+        toast("Gelukt!", {
+          description: "Video is toegevoegd aan BOTD database.",
+        })
+
+        form.reset()
+        setTicketId(null)
+        return
+      }
+
+      // Normal user flow
       await uploadNewVideo(data)
+
       toast("Succesfully uploaded your video!", {
         description:
           "We will check your submission and add your video to the collection.",
       })
+
       form.reset()
     } catch (err) {
-      console.log(err)
+      console.error(err)
       toast("Sorry, something went wrong.")
     }
   }
@@ -258,6 +293,26 @@ export default function UploadSection() {
                 </Drawer>
               )}
             />
+            <FormField
+              control={form.control}
+              name="credits"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl className="text-sm">
+                    <Input
+                      placeholder="YouTube channel name (e.g. Adam Ondra)"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="mt-2" />
+                </FormItem>
+              )}
+            />
+            {user?.email === "luukdegraaf1993@gmail.com" ? (
+              <DatePickerInput onDateChange={setTicketId} />
+            ) : (
+              ""
+            )}
           </form>
         </Form>
         <div className="flex flex-col justify-center gap-2">

@@ -13,6 +13,8 @@ import { useAuth } from "./context/loginContext"
 import SplashScreen from "./components/UI/home-page/SplashScreen"
 import Profile from "./pages/profile"
 import Leaderboard from "./pages/leaderboard"
+import BoulderOfTheDay from "./pages/boulderOfTheDay"
+import SelectGame from "./pages/selectGame"
 
 function App() {
   const { authLoading, versionReady } = useAuth()
@@ -37,6 +39,8 @@ function App() {
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/boulderOfTheDay" element={<BoulderOfTheDay />} />
+                <Route path="/selectGame" element={<SelectGame />} />
               </Routes>
               <div className="flex w-full justify-center">
                 <NavigationMenuMobile />

@@ -103,7 +103,10 @@ function Leaderboard() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex w-full flex-row items-center justify-between">
-                      <span>{user?.profile.displayName || "Anonymous"} </span>
+                      <span>
+                        {user?.profile?.displayName?.split(" ")[0] ||
+                          "Anonymous"}{" "}
+                      </span>
                       <span>
                         <strong className="text-xl font-bold">
                           {user.settings[dataType]}

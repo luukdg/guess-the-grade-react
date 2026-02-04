@@ -1,18 +1,19 @@
 import { convertToNumericGrade } from "@/functions/gradeConverter.jsx"
-import { collection, addDoc } from "firebase/firestore"
+import { setDoc, doc } from "firebase/firestore"
 import { db } from "../../firebase/firebaseConfig.js"
 import UrlParser from "js-video-url-parser"
 
-export async function uploadNewVideo(data) {
+export async function uploadNewBOTD(data) {
   const videoId = UrlParser.parse(data.youtubeLink).id
   const grade = data.grade
   const location = data.location
   const credits = data.credits
+  const ticketId = data.ticketId // "YYYY-MM-DD"
   const numericGrade = convertToNumericGrade(grade)
   const today = new Date()
 
   try {
-    const docRef = await addDoc(collection(db, "new-videos"), {
+    await setDoc(doc(db, "boulder-of-the-day", ticketId), {
       grade: grade,
       lastShowDate: null,
       youtubeLink: videoId,
@@ -34,7 +35,8 @@ export async function uploadNewVideo(data) {
       rand: Math.random(),
       approved: false,
     })
-    console.log("Document written with ID: ", docRef.id)
+
+    console.log("BOTD uploaded for:", ticketId)
   } catch (e) {
     console.error("Error adding video ", e)
   }

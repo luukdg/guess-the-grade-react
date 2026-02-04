@@ -33,6 +33,7 @@ export const SettingsProvider = ({ children }) => {
   const [openControls, setOpenControls] = useState(true) // Video controls visibility
   const storeRef = useRef(null) // Reference to the storage adapter
   const [settings, setSettings] = useState(defaultSettings) // Settings state
+  const [flushReady, setFlushReady] = useState(false)
 
   // Initialize store and load settings
   useEffect(() => {
@@ -90,6 +91,12 @@ export const SettingsProvider = ({ children }) => {
     saveSettingsDebounced(newSettings)
   }
 
+  useEffect(() => {
+    if (flushReady) {
+      flushStatsToFirebase()
+    }
+  }, [flushReady])
+
   // Update game stats locally
   function updateGameStatsLocal({ correct, gameFinished }) {
     setSettings((prev) => {
@@ -111,6 +118,7 @@ export const SettingsProvider = ({ children }) => {
         averageScore = correctGuesses / totalGames // Calcualate average score
         console.log("New total games:", totalGames)
         console.log("New average score:", averageScore)
+        setFlushReady(true)
       }
 
       console.log("Correct guesses:", correctGuesses)
@@ -135,6 +143,8 @@ export const SettingsProvider = ({ children }) => {
   function flushStatsToFirebase() {
     if (!storeRef.current) return
     saveSettingsDebounced(settings)
+    setFlushReady(false)
+    console.log("Flushing stats to Firebase")
   }
 
   function resetCurrentStreak() {

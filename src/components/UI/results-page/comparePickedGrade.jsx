@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card"
 
 export default function ComparePickedGrade({ currentGrade, guess }) {
-  const isCorrect = isGradeCorrect(guess)
+  const { isCorrect } = isGradeCorrect(guess)
 
   let actualValue = gradeMap[currentGrade]
   let userValue = gradeMap[guess.split("/")[0]]

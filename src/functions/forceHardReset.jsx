@@ -12,8 +12,10 @@ export async function forceHardRefresh() {
 
   // 2. Unregister service workers
   if ("serviceWorker" in navigator) {
-    const registrations = await navigator.serviceWorker.getRegistrations()
-    await Promise.all(registrations.map((r) => r.unregister()))
+    const regs = await navigator.serviceWorker.getRegistrations()
+    await Promise.all(regs.map((r) => r.unregister()))
+    // small delay to ensure SW is fully gone
+    await new Promise((res) => setTimeout(res, 100))
   }
 
   // 3. Reload from network

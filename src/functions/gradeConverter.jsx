@@ -32,7 +32,13 @@ export function convertToVSale(grade) {
 }
 
 export function convertToNumericGrade(grade) {
-  const score = French.getScore(grade)
+  let score
+
+  if (grade[0] === "V") {
+    score = VScale.getScore(grade)
+  } else {
+    score = French.getScore(grade)
+  }
 
   return score
 }

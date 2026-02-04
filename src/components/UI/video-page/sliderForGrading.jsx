@@ -1,14 +1,7 @@
 import Slider from "@mui/material/Slider"
-import { useSettings } from "@/context/settingsContext"
 import { CustomThumb } from "../customThumbs"
 
-export default function SliderForGrading({
-  value,
-  handleChange,
-  handleSubmit,
-}) {
-  const { settings } = useSettings()
-
+export default function SliderForGrading({ value, handleChange }) {
   return (
     <>
       <Slider
@@ -20,11 +13,6 @@ export default function SliderForGrading({
         min={0}
         max={60}
         onChange={handleChange}
-        onChangeCommitted={() => {
-          if (settings.submitOnDrag) {
-            handleSubmit()
-          }
-        }}
         slots={{
           thumb: CustomThumb,
         }}

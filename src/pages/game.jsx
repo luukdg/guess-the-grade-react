@@ -6,7 +6,7 @@ import Streak from "@/components/UI/video-page/scoreStreak"
 import { useSettings } from "@/context/settingsContext"
 
 function Game() {
-  const { flushStatsToFirebase, resetCurrentStreak, settings } = useSettings()
+  const { resetCurrentStreak, settings } = useSettings()
   const [lives, setLives] = useState(3)
   const [outcome, setOutcome] = useState("game")
   const [streak, setStreak] = useState(0)
@@ -17,12 +17,6 @@ function Game() {
   const [currentIndex, setCurrentIndex] = useState(0) // current video index
   const [videos, setVideos] = useState([]) // video array
   const gameFinished = lives > 0
-
-  useEffect(() => {
-    if (!gameFinished) {
-      flushStatsToFirebase()
-    }
-  }, [gameFinished])
 
   useEffect(() => {
     resetCurrentStreak()

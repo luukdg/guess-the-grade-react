@@ -42,6 +42,12 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         navigateFallback: "/index.html",
         navigateFallbackDenylist: [/^\/\.well-known\//],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === "navigate",
+            handler: "NetworkFirst",
+          },
+        ],
       },
     }),
   ],

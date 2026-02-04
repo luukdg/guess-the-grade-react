@@ -93,7 +93,17 @@ function Profile() {
                 Average score:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.averageScore}
+                {parseFloat(settings.averageScore.toFixed(2))}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-archivo-black">
+                Total games played:
+              </CardTitle>
+              <CardDescription className="text-primary text-2xl">
+                {settings.totalGames}
               </CardDescription>
             </CardHeader>
           </Card>

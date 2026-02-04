@@ -38,13 +38,13 @@ export default memo(function CheckGrade({
   setStreak,
   gameFinished,
 }) {
-  const correct = isGradeCorrect(guess)
+  const { isCorrect } = isGradeCorrect(guess)
   const { settings, updateGameStatsLocal } = useSettings()
 
   const message =
     guess == null
       ? ""
-      : correct
+      : isCorrect
         ? randomMessage(messages.correct)
         : randomMessage(messages.incorrect)
 
@@ -52,14 +52,14 @@ export default memo(function CheckGrade({
   useEffect(() => {
     if (guess == null || settings.infinite) return
 
-    if (correct) {
+    if (isCorrect) {
       setStreak((prev) => prev + 1)
       updateGameStatsLocal({ correct: true, gameFinished })
     } else {
       setLives((prev) => prev - 1)
       updateGameStatsLocal({ correct: false, gameFinished })
     }
-  }, [correct, gameFinished])
+  }, [isCorrect, gameFinished])
 
   return (
     <h1 className="text-center text-4xl font-bold">
