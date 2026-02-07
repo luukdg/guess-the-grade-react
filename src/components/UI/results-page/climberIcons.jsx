@@ -1,6 +1,7 @@
-import climberIcon from "/climber.svg"
-import ClimberIconLight from "/climber-light.svg"
 import { useTheme } from "@/context/themeProvider"
+
+import ClimberIconLight from "/climber-light.svg"
+import climberIcon from "/climber.svg"
 
 // Updates the lives inside the DOM
 export function ClimberIcons({ lives }) {

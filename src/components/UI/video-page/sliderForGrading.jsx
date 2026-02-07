@@ -1,12 +1,13 @@
 import Slider from "@mui/material/Slider"
+
 import { CustomThumb } from "../customThumbs"
 
-export default function SliderForGrading({ value, handleChange }) {
+export default function SliderForGrading({ handleChange, sliderValue }) {
   return (
     <>
       <Slider
         aria-label="Custom marks"
-        value={value}
+        value={sliderValue}
         valueLabelDisplay="off"
         step={10}
         marks

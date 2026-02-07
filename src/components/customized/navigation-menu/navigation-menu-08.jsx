@@ -1,3 +1,6 @@
+import { BookOpen, Home, Rss, Settings, User } from "lucide-react"
+import Link from "next/link"
+
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -6,8 +9,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import { BookOpen, Home, Rss, Settings, User } from "lucide-react"
-import Link from "next/link"
 
 const navigationMenuItems = [
   { title: "Home", href: "#", icon: Home, isActive: true },

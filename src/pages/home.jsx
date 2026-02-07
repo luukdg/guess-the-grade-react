@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import gradeLogo from "/logo.svg"
-import gradeLogoLight from "/logo-light.svg"
-import { HighScore } from "../components/UI/home-page/highScoreButton"
-import { useTheme } from "@/context/themeProvider"
+
 import { RandomTip } from "@/components/UI/randomTip"
+import { Button } from "@/components/ui/button"
 import { useSettings } from "@/context/settingsContext"
+import { useTheme } from "@/context/themeProvider"
+
+import { HighScore } from "../components/UI/home-page/highScoreButton"
+import gradeLogoLight from "/logo-light.svg"
+import gradeLogo from "/logo.svg"
 
 function Home() {
   const navigate = useNavigate()
@@ -45,7 +47,7 @@ function Home() {
           size="default"
           variant="default"
           className="w-full"
-          onClick={() => navigate("/game")}
+          onClick={() => navigate("/selectGame")}
         >
           START GAME
         </Button>

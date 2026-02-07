@@ -1,32 +1,37 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
-import { useState, useEffect } from "react"
-import ReactPlayer from "react-player"
-import { useSettings } from "@/context/settingsContext"
-import { AnimatePresence, motion } from "motion/react"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Report } from "./reportVideo"
 import {
+  ChevronDown,
+  ChevronUp,
   PauseIcon,
   PlayIcon,
   Volume2,
   VolumeOff,
-  ChevronDown,
-  ChevronUp,
 } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+
+import { useEffect, useState } from "react"
+import ReactPlayer from "react-player"
+
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Spinner } from "@/components/ui/spinner"
+import { useGameContext } from "@/context/gameContext"
+import { useSettings } from "@/context/settingsContext"
+
+import { Report } from "./reportVideo"
 
 const speeds = [1, 2]
 
 export function VideoPlayer({
   className = "",
   innerClassName = "",
-  firebaseId,
-  openToaster,
+  setVideoIsReady,
+  videoIsReady,
 }) {
-  const { openControls, setOpenControls, videoId, settings } = useSettings()
+  const { openControls, setOpenControls, settings } = useSettings()
+  const { firebaseId, videoId } = useGameContext()
   const [muted, setMuted] = useState(() => (!settings.mute ? false : true))
-  const [isPlaying, setIsPlaying] = useState(settings.autoPlay) // video play state
+  const [isPlaying, setIsPlaying] = useState(settings.autoPlay)
   const [speed, setSpeed] = useState(() => (settings.always2x ? 2 : 1))
 
   useEffect(() => {
@@ -47,6 +52,7 @@ export function VideoPlayer({
               src={`https://www.youtube.com/shorts/${videoId}`}
               // onReady={autoPlay ? () => setIsPlaying(true) : null}
               playing={isPlaying}
+              onPlay={() => setVideoIsReady(true)} // Check if a video is playing before submitting a guess
               muted={muted}
               controls={false}
               loop={settings.loop}
@@ -66,6 +72,14 @@ export function VideoPlayer({
                 width: "100%",
               }}
             />
+          )}
+
+          {/* Loader overlay */}
+          {!videoIsReady && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-black">
+              <Spinner className="size-12" />
+              Loading video...
+            </div>
           )}
         </div>
         <div className="pointer-events-auto absolute top-0 left-0 h-full w-full"></div>
@@ -114,7 +128,7 @@ export function VideoPlayer({
                       {s}x
                     </Button>
                   ))}
-                  <Report firebaseId={firebaseId} openToaster={openToaster} />
+                  <Report firebaseId={firebaseId} />
                 </ButtonGroup>
               </motion.div>
             )}

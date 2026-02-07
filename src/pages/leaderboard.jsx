@@ -1,17 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
 import { Separator } from "@radix-ui/react-separator"
 import { Trophy } from "lucide-react"
+
 import { useEffect, useState } from "react"
+
 import { getLeaderBoard } from "@/api/fetchLeaderboard"
-import { Spinner } from "@/components/UI/spinner"
 import { Card } from "@/components/UI/card"
+import { Spinner } from "@/components/UI/spinner"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { useAuth } from "@/context/loginContext"
 import { Button } from "@/components/ui/button"
-import climberIcon from "/climber.svg"
-import ClimberIconLight from "/climber-light.svg"
-import { useTheme } from "@/context/themeProvider"
 import {
   Select,
   SelectContent,
@@ -19,6 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useAuth } from "@/context/loginContext"
+import { useTheme } from "@/context/themeProvider"
+
+import ClimberIconLight from "/climber-light.svg"
+import climberIcon from "/climber.svg"
 
 const options = [
   { value: "maxStreak", label: "Max Streak" },

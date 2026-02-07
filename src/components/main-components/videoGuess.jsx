@@ -1,16 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { toast } from "sonner"
 
 import { useEffect, useState } from "react"
+
+import { updateUserGuess } from "@/api/updateUserGuess"
+import { Button } from "@/components/ui/button"
+import { Toaster } from "@/components/ui/sonner"
+import { useGameContext } from "@/context/gameContext"
+import { useSettings } from "@/context/settingsContext"
+
 import { getData } from "../../api/fetchVideoData"
 import { getGrade } from "../../functions/GetGradeLabel"
 import { convertToFont, convertToVSale } from "../../functions/gradeConverter"
-import { Button } from "@/components/ui/button"
 import SliderForGrading from "../UI/video-page/sliderForGrading"
-import { useSettings } from "@/context/settingsContext"
 import { VideoPlayer } from "../UI/video-page/videoPlayer"
-import { updateUserGuess } from "@/api/updateUserGuess"
-import { toast } from "sonner"
-import { Toaster } from "@/components/ui/sonner"
 
 export let currentGrade = null
 
@@ -21,19 +24,20 @@ const VideoGuess = ({
   setNumericGuess,
   setFirebaseId,
   firebaseId,
-  randomHoldIndex,
   currentIndex,
   setCurrentIndex,
   videos,
   setVideos,
 }) => {
-  const { setVideoId, settings } = useSettings()
-  const [value, setValue] = useState(30) // slider state
+  const { settings } = useSettings()
+  const { updateVideoId } = useGameContext()
+  const [sliderValue, setSliderValue] = useState(30)
+  const [videoIsReady, setVideoIsReady] = useState(false)
 
   // Resets the grade value after submitting
   const handleChange = (event, newValue) => {
-    setValue(newValue) // slider state
-    setNumericGuess(getGrade(newValue)) // numericGuess state
+    setSliderValue(newValue)
+    setNumericGuess(getGrade(newValue))
   }
 
   // Function to fetch 10 videos
@@ -47,11 +51,11 @@ const VideoGuess = ({
       setVideos(newVideos)
       console.log(newVideos)
       setCurrentIndex(0)
-      setVideoId(newVideos[0].youtubeLink)
+      updateVideoId(newVideos[0].youtubeLink)
       setFirebaseId(newVideos[0].ticketId)
       currentGrade = newVideos[0].grade
     } else {
-      setVideoId(videos[currentIndex].youtubeLink)
+      updateVideoId(videos[currentIndex].youtubeLink)
       setFirebaseId(videos[currentIndex].ticketId)
       currentGrade = videos[currentIndex].grade
     }
@@ -67,7 +71,7 @@ const VideoGuess = ({
     const convertedGuess = chooseGradeConverter(numericGuess)
     setGuess(convertedGuess)
     finish("result")
-    updateUserGuess(firebaseId, numericGuess)
+    updateUserGuess(firebaseId, numericGuess, "videos")
   }
 
   const chooseGradeConverter = (num) => {
@@ -87,6 +91,8 @@ const VideoGuess = ({
       <VideoPlayer
         firebaseId={firebaseId}
         openToaster={openToaster}
+        setVideoIsReady={setVideoIsReady}
+        videoIsReady={videoIsReady}
         className="border-border relative flex h-full items-center justify-center overflow-hidden border-1"
         innerClassName="absolute aspect-[9/16] h-full w-full bg-black"
       />
@@ -101,11 +107,8 @@ const VideoGuess = ({
         </div>
         <div className="mx-3 mt-1 flex h-10 items-center justify-center">
           <SliderForGrading
-            value={value}
-            setValue={setValue}
+            sliderValue={sliderValue}
             handleChange={handleChange}
-            randomHoldIndex={randomHoldIndex}
-            handleSubmit={handleSubmit}
           />
         </div>
         <div className="flex flex-col items-center justify-center pt-2 pb-2">
@@ -115,7 +118,7 @@ const VideoGuess = ({
               variant="default"
               className="w-full"
               onClick={() => {
-                handleSubmit()
+                videoIsReady ? handleSubmit() : null
               }}
             >
               Check your guess

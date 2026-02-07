@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
-import VideoGuess from "@/components/main-components/videoGuess"
-import Result from "@/components/main-components/result"
+
 import { ClimberIcons } from "@/components/UI/results-page/climberIcons"
 import Streak from "@/components/UI/video-page/scoreStreak"
+import Result from "@/components/main-components/result"
+import VideoGuess from "@/components/main-components/videoGuess"
+import { useGameContext } from "@/context/gameContext"
 import { useSettings } from "@/context/settingsContext"
 
 function Game() {
   const { resetCurrentStreak, settings } = useSettings()
-  const [lives, setLives] = useState(3)
+  const { lives, setLives } = useGameContext()
   const [outcome, setOutcome] = useState("game")
   const [streak, setStreak] = useState(0)
   const [guess, setGuess] = useState(null)
@@ -40,8 +42,6 @@ function Game() {
 
         {outcome === "game" && (
           <VideoGuess
-            lives={lives}
-            setLives={setLives}
             finish={(result) => setOutcome(result)}
             guess={guess}
             setGuess={setGuess}

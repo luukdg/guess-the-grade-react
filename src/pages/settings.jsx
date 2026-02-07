@@ -1,13 +1,15 @@
-import { Label } from "@/components/ui/label"
+import { Separator } from "@radix-ui/react-separator"
 import { Settings } from "lucide-react"
+
+import { useNavigate } from "react-router-dom"
+
 import { ComboBoxResponsive } from "@/components/UI/settings-page/SettingsPopover"
-import { location, gradeScale } from "@/constants/applicationSettings"
 import { LightModeToggle } from "@/components/UI/settings-page/lightModeToggle"
 import { VideoSettings } from "@/components/UI/settings-page/videoSettings"
-import { Separator } from "@radix-ui/react-separator"
+import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { gradeScale, location } from "@/constants/applicationSettings"
 import { useSettings } from "@/context/settingsContext"
-import { useNavigate } from "react-router-dom"
 
 function SettingsPage() {
   const { settings, updateSetting } = useSettings()

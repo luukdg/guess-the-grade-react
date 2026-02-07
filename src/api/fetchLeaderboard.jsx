@@ -1,4 +1,5 @@
-import { collection, getDocs, query, limit, orderBy } from "firebase/firestore"
+import { collection, getDocs, limit, orderBy, query } from "firebase/firestore"
+
 import { db } from "../../firebase/firebaseConfig.js"
 
 export async function getLeaderBoard(dataType) {

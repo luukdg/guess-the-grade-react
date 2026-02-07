@@ -1,14 +1,16 @@
-import { convertToNumericGrade } from "@/functions/gradeConverter.jsx"
-import { collection, addDoc } from "firebase/firestore"
-import { db } from "../../firebase/firebaseConfig.js"
+import { addDoc, collection } from "firebase/firestore"
 import UrlParser from "js-video-url-parser"
+
+import { convertGradeToNum } from "@/functions/gradeConverter.jsx"
+
+import { db } from "../../firebase/firebaseConfig.js"
 
 export async function uploadNewVideo(data) {
   const videoId = UrlParser.parse(data.youtubeLink).id
   const grade = data.grade
   const location = data.location
   const credits = data.credits
-  const numericGrade = convertToNumericGrade(grade)
+  const numericGrade = convertGradeToNum(grade)
   const today = new Date()
 
   try {

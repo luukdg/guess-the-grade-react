@@ -1,16 +1,21 @@
+import { Separator } from "@base-ui/react"
+
+import { useNavigate } from "react-router-dom"
+
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Separator } from "@base-ui/react"
-import { useNavigate } from "react-router-dom"
+import { useGameContext } from "@/context/gameContext"
+
 import ImageOne from "/boulderOne.webp"
 import ImageTwo from "/boulderTwo.webp"
 
 function SelectGame() {
   const navigate = useNavigate()
+  const { gameWon } = useGameContext()
 
   return (
     <>
@@ -39,6 +44,11 @@ function SelectGame() {
                   One new boulder every day. Closely observe and try to get it
                   right within 3 turns.
                 </CardDescription>
+                {gameWon !== null && (
+                  <div className="text-destructive font-bold">
+                    You already played today.
+                  </div>
+                )}
               </CardHeader>
             </div>
           </Card>

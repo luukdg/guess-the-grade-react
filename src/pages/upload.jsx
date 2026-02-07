@@ -1,8 +1,24 @@
-import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { Separator } from "@radix-ui/react-separator"
+import UrlParser from "js-video-url-parser"
+import { Check, ChevronsUpDown } from "lucide-react"
+import { SearchCheck, Upload } from "lucide-react"
+import { toast } from "sonner"
 import { z } from "zod"
-import { cn } from "@/lib/utils"
+
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+
+import { uploadNewBOTD } from "@/api/uploadNewBOTD"
+import { uploadNewVideo } from "@/api/uploadNewVideo"
+import { DatePickerInput } from "@/components/UI/upload-page/datePicker"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/UI/upload-page/form"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -11,32 +27,18 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/UI/upload-page/form"
-import {
   Drawer,
   DrawerContent,
-  DrawerTrigger,
-  DrawerTitle,
   DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input"
-import { Check, ChevronsUpDown } from "lucide-react"
-import { grades, gradesVScale } from "@/constants/gradeValues"
-import { uploadNewVideo } from "@/api/uploadNewVideo"
-import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
-import { Upload, SearchCheck } from "lucide-react"
+import { grades, gradesVScale } from "@/constants/gradeValues"
 import { boulderLocation } from "@/constants/gradeValues"
-import UrlParser from "js-video-url-parser"
 import { useSettings } from "@/context/settingsContext"
-import { Separator } from "@radix-ui/react-separator"
-import { DatePickerInput } from "@/components/UI/upload-page/datePicker"
-import { uploadNewBOTD } from "@/api/uploadNewBOTD"
+import { cn } from "@/lib/utils"
 
 // Zod schema for form validation
 const profileFormSchema = z.object({

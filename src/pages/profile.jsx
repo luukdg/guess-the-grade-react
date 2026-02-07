@@ -1,16 +1,18 @@
 import { Separator } from "@radix-ui/react-separator"
-import { useNavigate } from "react-router-dom"
-import { User, ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ArrowLeft, User } from "lucide-react"
+
 import { useEffect } from "react"
-import { useSettings } from "@/context/settingsContext"
+import { useNavigate } from "react-router-dom"
+
 import { LogOutAlert } from "@/components/UI/logoutAlert"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { useSettings } from "@/context/settingsContext"
 
 function Profile() {
   const navigate = useNavigate()

@@ -1,4 +1,5 @@
-import { getDoc, doc } from "firebase/firestore"
+import { doc, getDoc } from "firebase/firestore"
+
 import { db } from "../../firebase/firebaseConfig.js"
 import { convertToFont, convertToVSale } from "../functions/gradeConverter.jsx"
 
@@ -30,5 +31,6 @@ export async function getBoulderOfTheDay(gradeScale) {
     ...video,
     grade: convertedGrade,
     ticketId: snap.id,
+    guesses: video.guesses,
   }
 }

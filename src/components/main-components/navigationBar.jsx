@@ -1,11 +1,13 @@
+import { Home, Play, Settings, Trophy, Upload } from "lucide-react"
+
+import { NavLink } from "react-router-dom"
+
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import { Home, Settings, Upload, Play, Trophy } from "lucide-react"
-import { NavLink } from "react-router-dom"
 
 const navigationMenuItems = [
   { title: "Home", href: "/", icon: Home },

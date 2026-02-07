@@ -1,63 +1,70 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
 import { useEffect, useState } from "react"
-import { useSettings } from "@/context/settingsContext"
-import { VideoPlayer } from "@/components/UI/video-page/videoPlayer"
-import { toast } from "sonner"
-import { Toaster } from "@/components/ui/sonner"
-import { convertToFont, convertToVSale } from "@/functions/gradeConverter"
+import { useNavigate } from "react-router-dom"
+
 import { getBoulderOfTheDay } from "@/api/fetchBoulderOfTheDay"
+import { updateUserGuess } from "@/api/updateUserGuess"
 import { Button } from "@/components/UI/button"
-import { getGrade } from "@/functions/getGradeLabel"
-import SliderForGrading from "@/components/UI/video-page/sliderForGrading"
-import { isGradeCorrect } from "@/functions/isGradeCorrect"
+import { GameFinished } from "@/components/UI/video-page/gameFinishedAlert"
 import { GradeCell } from "@/components/UI/video-page/gradeCells"
+import SliderForGrading from "@/components/UI/video-page/sliderForGrading"
+import { VideoPlayer } from "@/components/UI/video-page/videoPlayer"
+import { Toaster } from "@/components/ui/sonner"
+import { useGameContext } from "@/context/gameContext"
+import { useSettings } from "@/context/settingsContext"
+import { getGrade } from "@/functions/getGradeLabel"
+import { convertNumToGrade } from "@/functions/gradeConverter"
+import { isGradeCorrect } from "@/functions/isGradeCorrect"
 
 function BoulderOfTheDay() {
-  const { setVideoId, settings } = useSettings()
-  const [guess, setGuess] = useState([]) // Saves the grade to show in the DOM
-  const [firebaseId, setFirebaseId] = useState(null)
-  const [correctGrade, setCorrectGrade] = useState(null)
+  const navigate = useNavigate()
+  const { settings } = useSettings()
+  const {
+    correctGrade,
+    updateCorrectGrade,
+    firebaseId,
+    updateFirebaseId,
+    updateGameWon,
+    gameWon,
+    guessState,
+    updateGuessState,
+    updateVideoId,
+    videoStats,
+    setVideoStats,
+  } = useGameContext()
+
   const [numericGuess, setNumericGuess] = useState([68, 71])
-  const [value, setValue] = useState(30) // slider state
-  const [randomHoldIndex] = useState(() => Math.floor(Math.random() * 6))
-  const [outcome, setOutcome] = useState([])
-  const [difference, setDifference] = useState([])
-  const [answerIndex, setAnswerIndex] = useState(3)
+  const [sliderValue, setSliderValue] = useState(30)
+  const [videoIsReady, setVideoIsReady] = useState(false)
 
-  // Resets the grade value after submitting
   const handleChange = (event, newValue) => {
-    setValue(newValue) // slider state
-    setNumericGuess(getGrade(newValue)) // numericGuess state
+    setSliderValue(newValue)
+    setNumericGuess(getGrade(newValue))
   }
 
-  // Submit guess
   const handleSubmit = () => {
-    const convertedGuess = chooseGradeConverter(numericGuess)
-    setGuess((prev) => [...prev, convertedGuess])
-    const { isCorrect, diff } = isGradeCorrect(convertedGuess, correctGrade) // Checks if the user guess matches the answer
-    setOutcome((prev) => [...prev, isCorrect])
-    setDifference((prev) => [...prev, diff])
-    setAnswerIndex((prev) => prev - 1)
-  }
+    const convertedGuess = convertNumToGrade(
+      numericGuess,
+      settings.gradeScale.value,
+    )
+    const { isCorrect, diff } = isGradeCorrect(convertedGuess, correctGrade)
 
-  // Translates the grade
-  const chooseGradeConverter = (num) => {
-    return settings.gradeScale.value === "font-scale"
-      ? convertToFont(num)
-      : convertToVSale(num)
-  }
+    updateGuessState(convertedGuess, isCorrect, diff)
 
-  // Report
-  function openToaster(message) {
-    toast(message)
+    if (isCorrect) {
+      updateGameWon(true)
+    } else if (guessState.guess.length + 1 >= 3) {
+      updateGameWon(false)
+    }
+    updateUserGuess(firebaseId, numericGuess, "boulder-of-the-day")
   }
 
   const fetchBoulderOfTheDay = async () => {
     const newVideo = await getBoulderOfTheDay(settings.gradeScale.value)
-    setVideoId(newVideo.youtubeLink)
-    setFirebaseId(newVideo.ticketId)
-    setCorrectGrade(newVideo.grade)
+    setVideoStats(newVideo.guesses)
+    updateVideoId(newVideo.youtubeLink)
+    updateFirebaseId(newVideo.ticketId)
+    updateCorrectGrade(newVideo.grade)
   }
 
   useEffect(() => {
@@ -65,24 +72,19 @@ function BoulderOfTheDay() {
   }, [])
 
   useEffect(() => {
-    console.log(guess)
-    if (correctGrade) {
-      console.log("correct grade: ", correctGrade)
+    if (videoStats) {
+      console.log(videoStats)
     }
-    if (outcome) {
-      console.log("OUTCOME:", outcome)
-    }
-    if (difference) {
-      console.log("DIFF: ", difference)
-    }
-    if (answerIndex) {
-      console.log("answerIndex: ", answerIndex)
-    }
-  }, [guess, correctGrade, outcome, difference])
+  }, [videoStats])
 
   return (
     <>
       <div className="mt-1 flex h-full w-full flex-col gap-2 px-3">
+        <GameFinished
+          navigate={navigate}
+          gameWon={gameWon}
+          guessState={guessState}
+        />
         <Toaster position="top-center" />
         <div className="flex w-full flex-row items-center justify-center gap-1">
           <div className="font-archivo-black flex h-8 w-full items-center justify-center text-center font-bold">
@@ -90,9 +92,9 @@ function BoulderOfTheDay() {
               {[0, 1, 2].map((i) => (
                 <GradeCell
                   key={i}
-                  guess={guess[i]}
-                  outcome={outcome[i]}
-                  difference={difference[i]}
+                  guess={guessState.guess[i]}
+                  outcome={guessState.outcome[i]}
+                  difference={guessState.difference[i]}
                   rounded={
                     i === 0
                       ? "rounded-sm rounded-r-none"
@@ -106,8 +108,8 @@ function BoulderOfTheDay() {
           </div>
         </div>
         <VideoPlayer
-          firebaseId={firebaseId}
-          openToaster={openToaster}
+          setVideoIsReady={setVideoIsReady}
+          videoIsReady={videoIsReady}
           className="border-border relative flex h-full items-center justify-center overflow-hidden border-1"
           innerClassName="absolute aspect-[9/16] h-full w-full bg-black"
         />
@@ -116,30 +118,26 @@ function BoulderOfTheDay() {
           <div className="align-center flex w-full items-center justify-center gap-2">
             Guess:{" "}
             <strong className="font-archivo-black text-lg">
-              {chooseGradeConverter(numericGuess)}
+              {convertNumToGrade(numericGuess, settings.gradeScale.value)}
             </strong>
           </div>
           <div className="mx-3 mt-1 flex h-10 items-center justify-center">
             <SliderForGrading
-              value={value}
-              setValue={setValue}
+              sliderValue={sliderValue}
               handleChange={handleChange}
-              randomHoldIndex={randomHoldIndex}
             />
           </div>
           <div className="flex flex-col items-center justify-center pt-2 pb-2">
-            {!settings.submitOnDrag && (
-              <Button
-                size="lg"
-                variant="default"
-                className="w-full"
-                onClick={() => {
-                  handleSubmit()
-                }}
-              >
-                Check your guess
-              </Button>
-            )}
+            <Button
+              size="lg"
+              variant="default"
+              className="w-full"
+              onClick={() => {
+                videoIsReady ? handleSubmit() : null
+              }}
+            >
+              Check your guess
+            </Button>
           </div>
         </div>
       </div>

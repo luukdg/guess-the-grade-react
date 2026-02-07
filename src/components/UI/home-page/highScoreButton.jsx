@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button"
 import { Trophy } from "lucide-react"
+
+import GetGif from "@/api/giphy/giphyApi"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import GetGif from "@/api/giphy/giphyApi"
+import { Button } from "@/components/ui/button"
 import { useSettings } from "@/context/settingsContext"
 
 export function HighScore() {

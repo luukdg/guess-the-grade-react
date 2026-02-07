@@ -1,4 +1,5 @@
 import { signInWithPopup } from "firebase/auth"
+
 import { auth, googleProvider } from "../../firebase/firebaseConfig"
 
 export const googleAuth = async () => {

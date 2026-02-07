@@ -1,10 +1,10 @@
 import js from "@eslint/js"
-import globals from "globals"
-import pluginReact from "eslint-plugin-react"
-import { defineConfig } from "eslint/config"
-import pluginReactHooks from "eslint-plugin-react-hooks"
-import eslintPluginPrettier from "eslint-plugin-prettier"
 import eslintConfigPrettier from "eslint-config-prettier"
+import eslintPluginPrettier from "eslint-plugin-prettier"
+import pluginReact from "eslint-plugin-react"
+import pluginReactHooks from "eslint-plugin-react-hooks"
+import { defineConfig } from "eslint/config"
+import globals from "globals"
 
 export default defineConfig([
   { ignores: ["dist/**", "node_modules/**", "vite.config.js"] },
@@ -24,6 +24,7 @@ export default defineConfig([
     rules: {
       // Prettier errors show up as ESLint errors
       "prettier/prettier": "error",
+      "react/no-unused-prop-types": "warn",
     },
   },
 

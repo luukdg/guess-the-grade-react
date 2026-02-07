@@ -1,16 +1,18 @@
-import { useState, useEffect, createContext, useContext } from "react"
 import { onAuthStateChanged, signInWithPopup } from "firebase/auth"
-import { auth, googleProvider } from "../../firebase/firebaseConfig"
+
+import { createContext, useContext, useEffect, useState } from "react"
+
 import { checkForUpdate } from "@/api/fetchAppVersion.jsx"
+
+import { auth, googleProvider } from "../../firebase/firebaseConfig"
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null) // null = not logged in
+  const [user, setUser] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [versionReady, setVersionReady] = useState(true)
 
-  // Check for app updates on mount
   useEffect(() => {
     async function run() {
       const ok = await checkForUpdate()
@@ -21,7 +23,6 @@ export const AuthProvider = ({ children }) => {
     run()
   }, [])
 
-  // Track login state automatically
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser)
@@ -30,18 +31,16 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe
   }, [])
 
-  // Function to log in with Google
   const loginWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider)
-      setUser(result.user) // update state
+      setUser(result.user)
       console.log("User logged in:", result.user.displayName)
     } catch (error) {
       console.error(error)
     }
   }
 
-  // Function to log out
   const logout = async () => {
     await auth.signOut()
     setUser(null)

@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
-import { createContext, useState, useContext, useEffect, useRef } from "react"
-import { LocalStorageAdapter } from "./localStorageAdapter"
-import { FirestoreAdapter } from "./fireStoreAdapter"
-import { useAuth } from "./loginContext"
 import { debounce } from "lodash"
+
+import { createContext, useContext, useEffect, useRef, useState } from "react"
+
+import { FirestoreAdapter } from "./fireStoreAdapter"
+import { LocalStorageAdapter } from "./localStorageAdapter"
+import { useAuth } from "./loginContext"
 
 const SettingsContext = createContext()
 
@@ -29,7 +30,6 @@ export const SettingsProvider = ({ children }) => {
   }
 
   const { user, authLoading } = useAuth() // Get user from auth context
-  const [videoId, setVideoId] = useState(null) // Saves the current video ID being played
   const [openControls, setOpenControls] = useState(true) // Video controls visibility
   const storeRef = useRef(null) // Reference to the storage adapter
   const [settings, setSettings] = useState(defaultSettings) // Settings state
@@ -163,8 +163,6 @@ export const SettingsProvider = ({ children }) => {
         updateGameStatsLocal,
         flushStatsToFirebase,
         resetCurrentStreak,
-        videoId,
-        setVideoId,
         openControls,
         setOpenControls,
         storeRef,

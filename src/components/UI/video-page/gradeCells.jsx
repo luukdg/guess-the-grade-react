@@ -16,7 +16,7 @@ export function GradeCell({ guess, outcome, difference, rounded }) {
       : difference === 1
         ? "text-orange-400 bg-primary-foreground"
         : outcome === false
-          ? "text-red-400 bg-primary-foreground"
+          ? "bg-primary-foreground"
           : ""
 
   return (

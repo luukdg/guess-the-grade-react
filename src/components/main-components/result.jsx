@@ -1,30 +1,31 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { ChartNoAxesColumn, Youtube } from "lucide-react"
+import { ChevronRight } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import { toast } from "sonner"
 
 import { useEffect, useState } from "react"
-import { currentGrade } from "./videoGuess"
-import { isGradeCorrect } from "../../functions/isGradeCorrect"
-import CheckGrade from "../UI/results-page/guessReponse"
-import { motion, AnimatePresence } from "motion/react"
+
 import { Button } from "@/components/ui/button"
-import GameOverButtons from "../UI/results-page/gameOverButtons"
-import { VideoPlayer } from "../UI/video-page/videoPlayer"
-import { Youtube, ChartNoAxesColumn } from "lucide-react"
-import StatTabs from "../UI/results-page/statTabs"
-import { ChevronRight } from "lucide-react"
-import { Report } from "../UI/video-page/reportVideo"
-import { Toaster } from "@/components/ui/sonner"
-import { toast } from "sonner"
 import { ButtonGroup } from "@/components/ui/button-group"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
+import { Toaster } from "@/components/ui/sonner"
+import { useGameContext } from "@/context/gameContext"
+
+import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import GameOverButtons from "../UI/results-page/gameOverButtons"
+import CheckGrade from "../UI/results-page/guessReponse"
+import StatTabs from "../UI/results-page/statTabs"
+import { Report } from "../UI/video-page/reportVideo"
+import { VideoPlayer } from "../UI/video-page/videoPlayer"
+import { currentGrade } from "./videoGuess"
 
 const Result = ({
   guess,
-  lives,
-  setLives,
   setStreak,
   restart,
   nextVideo,
@@ -34,11 +35,13 @@ const Result = ({
   firebaseId,
   gameFinished,
 }) => {
+  const { lives, decrementLife } = useGameContext()
   const { isCorrect } = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
   const [api, setApi] = useState(null)
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
+  const [videoIsReady, setVideoIsReady] = useState(false)
 
   useEffect(() => {
     if (!api) return
@@ -103,7 +106,7 @@ const Result = ({
                   gameFinished={gameFinished}
                   guess={guess}
                   lives={lives}
-                  setLives={setLives}
+                  decrementLife={decrementLife}
                   setStreak={setStreak}
                 />
                 <div className="mb-3 text-center text-lg">
@@ -204,6 +207,8 @@ const Result = ({
               className="absolute top-15 z-1 mb-15 flex aspect-[9/16] h-3/4 bg-black shadow-lg"
             >
               <VideoPlayer
+                setVideoIsReady={setVideoIsReady}
+                videoIsReady={videoIsReady}
                 innerClassName="h-full w-full"
                 className="relative"
               />
