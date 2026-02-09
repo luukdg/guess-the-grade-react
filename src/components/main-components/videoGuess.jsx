@@ -115,7 +115,7 @@ const VideoGuess = ({
           {!settings.submitOnDrag && (
             <Button
               size="lg"
-              variant="default"
+              variant={videoIsReady ? "default" : "outline"}
               className="w-full"
               onClick={() => {
                 videoIsReady ? handleSubmit() : null

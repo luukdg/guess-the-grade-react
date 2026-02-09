@@ -3,9 +3,11 @@ import { motion } from "framer-motion"
 const slidePop = {
   idle: { y: 0, scale: 1 },
   pop: {
-    y: [-10, 0],
-    scale: [1, 1.05, 1],
-    transition: { duration: 0.35, ease: "easeOut" },
+    scale: [1, 1.03, 1],
+    transition: {
+      duration: 0.4,
+      ease: "easeOut",
+    },
   },
 }
 

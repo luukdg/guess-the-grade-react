@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
 import {
-  loadDailyGameWon,
-  saveDailyGameWon,
+  loadDailyFirebaseId,
+  loadDailyGame,
+  loadDailyGuesses,
+  saveDailyGame,
 } from "@/functions/useDailyGameState"
 import { GameContextType, GuessStateType } from "@/types/gameContext"
 
@@ -10,17 +12,24 @@ const GameContext = createContext<GameContextType | undefined>(undefined)
 
 export const GameProvider = ({ children }: { children: any }) => {
   // General
-  const [firebaseId, setFirebaseId] = useState<string | null>(null)
+  const [firebaseId, setFirebaseId] = useState<string | null>(
+    loadDailyFirebaseId,
+  )
   const [correctGrade, setCorrectGrade] = useState<string | null>(null)
-  const [gameWon, setGameWon] = useState<boolean | null>(loadDailyGameWon)
+  const [gameWon, setGameWon] = useState<boolean | null>(loadDailyGame)
   const [videoId, setVideoId] = useState<string | null>(null)
   const [videoStats, setVideoStats] = useState<any>(null)
 
   // Boulder of the day
-  const [guessState, setGuessState] = useState<GuessStateType>({
-    guess: [],
-    outcome: [],
-    difference: [],
+  const [guessState, setGuessState] = useState<GuessStateType>(() => {
+    const stored = loadDailyGuesses()
+    return (
+      stored ?? {
+        guess: [],
+        outcome: [],
+        difference: [],
+      }
+    )
   })
 
   // Normal game mode
@@ -60,8 +69,10 @@ export const GameProvider = ({ children }: { children: any }) => {
   }
 
   useEffect(() => {
-    saveDailyGameWon(gameWon)
-  }, [gameWon])
+    if (gameWon === null) return
+
+    saveDailyGame(gameWon, guessState, firebaseId)
+  }, [gameWon, guessState, firebaseId])
 
   return (
     <GameContext.Provider

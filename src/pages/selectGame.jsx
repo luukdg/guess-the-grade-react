@@ -26,7 +26,11 @@ function SelectGame() {
         <Separator className="border-muted mb-3 w-full border-t" />
         <div className="mb-3 flex h-full w-full flex-col items-center gap-3">
           <Card
-            onClick={() => navigate("/boulderOfTheDay")}
+            onClick={() =>
+              gameWon !== null
+                ? navigate("/resultBoulderOfTheDay")
+                : navigate("/boulderOfTheDay")
+            }
             className="hover:bg-secondary relative w-full flex-1 cursor-pointer overflow-hidden sm:w-3/4 lg:w-1/2"
           >
             <img

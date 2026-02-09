@@ -1,5 +1,14 @@
 import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts"
 
+import { useEffect } from "react"
+
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import {
   ChartContainer,
   ChartTooltip,
@@ -13,7 +22,9 @@ const chartConfig = {
   },
 }
 
-export function BOTDStats({ videoStats }) {
+export function BOTDStats(guesses) {
+  const guessesPerRange = guesses
+
   const rangesToGrades = {
     "48-59": "5a/5c+",
     "60-63": "6a/6a+",
@@ -24,11 +35,9 @@ export function BOTDStats({ videoStats }) {
     "80-83": "7c/7c+",
   }
 
-  const guessesPerRange = videoStats
-
   const mergedData = Object.keys(rangesToGrades).map((range) => ({
     grades: rangesToGrades[range], // X-axis label
-    guesses: guessesPerRange[range] || 0, // Y-axis value
+    guesses: guessesPerRange.guesses[range] || 0, // Y-axis value
   }))
 
   let actualValue = 4
@@ -39,44 +48,58 @@ export function BOTDStats({ videoStats }) {
     { index: userValue, color: "oklch(70.4% 0.191 22.216)" }, // red-400
   ]
 
-  return (
-    <ChartContainer config={chartConfig}>
-      <BarChart accessibilityLayer data={mergedData}>
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey="grades"
-          tickLine={false}
-          tickMargin={20}
-          axisLine={false}
-          fontSize={11}
-          interval={0}
-        />
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
-        />
-        <Bar
-          dataKey="guesses"
-          radius={4}
-          shape={(props) => {
-            // check if this bar is highlighted
-            const highlight = highlightedBars.find(
-              (h) => h.index === props.index,
-            )
+  useEffect(() => {
+    console.log("guesses per range: ", guessesPerRange)
+  }, [guesses, guessesPerRange])
 
-            return (
-              <Rectangle
-                {...props}
-                fill="var(--color-guesses)" // always normal fill
-                stroke={highlight ? highlight.color : "none"} // only border
-                strokeWidth={highlight ? 2 : 0} // thickness of the border
-                strokeDasharray={highlight ? 4 : 0} // optional dashed border
-                strokeDashoffset={highlight ? 4 : 0} // optional dashed offset
-              />
-            )
-          }}
-        />
-      </BarChart>
-    </ChartContainer>
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Distribution of everyone&apos;s guesses.</CardTitle>
+        <CardDescription>
+          Showing total visitors for the last 6 months
+        </CardDescription>
+      </CardHeader>
+      <ChartContainer config={chartConfig}>
+        <BarChart accessibilityLayer data={mergedData}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="grades"
+            tickLine={false}
+            tickMargin={20}
+            axisLine={false}
+            fontSize={11}
+            interval={0}
+          />
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel />}
+          />
+          <Bar
+            dataKey="guesses"
+            label
+            radius={4}
+            shape={(props) => {
+              // check if this bar is highlighted
+              const highlight = highlightedBars.find(
+                (h) => h.index === props.index,
+              )
+
+              return (
+                <Rectangle
+                  {...props}
+                  fill="var(--color-guesses)" // always normal fill
+                  stroke={highlight ? highlight.color : ""} // only border
+                  strokeWidth={highlight ? 2 : 0} // thickness of the border
+                  strokeDasharray={highlight ? 4 : 0} // optional dashed border
+                  strokeDashoffset={highlight ? 4 : 0} // optional dashed offset
+                />
+              )
+            }}
+          />
+        </BarChart>
+      </ChartContainer>
+      <CardFooter>Average first guess</CardFooter>
+    </Card>
   )
 }

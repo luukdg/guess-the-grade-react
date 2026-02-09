@@ -81,6 +81,7 @@ export function VideoStats({ videos, currentIndex, currentGrade, guess }) {
             />
             <Bar
               dataKey="guesses"
+              label
               radius={4}
               shape={(props) => {
                 // check if this bar is highlighted
