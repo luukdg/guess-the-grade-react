@@ -59,7 +59,7 @@ export function HighScore() {
             for that.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <GetGif />
+        <GetGif maxStreak={settings.maxStreak} />
         <AlertDialogFooter>
           <AlertDialogAction>Close</AlertDialogAction>
         </AlertDialogFooter>

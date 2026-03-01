@@ -36,6 +36,7 @@ function BoulderOfTheDay() {
   const [numericGuess, setNumericGuess] = useState([68, 71])
   const [sliderValue, setSliderValue] = useState(30)
   const [videoIsReady, setVideoIsReady] = useState(false)
+  const [firstGuess, setFirstGuess] = useState(true)
 
   const handleChange = (event, newValue) => {
     setSliderValue(newValue)
@@ -56,7 +57,11 @@ function BoulderOfTheDay() {
     } else if (guessState.guess.length + 1 >= 3) {
       updateGameWon(false)
     }
-    updateUserGuess(firebaseId, numericGuess, "boulder-of-the-day")
+
+    if (firstGuess) {
+      updateUserGuess(firebaseId, numericGuess, "boulder-of-the-day")
+      setFirstGuess(false)
+    }
   }
 
   const fetchBoulderOfTheDay = async () => {

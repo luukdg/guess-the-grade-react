@@ -52,12 +52,14 @@ const ResultBoulderOfTheDay = () => {
       </div>
 
       <div className="text-center text-sm">
-        4<strong>Your guesses:</strong> {guesses.join(", ")}
+        <strong>Your guesses:</strong> {guesses.join(", ")}
       </div>
 
       <div className="mt-10 w-full">
         {isLoadingStats ? (
-          <Spinner className="size-12" />
+          <div className="flex h-full w-full items-center justify-center">
+            <Spinner className="size-12" />
+          </div>
         ) : (
           <BOTDStats guesses={videoStats} />
         )}
