@@ -18,6 +18,7 @@ function Game() {
   const [randomHoldIndex] = useState(() => Math.floor(Math.random() * 6))
   const [currentIndex, setCurrentIndex] = useState(0) // current video index
   const [videos, setVideos] = useState([]) // video array
+  const [credits, setCredits] = useState("") // video credits
   const gameFinished = lives > 0
 
   useEffect(() => {
@@ -56,6 +57,8 @@ function Game() {
             setCurrentIndex={setCurrentIndex}
             videos={videos}
             setVideos={setVideos}
+            setCredits={setCredits}
+            credits={credits}
           />
         )}
         {outcome === "result" && (
@@ -85,6 +88,7 @@ function Game() {
             setCurrentIndex={setCurrentIndex}
             videos={videos}
             currentIndex={currentIndex}
+            credits={credits}
           />
         )}
       </div>

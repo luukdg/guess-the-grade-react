@@ -68,6 +68,7 @@ export async function getData(useGradeScale, videoType) {
       grade: convertedGrade,
       ticketId: snap.docs[i].id,
       guesses: data.guesses || [],
+      credits: data.credits || "",
     })
   }
 

@@ -42,7 +42,7 @@ function SelectGame() {
             <div className="relative z-10 flex h-full flex-col justify-center text-center">
               <CardHeader className="w-full">
                 <CardTitle className="font-archivo-black text-2xl">
-                  Boulder of the day
+                  Daily Bloc
                 </CardTitle>
                 <CardDescription className="text-primary">
                   One new boulder every day. Closely observe and try to get it
@@ -69,7 +69,7 @@ function SelectGame() {
             <div className="relative z-10 flex h-full flex-col justify-center text-center">
               <CardHeader className="w-full">
                 <CardTitle className="font-archivo-black text-2xl">
-                  Play with 3 lives
+                  Survival mode
                 </CardTitle>
                 <CardDescription className="text-primary">
                   Watch videos of boulders and grade them. Try to guess as many

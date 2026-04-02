@@ -8,17 +8,15 @@ import {
   VolumeOff,
 } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
-
 import { useEffect, useState } from "react"
 import ReactPlayer from "react-player"
-
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Spinner } from "@/components/ui/spinner"
 import { useGameContext } from "@/context/gameContext"
 import { useSettings } from "@/context/settingsContext"
-
 import { Report } from "./reportVideo"
+import { Badge } from "@/components/ui/badge"
 
 const speeds = [1, 2]
 
@@ -27,6 +25,7 @@ export function VideoPlayer({
   innerClassName = "",
   setVideoIsReady,
   videoIsReady,
+  credits,
 }) {
   const { openControls, setOpenControls, settings } = useSettings()
   const { firebaseId, videoId } = useGameContext()
@@ -93,7 +92,11 @@ export function VideoPlayer({
             WebkitMaskImage:
               "linear-gradient(to bottom, black 60%, transparent 100%)",
           }}
-        ></div>
+        >
+          <div className="pt-1 pl-2">
+            <Badge>Credits: {credits}</Badge>
+          </div>
+        </div>
         <div className="absolute bottom-2 flex w-full flex-col items-center gap-4">
           <AnimatePresence initial={false}>
             {openControls && (

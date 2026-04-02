@@ -34,6 +34,7 @@ const Result = ({
   videos,
   firebaseId,
   gameFinished,
+  credits,
 }) => {
   const { lives, decrementLife } = useGameContext()
   const { isCorrect } = isGradeCorrect(guess)
@@ -211,6 +212,7 @@ const Result = ({
                 videoIsReady={videoIsReady}
                 innerClassName="h-full w-full"
                 className="relative"
+                credits={credits}
               />
             </motion.div>
           </>

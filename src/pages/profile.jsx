@@ -52,7 +52,60 @@ function Profile() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-4 flex flex-row items-center justify-center gap-2 text-base font-bold text-(--muted-foreground)">
+          <Separator className="border-muted flex-1 border-t" />
+          Daily Bloc
+          <Separator className="border-muted flex-1 border-t" />
+        </div>
+        <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-archivo-black">
+                Current streak:
+              </CardTitle>
+              <CardDescription className="text-primary text-2xl">
+                0
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-archivo-black">Max streak:</CardTitle>
+              <CardDescription className="text-primary text-2xl">
+                0
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-archivo-black">
+                Total games played:
+              </CardTitle>
+              <CardDescription className="text-primary text-2xl">
+                0
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-archivo-black">
+                Guess average:
+              </CardTitle>
+              <CardDescription className="text-primary text-2xl">
+                0
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+
+        <div className="mb-4">
+          <div className="flex flex-row items-center justify-center gap-2 text-base font-bold text-(--muted-foreground)">
+            <Separator className="border-muted flex-1 border-t" />
+            Surival mode
+            <Separator className="border-muted flex-1 border-t" />
+          </div>
+        </div>
+        <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-3">
           <Card>
             <CardHeader>
               <CardTitle className="font-archivo-black">
@@ -110,10 +163,9 @@ function Profile() {
             </CardHeader>
           </Card>
         </div>
-      </div>
-      <div className="flex w-full flex-col justify-end pb-2">
-        <Separator className="border-muted my-4 w-full border-t" />
-        <div className="flex w-full gap-2">
+
+        <Separator className="border-muted mb-4 w-full border-t" />
+        <div className="flex h-full w-full gap-2 pb-2">
           <Button
             onClick={() => navigate("/settings")}
             variant="outline"
@@ -122,7 +174,6 @@ function Profile() {
           >
             Settings
           </Button>
-
           <LogOutAlert />
         </div>
       </div>

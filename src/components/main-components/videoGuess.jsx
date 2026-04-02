@@ -28,6 +28,8 @@ const VideoGuess = ({
   setCurrentIndex,
   videos,
   setVideos,
+  credits,
+  setCredits,
 }) => {
   const { settings } = useSettings()
   const { updateVideoId } = useGameContext()
@@ -49,6 +51,7 @@ const VideoGuess = ({
         settings.videoType.value,
       )
       setVideos(newVideos)
+      setCredits(newVideos[0].credits)
       console.log(newVideos)
       setCurrentIndex(0)
       updateVideoId(newVideos[0].youtubeLink)
@@ -57,6 +60,7 @@ const VideoGuess = ({
     } else {
       updateVideoId(videos[currentIndex].youtubeLink)
       setFirebaseId(videos[currentIndex].ticketId)
+      setCredits(videos[currentIndex].credits)
       currentGrade = videos[currentIndex].grade
     }
   }
@@ -93,6 +97,7 @@ const VideoGuess = ({
         openToaster={openToaster}
         setVideoIsReady={setVideoIsReady}
         videoIsReady={videoIsReady}
+        credits={credits}
         className="border-border relative flex h-full items-center justify-center overflow-hidden border-1"
         innerClassName="absolute aspect-[9/16] h-full w-full bg-black"
       />
