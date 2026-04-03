@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-
 import { getBoulderOfTheDay } from "@/api/fetchBoulderOfTheDay"
 import { updateUserGuess } from "@/api/updateUserGuess"
 import { Button } from "@/components/UI/button"
@@ -37,6 +36,7 @@ function BoulderOfTheDay() {
   const [sliderValue, setSliderValue] = useState(30)
   const [videoIsReady, setVideoIsReady] = useState(false)
   const [firstGuess, setFirstGuess] = useState(true)
+  const [credits, setCredits] = useState("")
 
   const handleChange = (event, newValue) => {
     setSliderValue(newValue)
@@ -70,6 +70,7 @@ function BoulderOfTheDay() {
     updateVideoId(newVideo.youtubeLink)
     updateFirebaseId(newVideo.ticketId)
     updateCorrectGrade(newVideo.grade)
+    setCredits(newVideo.credits)
   }
 
   useEffect(() => {
@@ -115,6 +116,7 @@ function BoulderOfTheDay() {
         <VideoPlayer
           setVideoIsReady={setVideoIsReady}
           videoIsReady={videoIsReady}
+          credits={credits}
           className="border-border relative flex h-full items-center justify-center overflow-hidden border-1"
           innerClassName="absolute aspect-[9/16] h-full w-full bg-black"
         />

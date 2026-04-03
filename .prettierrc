@@ -1,7 +1,4 @@
 {
   "semi": false,
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "importOrder": ["^react", "^@/", "^[./]"],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

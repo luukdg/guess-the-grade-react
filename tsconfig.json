@@ -3,6 +3,8 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "outDir": "./dist",
+    "noEmit": true,
 
     "jsx": "react-jsx",
 

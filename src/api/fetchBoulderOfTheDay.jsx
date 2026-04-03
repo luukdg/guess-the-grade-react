@@ -32,5 +32,6 @@ export async function getBoulderOfTheDay(gradeScale) {
     grade: convertedGrade,
     ticketId: snap.id,
     guesses: video.guesses,
+    credits: video.credits,
   }
 }
