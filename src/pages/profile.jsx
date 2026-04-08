@@ -112,7 +112,7 @@ function Profile() {
                 Videos watched:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.videosWatched}
+                {settings.survivalStats.videosWatched}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -122,7 +122,7 @@ function Profile() {
                 Correct guesses:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.correctGuesses}
+                {settings.survivalStats.correctGuesses}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -130,7 +130,7 @@ function Profile() {
             <CardHeader>
               <CardTitle className="font-archivo-black">Accuracy:</CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.accuracy}%
+                {settings.survivalStats.accuracy}%
               </CardDescription>
             </CardHeader>
           </Card>
@@ -138,7 +138,7 @@ function Profile() {
             <CardHeader>
               <CardTitle className="font-archivo-black">Best streak:</CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {parseFloat(settings.maxStreak.toFixed(2))}
+                {parseFloat(settings.survivalStats.maxStreak.toFixed(2))}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -148,7 +148,7 @@ function Profile() {
                 Average score:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {parseFloat(settings.averageScore.toFixed(2))}
+                {parseFloat(settings.survivalStats.averageScore.toFixed(2))}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -158,7 +158,7 @@ function Profile() {
                 Total games played:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {settings.totalGames}
+                {settings.survivalStats.totalGames}
               </CardDescription>
             </CardHeader>
           </Card>

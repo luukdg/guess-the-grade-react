@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { debounce } from "lodash"
-
 import { createContext, useContext, useEffect, useRef, useState } from "react"
-
 import { FirestoreAdapter } from "./fireStoreAdapter"
 import { LocalStorageAdapter } from "./localStorageAdapter"
 import { useAuth } from "./loginContext"
@@ -11,13 +9,15 @@ const SettingsContext = createContext()
 
 export const SettingsProvider = ({ children }) => {
   const defaultSettings = {
-    totalGames: 0,
-    currentStreak: 0,
-    videosWatched: 0,
-    correctGuesses: 0,
-    accuracy: 0,
-    maxStreak: 0,
-    averageScore: 0,
+    survivalStats: {
+      totalGames: 0,
+      currentStreak: 0,
+      videosWatched: 0,
+      correctGuesses: 0,
+      accuracy: 0,
+      maxStreak: 0,
+      averageScore: 0,
+    },
     firstTime: true,
     submitOnDrag: false,
     infinite: false,
@@ -100,21 +100,23 @@ export const SettingsProvider = ({ children }) => {
   // Update game stats locally
   function updateGameStatsLocal({ correct, gameFinished }) {
     setSettings((prev) => {
-      const currentStreak = correct
-        ? prev.currentStreak + 1
-        : prev.currentStreak
-      console.log("correct =", correct, "prev streak =", prev.currentStreak)
+      const stats = prev.survivalStats
 
-      const maxStreak = Math.max(prev.maxStreak, currentStreak)
-      const correctGuesses = prev.correctGuesses + (correct ? 1 : 0) // increment correct guesses if the answer is correct
-      const videosWatched = prev.videosWatched + 1 // increment videos watched
+      const currentStreak = correct
+        ? stats.currentStreak + 1
+        : stats.currentStreak
+      console.log("correct =", correct, "prev streak =", stats.currentStreak)
+
+      const maxStreak = Math.max(stats.maxStreak, currentStreak)
+      const correctGuesses = stats.correctGuesses + (correct ? 1 : 0) // increment correct guesses if the answer is correct
+      const videosWatched = stats.videosWatched + 1 // increment videos watched
       const accuracy = Math.round((correctGuesses / videosWatched) * 100) // calculate accuracy
 
-      let totalGames = prev.totalGames
-      let averageScore = prev.averageScore
+      let totalGames = stats.totalGames
+      let averageScore = stats.averageScore
 
       if (!gameFinished) {
-        totalGames = prev.totalGames + 1 // increment total games played
+        totalGames = stats.totalGames + 1 // increment total games played
         averageScore = correctGuesses / totalGames // Calcualate average score
         console.log("New total games:", totalGames)
         console.log("New average score:", averageScore)
@@ -129,13 +131,16 @@ export const SettingsProvider = ({ children }) => {
 
       return {
         ...prev,
-        currentStreak,
-        maxStreak,
-        correctGuesses,
-        videosWatched,
-        accuracy,
-        averageScore,
-        totalGames,
+        survivalStats: {
+          ...stats,
+          currentStreak,
+          maxStreak,
+          correctGuesses,
+          videosWatched,
+          accuracy,
+          averageScore,
+          totalGames,
+        },
       }
     })
   }
@@ -150,7 +155,9 @@ export const SettingsProvider = ({ children }) => {
   function resetCurrentStreak() {
     setSettings((prev) => ({
       ...prev,
-      currentStreak: 0,
+      survivalStats: {
+        currentStreak: 0,
+      },
     }))
     console.log("I AM RESETTING THE STREAK")
   }
