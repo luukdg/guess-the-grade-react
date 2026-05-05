@@ -12,9 +12,8 @@ function getTodayYYYYMMDD() {
 
 export async function getDailyStats() {
   const today = getTodayYYYYMMDD()
-  console.log(today) // e.g. "2026-02-02"
 
-  const ref = doc(db, "boulder-of-the-day", "2026-02-03")
+  const ref = doc(db, "boulder-of-the-day", today)
   const snap = await getDoc(ref)
 
   if (!snap.exists()) return null

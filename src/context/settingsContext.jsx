@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { debounce } from "lodash"
+import { debounce, merge } from "lodash"
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { FirestoreAdapter } from "./fireStoreAdapter"
 import { LocalStorageAdapter } from "./localStorageAdapter"
@@ -18,6 +18,12 @@ export const SettingsProvider = ({ children }) => {
       maxStreak: 0,
       averageScore: 0,
     },
+    dailyBlocStats: {
+      totalGames: 0,
+      currentStreak: 0,
+      maxStreak: 0,
+      averageScore: 0,
+    },
     firstTime: true,
     submitOnDrag: false,
     infinite: false,
@@ -29,11 +35,38 @@ export const SettingsProvider = ({ children }) => {
     gradeScale: { value: "font-scale", label: "Font-scale" },
   }
 
-  const { user, authLoading } = useAuth() // Get user from auth context
-  const [openControls, setOpenControls] = useState(true) // Video controls visibility
-  const storeRef = useRef(null) // Reference to the storage adapter
-  const [settings, setSettings] = useState(defaultSettings) // Settings state
+  const { user, authLoading } = useAuth()
+  const [openControls, setOpenControls] = useState(true)
+  const storeRef = useRef(null)
+  const [settings, setSettings] = useState(defaultSettings)
   const [flushReady, setFlushReady] = useState(false)
+
+  // ✅ Keep a ref of current settings so debounced functions always see latest value
+  const settingsRef = useRef(settings)
+  useEffect(() => {
+    settingsRef.current = settings
+  }, [settings])
+
+  // ✅ Keep a ref of current user so debounced functions always see latest value
+  const userRef = useRef(user)
+  useEffect(() => {
+    userRef.current = user
+  }, [user])
+
+  // ✅ Create debounced function once using useRef to avoid recreation on every render
+  const saveSettingsDebounced = useRef(
+    debounce(async (data) => {
+      if (!storeRef.current) return
+
+      if (userRef.current) {
+        await storeRef.current.save(data, userRef.current)
+      } else {
+        await storeRef.current.save(data)
+      }
+
+      console.log("Settings saved:", data)
+    }, 2000),
+  ).current
 
   // Initialize store and load settings
   useEffect(() => {
@@ -68,27 +101,22 @@ export const SettingsProvider = ({ children }) => {
     })
   }, [user])
 
-  // Debounced save function
-  const saveSettingsDebounced = debounce(async (data) => {
-    if (!storeRef.current) return
-
-    if (user) {
-      await storeRef.current.save(data, user)
-    } else {
-      await storeRef.current.save(data)
-    }
-
-    console.log("Settings saved:", data)
-  }, 2000)
-
   // Update setting function
   function updateSetting(key, value) {
-    if (settings[key] === value) return // skip if no change
+    if (settings[key] === value) return
     const newSettings = { ...settings, [key]: value }
     setSettings(newSettings)
-
-    // Debounced save
     saveSettingsDebounced(newSettings)
+  }
+
+  // ✅ Safe function for external consumers (e.g. GameContext)
+  // Merges partial data with current settings before saving
+  function saveToStore(partialData) {
+    if (!storeRef.current) return
+    // ✅ Deep merge instead of shallow spread
+    const merged = merge({}, settingsRef.current, partialData)
+    setSettings(merged)
+    saveSettingsDebounced(merged)
   }
 
   useEffect(() => {
@@ -100,7 +128,7 @@ export const SettingsProvider = ({ children }) => {
   // Update game stats locally
   function updateGameStatsLocal({ correct, gameFinished }) {
     setSettings((prev) => {
-      const stats = prev.survivalStats
+      const stats = prev.survivalStats ?? defaultSettings.survivalStats
 
       const currentStreak = correct
         ? stats.currentStreak + 1
@@ -108,16 +136,16 @@ export const SettingsProvider = ({ children }) => {
       console.log("correct =", correct, "prev streak =", stats.currentStreak)
 
       const maxStreak = Math.max(stats.maxStreak, currentStreak)
-      const correctGuesses = stats.correctGuesses + (correct ? 1 : 0) // increment correct guesses if the answer is correct
-      const videosWatched = stats.videosWatched + 1 // increment videos watched
-      const accuracy = Math.round((correctGuesses / videosWatched) * 100) // calculate accuracy
+      const correctGuesses = stats.correctGuesses + (correct ? 1 : 0)
+      const videosWatched = stats.videosWatched + 1
+      const accuracy = Math.round((correctGuesses / videosWatched) * 100)
 
       let totalGames = stats.totalGames
       let averageScore = stats.averageScore
 
       if (!gameFinished) {
-        totalGames = stats.totalGames + 1 // increment total games played
-        averageScore = correctGuesses / totalGames // Calcualate average score
+        totalGames = stats.totalGames + 1
+        averageScore = correctGuesses / totalGames
         console.log("New total games:", totalGames)
         console.log("New average score:", averageScore)
         setFlushReady(true)
@@ -147,7 +175,8 @@ export const SettingsProvider = ({ children }) => {
 
   function flushStatsToFirebase() {
     if (!storeRef.current) return
-    saveSettingsDebounced(settings)
+    // ✅ Use settingsRef.current instead of settings to avoid stale closure
+    saveSettingsDebounced(settingsRef.current)
     setFlushReady(false)
     console.log("Flushing stats to Firebase")
   }
@@ -156,10 +185,10 @@ export const SettingsProvider = ({ children }) => {
     setSettings((prev) => ({
       ...prev,
       survivalStats: {
+        ...prev.survivalStats,
         currentStreak: 0,
       },
     }))
-    console.log("I AM RESETTING THE STREAK")
   }
 
   return (
@@ -174,6 +203,7 @@ export const SettingsProvider = ({ children }) => {
         setOpenControls,
         storeRef,
         user,
+        saveToStore, // ✅ expose saveToStore instead of saveSettingsDebounced
       }}
     >
       {children}

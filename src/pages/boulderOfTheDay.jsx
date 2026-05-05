@@ -51,6 +51,7 @@ function BoulderOfTheDay() {
     const { isCorrect, diff } = isGradeCorrect(convertedGuess, correctGrade)
 
     updateGuessState(convertedGuess, isCorrect, diff)
+    // updateGameStatsLocal({ isCorrect, anotherVariable }, "daily")
 
     if (isCorrect) {
       updateGameWon(true)
@@ -65,12 +66,16 @@ function BoulderOfTheDay() {
   }
 
   const fetchBoulderOfTheDay = async () => {
-    const newVideo = await getBoulderOfTheDay(settings.gradeScale.value)
-    setVideoStats(newVideo.guesses)
-    updateVideoId(newVideo.youtubeLink)
-    updateFirebaseId(newVideo.ticketId)
-    updateCorrectGrade(newVideo.grade)
-    setCredits(newVideo.credits)
+    try {
+      const newVideo = await getBoulderOfTheDay(settings.gradeScale.value)
+      setVideoStats(newVideo.guesses)
+      updateVideoId(newVideo.youtubeLink)
+      updateFirebaseId(newVideo.ticketId)
+      updateCorrectGrade(newVideo.grade)
+      setCredits(newVideo.credits)
+    } catch (error) {
+      console.error("Failed to fetch boulder of the day:", error)
+    }
   }
 
   useEffect(() => {

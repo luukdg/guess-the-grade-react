@@ -22,6 +22,7 @@ function Game() {
   const gameFinished = lives > 0
 
   useEffect(() => {
+    setLives(3)
     resetCurrentStreak()
   }, [])
 

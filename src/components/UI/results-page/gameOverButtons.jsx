@@ -11,7 +11,9 @@ export default function GameOverButtons({ restart }) {
         size="lg"
         variant="outline"
         className="flex-1"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          navigate("/")
+        }}
       >
         Home
       </Button>

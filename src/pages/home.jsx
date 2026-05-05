@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { useSettings } from "@/context/settingsContext"
 import { useTheme } from "@/context/themeProvider"
 
-import { HighScore } from "../components/UI/home-page/highScoreButton"
 import gradeLogoLight from "/logo-light.svg"
 import gradeLogo from "/logo.svg"
 
@@ -16,8 +15,8 @@ function Home() {
 
   return (
     <div className="align-sel relative flex h-full w-full flex-1 flex-col items-center px-3 pt-3">
-      <div className="flex w-full flex-row justify-between gap-2">
-        <HighScore />
+      <div className="flex w-full flex-row justify-end gap-2">
+        {/* <HighScore /> */}
         <div>
           <img
             className="border-primary h-10 w-10 rounded-full border-2 object-cover"

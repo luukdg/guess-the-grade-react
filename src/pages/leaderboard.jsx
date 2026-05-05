@@ -22,11 +22,18 @@ import { useTheme } from "@/context/themeProvider"
 import ClimberIconLight from "/climber-light.svg"
 import climberIcon from "/climber.svg"
 
-const options = [
-  { value: "maxStreak", label: "Max Streak" },
-  { value: "accuracy", label: "Guess Accuracy" },
-  { value: "totalGames", label: "Total Games" },
-]
+// Different options per game mode
+const statOptions = {
+  survivalStats: [
+    { value: "maxStreak", label: "Max Streak" },
+    { value: "accuracy", label: "Accuracy" },
+    { value: "totalGames", label: "Total Games" },
+  ],
+  dailyBlocStats: [
+    { value: "maxStreak", label: "Max Streak" },
+    { value: "averageScore", label: "Guess Average" },
+  ],
+}
 
 function Leaderboard() {
   const { user, loginWithGoogle } = useAuth()
@@ -34,27 +41,40 @@ function Leaderboard() {
   const [dataLoading, setDataLoading] = useState(false)
   const [dataType, setDataType] = useState("maxStreak")
   const [data, setData] = useState({})
+  const [gameMode, setGameMode] = useState("survivalStats")
+
+  const options = statOptions[gameMode]
 
   const leaderboard = async () => {
     if (!user) return
-    if (data[dataType]) return // we already have data, skip fetch
+    const cacheKey = `${gameMode}_${dataType}` // ✅ unique key per mode + stat
+    if (data[cacheKey]) return
 
     setDataLoading(false)
-    const leaderboardData = await getLeaderBoard(dataType)
-    setData((prev) => ({ ...prev, [dataType]: leaderboardData }))
-    console.log("Leaderboard data: ", leaderboardData)
+    const leaderboardData = await getLeaderBoard(dataType, gameMode)
+    setData((prev) => ({ ...prev, [cacheKey]: leaderboardData }))
     setDataLoading(true)
+  }
+
+  // ✅ Reset dataType when switching game mode if it doesn't exist in new options
+  function handleGameModeChange(mode) {
+    setGameMode(mode)
+    const modeOptions = statOptions[mode]
+    if (!modeOptions.find((o) => o.value === dataType)) {
+      setDataType(modeOptions[0].value)
+    }
   }
 
   useEffect(() => {
     leaderboard()
-  }, [dataType, user])
+  }, [dataType, gameMode, user]) // ✅ add gameMode as dependency
 
-  // Reorder options to have selected one first
   const orderedOptions = [
     options.find((o) => o.value === dataType),
     ...options.filter((o) => o.value !== dataType),
   ]
+
+  const cacheKey = `${gameMode}_${dataType}`
 
   return (
     <div className="border-border flex h-full w-full flex-col overflow-y-auto px-3 pt-3">
@@ -67,9 +87,31 @@ function Leaderboard() {
         {user ? (
           dataLoading ? (
             <div className="flex h-full w-full flex-col items-center justify-start gap-2 md:w-3/4 lg:w-1/2">
-              <div className="w-full">
+              <div className="flex w-full items-center justify-between">
+                <div className="flex rounded-md border">
+                  <Button
+                    variant={gameMode === "survivalStats" ? "default" : "ghost"}
+                    size="sm"
+                    className="rounded-r-none"
+                    onClick={() => handleGameModeChange("survivalStats")}
+                  >
+                    Survival
+                  </Button>
+                  <Button
+                    variant={
+                      gameMode === "dailyBlocStats" ? "default" : "ghost"
+                    }
+                    size="sm"
+                    className="rounded-l-none"
+                    onClick={() => handleGameModeChange("dailyBlocStats")}
+                  >
+                    Daily Bloc
+                  </Button>
+                </div>
+
+                {/* Stat selector */}
                 <Select value={dataType} onValueChange={setDataType}>
-                  <SelectTrigger className="dark:bg-card w-[180px]">
+                  <SelectTrigger className="dark:bg-card">
                     <SelectValue placeholder="Data Type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -81,43 +123,51 @@ function Leaderboard() {
                   </SelectContent>
                 </Select>
               </div>
+
               <Card className="flex w-full flex-col gap-3 p-4">
-                {data[dataType]?.map((user, index) => (
-                  <div
-                    key={user.id}
-                    className="flex flex-row items-center gap-2"
-                  >
-                    {index + 1}.
-                    <Avatar>
-                      <AvatarImage
-                        src={user?.profile.photoURL}
-                        alt="@shadcn"
-                        referrerPolicy="no-referrer"
-                      />
-                      <AvatarFallback>
-                        <img
-                          className="w-6"
-                          src={
-                            theme === "dark" ? climberIcon : ClimberIconLight
-                          }
-                          alt=""
+                {data[cacheKey]?.map(
+                  (
+                    user,
+                    index, // ✅ use cacheKey
+                  ) => (
+                    <div
+                      key={user.id}
+                      className="flex flex-row items-center gap-2"
+                    >
+                      {index + 1}.
+                      <Avatar>
+                        <AvatarImage
+                          src={user?.profile.photoURL}
+                          alt="@shadcn"
+                          referrerPolicy="no-referrer"
                         />
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex w-full flex-row items-center justify-between">
-                      <span>
-                        {user?.profile?.displayName?.split(" ")[0] ||
-                          "Anonymous"}{" "}
-                      </span>
-                      <span>
-                        <strong className="text-xl font-bold">
-                          {user.settings[dataType]}
-                          {dataType === "accuracy" ? "%" : ""}
-                        </strong>
-                      </span>
+                        <AvatarFallback>
+                          <img
+                            className="w-6"
+                            src={
+                              theme === "dark" ? climberIcon : ClimberIconLight
+                            }
+                            alt=""
+                          />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex w-full flex-row items-center justify-between">
+                        <span>
+                          {user?.profile?.displayName?.split(" ")[0] ||
+                            "Anonymous"}
+                        </span>
+                        <span>
+                          <strong className="text-xl font-bold">
+                            {user?.settings[gameMode][dataType]}
+                            {dataType === "accuracy" ? "%" : ""}
+                            {dataType === "guessAverage" ? " avg" : ""}{" "}
+                            {/* ✅ */}
+                          </strong>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ),
+                )}
               </Card>
             </div>
           ) : (
@@ -132,11 +182,10 @@ function Leaderboard() {
               <br />
               to view the leaderboard.
             </span>
-
             <Button variant="default" onClick={loginWithGoogle}>
               Login with Google
             </Button>
-          </div> // render this if user is falsy
+          </div>
         )}
       </div>
     </div>

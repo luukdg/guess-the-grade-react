@@ -64,7 +64,7 @@ function Profile() {
                 Current streak:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                0
+                {settings.dailyBlocStats.currentStreak}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -72,7 +72,7 @@ function Profile() {
             <CardHeader>
               <CardTitle className="font-archivo-black">Max streak:</CardTitle>
               <CardDescription className="text-primary text-2xl">
-                0
+                {settings.dailyBlocStats.maxStreak}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -82,7 +82,7 @@ function Profile() {
                 Total games played:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                0
+                {settings.dailyBlocStats.totalGames}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -92,7 +92,7 @@ function Profile() {
                 Guess average:
               </CardTitle>
               <CardDescription className="text-primary text-2xl">
-                0
+                {settings.dailyBlocStats.averageScore}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -138,7 +138,7 @@ function Profile() {
             <CardHeader>
               <CardTitle className="font-archivo-black">Best streak:</CardTitle>
               <CardDescription className="text-primary text-2xl">
-                {parseFloat(settings.survivalStats.maxStreak.toFixed(2))}
+                {parseFloat(settings.survivalStats.maxStreak)}
               </CardDescription>
             </CardHeader>
           </Card>

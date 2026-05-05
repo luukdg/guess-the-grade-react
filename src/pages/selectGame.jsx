@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { useGameContext } from "@/context/gameContext"
+import { CountdownToMidnight } from "@/components/UI/countdown"
 
 import ImageOne from "/boulderOne.webp"
 import ImageTwo from "/boulderTwo.webp"
@@ -49,15 +50,22 @@ function SelectGame() {
                   right within 3 turns.
                 </CardDescription>
                 {gameWon !== null && (
-                  <div className="text-destructive font-bold">
-                    You already played today.
+                  <div className="font-bold">
+                    <div className="text-muted-foreground text-sm">
+                      Next challenge in
+                    </div>
+                    <div className="text-destructive text-lg">
+                      <CountdownToMidnight />
+                    </div>
                   </div>
                 )}
               </CardHeader>
             </div>
           </Card>
           <Card
-            onClick={() => navigate("/game")}
+            onClick={() => {
+              navigate("/game")
+            }}
             className="hover:bg-secondary relative w-full flex-1 cursor-pointer overflow-hidden sm:w-3/4 lg:w-1/2"
           >
             <img
