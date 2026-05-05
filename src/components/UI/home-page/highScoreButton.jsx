@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
-import { retrieveStreak } from "@/api/localStorage/streakLocalStorage"
 import { Trophy } from "lucide-react"
+
+import GetGif from "@/api/giphy/giphyApi"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,13 +11,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import GetGif from "@/api/giphy/giphyApi"
+import { Button } from "@/components/ui/button"
+import { useSettings } from "@/context/settingsContext"
 
 export function HighScore() {
-  const currentStreak = retrieveStreak()
+  const { settings } = useSettings()
 
   // Show different message with no high score
-  if (currentStreak === null || currentStreak === "0") {
+  if (settings.maxStreak === null || settings.maxStreak === "0") {
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -45,18 +46,20 @@ export function HighScore() {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="default" size="sm">
-          <Trophy /> {currentStreak}
+          <Trophy /> {settings.maxStreak}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Your high score: {currentStreak}</AlertDialogTitle>
+          <AlertDialogTitle>
+            Your high score: {settings.maxStreak}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            {currentStreak} correct answers! Nice one, you deserve a gif for
-            that.
+            {settings.maxStreak} correct answers! Nice one, you deserve a gif
+            for that.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <GetGif />
+        <GetGif maxStreak={settings.maxStreak} />
         <AlertDialogFooter>
           <AlertDialogAction>Close</AlertDialogAction>
         </AlertDialogFooter>

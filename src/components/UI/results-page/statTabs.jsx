@@ -1,11 +1,5 @@
-import { VideoStats } from "./statistics"
 import ComparePickedGrade from "./comparePickedGrade"
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { VideoStats } from "./statistics"
 
 const StatTabs = ({ videos, currentIndex, currentGrade, guess }) => {
   return (
@@ -18,12 +12,6 @@ const StatTabs = ({ videos, currentIndex, currentGrade, guess }) => {
           currentGrade={currentGrade}
           guess={guess}
         />
-        <Card className="h-40 w-full">
-          <CardHeader>
-            <CardTitle>More to come...</CardTitle>
-            <CardDescription></CardDescription>
-          </CardHeader>
-        </Card>
       </div>
     </div>
   )

@@ -1,31 +1,31 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { ChartNoAxesColumn, Youtube } from "lucide-react"
+import { ChevronRight } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import { toast } from "sonner"
 
 import { useEffect, useState } from "react"
-import { currentGrade } from "./videoGuess"
-import { isGradeCorrect } from "../../functions/isGradeCorrect"
-import CheckGrade from "../UI/results-page/guessReponse"
-import { motion, AnimatePresence } from "motion/react"
+
 import { Button } from "@/components/ui/button"
-import GameOverButtons from "../UI/results-page/gameOverButtons"
-import { saveStreakToLocalStorage } from "../../api/localStorage/streakLocalStorage"
-import { VideoPlayer } from "../UI/video-page/videoPlayer"
-import { Youtube } from "lucide-react"
-import StatTabs from "../UI/results-page/statTabs"
-import { ChevronRight } from "lucide-react"
-import { Report } from "../UI/video-page/reportVideo"
-import { Toaster } from "@/components/ui/sonner"
-import { toast } from "sonner"
+import { ButtonGroup } from "@/components/ui/button-group"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
+import { Toaster } from "@/components/ui/sonner"
+import { useGameContext } from "@/context/gameContext"
+
+import { isGradeCorrect } from "../../functions/isGradeCorrect"
+import GameOverButtons from "../UI/results-page/gameOverButtons"
+import CheckGrade from "../UI/results-page/guessReponse"
+import StatTabs from "../UI/results-page/statTabs"
+import { Report } from "../UI/video-page/reportVideo"
+import { VideoPlayer } from "../UI/video-page/videoPlayer"
+import { currentGrade } from "./videoGuess"
 
 const Result = ({
   guess,
-  lives,
-  setLives,
-  streak,
   setStreak,
   restart,
   nextVideo,
@@ -33,12 +33,16 @@ const Result = ({
   currentIndex,
   videos,
   firebaseId,
+  gameFinished,
+  credits,
 }) => {
-  const isCorrect = isGradeCorrect(guess)
+  const { lives, decrementLife } = useGameContext()
+  const { isCorrect } = isGradeCorrect(guess)
   const [openVideo, setOpenVideo] = useState(false)
   const [api, setApi] = useState(null)
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
+  const [videoIsReady, setVideoIsReady] = useState(false)
 
   useEffect(() => {
     if (!api) return
@@ -52,7 +56,6 @@ const Result = ({
   }, [api])
 
   useEffect(() => {
-    saveStreakToLocalStorage(streak)
     setCurrentIndex((prev) => prev + 1)
   }, [])
 
@@ -101,10 +104,10 @@ const Result = ({
                 }}
               >
                 <CheckGrade
+                  gameFinished={gameFinished}
                   guess={guess}
                   lives={lives}
-                  setLives={setLives}
-                  streak={streak}
+                  decrementLife={decrementLife}
                   setStreak={setStreak}
                 />
                 <div className="mb-3 text-center text-lg">
@@ -126,15 +129,29 @@ const Result = ({
                 </div>
 
                 <div className="flex flex-row gap-2">
-                  <Button
-                    onClick={() => setOpenVideo(true)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    <Youtube />
-                    Watch again
-                  </Button>
-                  <Report firebaseId={firebaseId} openToaster={openToaster} />
+                  <ButtonGroup>
+                    <Button
+                      onClick={() => setOpenVideo(true)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Youtube />
+                      Watch again
+                    </Button>
+                    <Report
+                      variant="outline"
+                      firebaseId={firebaseId}
+                      openToaster={openToaster}
+                    />
+                    <Button
+                      onClick={() => api && api.scrollTo(1)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <ChartNoAxesColumn />
+                      Stats
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </motion.div>
             </CarouselItem>
@@ -151,12 +168,12 @@ const Result = ({
         </Carousel>
       </div>
 
-      <div className="flex h-11 w-full gap-2 pb-2">
-        {lives === 0 ? (
+      <div className="flex h-12 w-full gap-2 pb-2">
+        {!gameFinished ? (
           <GameOverButtons restart={restart} />
         ) : (
           <Button
-            size="default"
+            size="lg"
             variant="default"
             className="w-full"
             onClick={() => nextVideo()}
@@ -188,11 +205,14 @@ const Result = ({
                 duration: 0.2,
                 ease: [0.34, 1.56, 0.64, 1],
               }}
-              className="absolute z-1 mb-15 flex aspect-[9/16] h-3/4 bg-black shadow-lg"
+              className="absolute top-15 z-1 mb-15 flex aspect-[9/16] h-3/4 bg-black shadow-lg"
             >
               <VideoPlayer
+                setVideoIsReady={setVideoIsReady}
+                videoIsReady={videoIsReady}
                 innerClassName="h-full w-full"
                 className="relative"
+                credits={credits}
               />
             </motion.div>
           </>

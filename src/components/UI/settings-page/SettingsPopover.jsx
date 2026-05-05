@@ -1,4 +1,5 @@
 import { useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -16,18 +17,17 @@ import { useSettings } from "@/context/settingsContext"
 
 export function ComboBoxResponsive({ inputArray, localStorageType }) {
   const [open, setOpen] = useState(false)
-  const { videoType, updateVideoType, gradeScale, updateGradeScale } =
-    useSettings()
+  const { settings, updateSetting } = useSettings()
   const statuses = inputArray
   let storedValue = null
   let storedFunction = null
 
   if (localStorageType === "gradeScale") {
-    storedValue = gradeScale
-    storedFunction = updateGradeScale
+    storedValue = settings.gradeScale
+    storedFunction = (value) => updateSetting("gradeScale", value)
   } else {
-    storedValue = videoType
-    storedFunction = updateVideoType
+    storedValue = settings.videoType
+    storedFunction = (value) => updateSetting("videoType", value)
   }
 
   return (

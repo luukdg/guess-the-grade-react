@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "164563794329",
+    "project_id": "guess-the-grade-1a830",
+    "storage_bucket": "guess-the-grade-1a830.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164563794329:android:4cd5dc94736b7f93643b08",
+        "android_client_info": {
+          "package_name": "app.web.guess_the_grade_1a830.twa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnGqwnaTTOKcHBogTfoDslIHqS9n64YkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

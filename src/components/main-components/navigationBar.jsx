@@ -1,15 +1,18 @@
+import { Home, Play, Settings, Trophy, Upload } from "lucide-react"
+
+import { NavLink } from "react-router-dom"
+
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import { Home, Settings, Upload, Play } from "lucide-react"
-import { NavLink } from "react-router-dom"
 
 const navigationMenuItems = [
   { title: "Home", href: "/", icon: Home },
-  { title: "Play", href: "/game", icon: Play },
+  { title: "Play", href: "/selectGame", icon: Play },
+  { title: "Leaderboard", href: "/leaderboard", icon: Trophy },
   { title: "Upload", href: "/upload", icon: Upload },
   { title: "Settings", href: "/settings", icon: Settings },
 ]
@@ -21,10 +24,12 @@ export default function NavigationMenuMobile() {
         {navigationMenuItems.map((item) => (
           <NavigationMenuItem key={item.title}>
             <NavLink
+              // change "py-3" for padding and "size-5" for icon size
+              end={false}
               to={item.href}
               className={({ isActive }) =>
                 cn(
-                  "data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground text-muted-foreground flex h-auto w-screen flex-col items-center gap-1 rounded-none p-2 py-2 text-xs transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4",
+                  "data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground text-muted-foreground flex w-screen flex-col items-center gap-1 rounded-none p-2 py-5 text-xs transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-5",
                   "transition-colors outline-none",
                   isActive &&
                     "bg-accent text-accent-foreground focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-accent-foreground focus-visible:ring-[3px]",
@@ -32,7 +37,7 @@ export default function NavigationMenuMobile() {
               }
             >
               <item.icon />
-              <span>{item.title}</span>
+              {/* <span>{item.title}</span> */}
             </NavLink>
           </NavigationMenuItem>
         ))}

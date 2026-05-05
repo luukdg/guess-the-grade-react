@@ -1,8 +1,24 @@
-import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { Separator } from "@radix-ui/react-separator"
+import UrlParser from "js-video-url-parser"
+import { Check, ChevronsUpDown } from "lucide-react"
+import { SearchCheck, Upload } from "lucide-react"
+import { toast } from "sonner"
 import { z } from "zod"
-import { cn } from "@/lib/utils"
+
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+
+import { uploadNewBOTD } from "@/api/uploadNewBOTD"
+import { uploadNewVideo } from "@/api/uploadNewVideo"
+import { DatePickerInput } from "@/components/UI/upload-page/datePicker"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/UI/upload-page/form"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -11,30 +27,18 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/UI/upload-page/form"
-import {
   Drawer,
   DrawerContent,
-  DrawerTrigger,
-  DrawerTitle,
   DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input"
-import { Check, ChevronsUpDown } from "lucide-react"
-import { grades, gradesVScale } from "@/constants/gradeValues"
-import { uploadNewVideo } from "@/api/uploadNewVideo"
-import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
-import { Upload, SearchCheck } from "lucide-react"
+import { grades, gradesVScale } from "@/constants/gradeValues"
 import { boulderLocation } from "@/constants/gradeValues"
-import UrlParser from "js-video-url-parser"
 import { useSettings } from "@/context/settingsContext"
-import { Separator } from "@radix-ui/react-separator"
+import { cn } from "@/lib/utils"
 
 // Zod schema for form validation
 const profileFormSchema = z.object({
@@ -66,37 +70,71 @@ const profileFormSchema = z.object({
     ),
   grade: z.string().nonempty({ message: "You must select a grade." }),
   location: z.string().nonempty({ message: "You must select a location." }),
+  credits: z
+    .string()
+    .nonempty({ message: "You must give credits to someone." }),
 })
 
 // useStates and useForm variables
 export default function UploadSection() {
-  const { gradeScale } = useSettings()
+  const { settings, user } = useSettings()
   const [firstOpen, setFirstOpen] = useState(false)
   const [SecondOpen, setSecondOpen] = useState(false)
+  const [ticketId, setTicketId] = useState(null) // Only for admin
   const form = useForm({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
       youtubeLink: "",
       grade: "",
       location: "",
+      credits: "",
     },
     mode: "onChange",
   })
 
   // Use appropriate grade scale based on settings
-  const gradesToUse = gradeScale.value === "v-scale" ? gradesVScale : grades
+  const gradesToUse =
+    settings.gradeScale.value === "v-scale" ? gradesVScale : grades
 
   // Toaster notification on submit
   async function onSubmit(data) {
     try {
+      const isAdmin = user?.email === "luukdegraaf1993@gmail.com"
+
+      // Admin must select a BOTD date
+      if (isAdmin) {
+        if (!ticketId) {
+          toast("Selecteer een datum", {
+            description: "Kies eerst een datum voor Boulder of the Day.",
+          })
+          return
+        }
+
+        await uploadNewBOTD({
+          ...data,
+          ticketId,
+        })
+
+        toast("Gelukt!", {
+          description: "Video is toegevoegd aan BOTD database.",
+        })
+
+        form.reset()
+        setTicketId(null)
+        return
+      }
+
+      // Normal user flow
       await uploadNewVideo(data)
+
       toast("Succesfully uploaded your video!", {
         description:
           "We will check your submission and add your video to the collection.",
       })
+
       form.reset()
     } catch (err) {
-      console.log(err)
+      console.error(err)
       toast("Sorry, something went wrong.")
     }
   }
@@ -104,7 +142,7 @@ export default function UploadSection() {
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto px-3 pt-3">
       <Toaster position="top-center" />
-      <div className="mb-5 flex w-full items-center justify-center gap-2 text-xl font-bold">
+      <div className="mb-3 flex w-full items-center justify-center gap-2 text-xl font-bold">
         <h1>Upload</h1>
         <Upload className="text-(--muted-foreground)" />
       </div>
@@ -257,6 +295,26 @@ export default function UploadSection() {
                 </Drawer>
               )}
             />
+            <FormField
+              control={form.control}
+              name="credits"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl className="text-sm">
+                    <Input
+                      placeholder="YouTube channel name (e.g. Adam Ondra)"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="mt-2" />
+                </FormItem>
+              )}
+            />
+            {user?.email === "luukdegraaf1993@gmail.com" ? (
+              <DatePickerInput onDateChange={setTicketId} />
+            ) : (
+              ""
+            )}
           </form>
         </Form>
         <div className="flex flex-col justify-center gap-2">
@@ -283,7 +341,7 @@ export default function UploadSection() {
       <div className="w-full pb-2">
         <Button
           className="w-full"
-          size="default"
+          size="lg"
           variant="default"
           type="submit"
           form="video-form"

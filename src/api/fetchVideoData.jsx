@@ -1,4 +1,5 @@
-import { collection, getDocs, where, query, limit } from "firebase/firestore"
+import { collection, getDocs, limit, query, where } from "firebase/firestore"
+
 import { db } from "../../firebase/firebaseConfig.js"
 import { convertToFont, convertToVSale } from "../functions/gradeConverter.jsx"
 
@@ -67,6 +68,7 @@ export async function getData(useGradeScale, videoType) {
       grade: convertedGrade,
       ticketId: snap.docs[i].id,
       guesses: data.guesses || [],
+      credits: data.credits || "",
     })
   }
 

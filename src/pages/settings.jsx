@@ -1,23 +1,25 @@
-import { Label } from "@/components/ui/label"
-import { Settings } from "lucide-react"
-import { ComboBoxResponsive } from "@/components/UI/settings-page/SettingsPopover"
-import { location, gradeScale } from "@/constants/applicationSettings"
-import { LightModeToggle } from "@/components/UI/settings-page/lightModeToggle"
-import { VideoSettings } from "@/components/UI/settings-page/videoSettings"
 import { Separator } from "@radix-ui/react-separator"
-import { Switch } from "@/components/ui/switch"
-import { useSettings } from "@/context/settingsContext"
+import { Settings } from "lucide-react"
+
 import { useNavigate } from "react-router-dom"
 
+import { ComboBoxResponsive } from "@/components/UI/settings-page/SettingsPopover"
+import { LightModeToggle } from "@/components/UI/settings-page/lightModeToggle"
+import { VideoSettings } from "@/components/UI/settings-page/videoSettings"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+import { gradeScale, location } from "@/constants/applicationSettings"
+import { useSettings } from "@/context/settingsContext"
+
 function SettingsPage() {
-  const { infinite, updateInfinite, submitOnDrag, updateSubmitOnDrag } =
-    useSettings()
+  const { settings, updateSetting } = useSettings()
+
   const navigate = useNavigate()
 
   return (
     <>
       <div className="border-border flex h-full w-full flex-col overflow-y-auto px-3 pt-3">
-        <div className="mb-5 flex w-full items-center justify-center gap-2 text-xl font-bold">
+        <div className="mb-3 flex w-full items-center justify-center gap-2 text-xl font-bold">
           <h1>Settings</h1>
           <Settings className="text-(--muted-foreground)" />
         </div>
@@ -58,16 +60,18 @@ function SettingsPage() {
             <Label htmlFor="infinite">Disable lives (infinite mode):</Label>
             <Switch
               id="infinite"
-              checked={infinite}
-              onCheckedChange={updateInfinite}
+              checked={settings.infinite}
+              onCheckedChange={(checked) => updateSetting("infinite", checked)}
             />
           </div>
           <div className="flex w-full flex-row justify-between">
             <Label htmlFor="submitOnDrag">Submit on drag:</Label>
             <Switch
               id="submitOnDrag"
-              checked={submitOnDrag}
-              onCheckedChange={updateSubmitOnDrag}
+              checked={settings.submitOnDrag}
+              onCheckedChange={(checked) =>
+                updateSetting("submitOnDrag", checked)
+              }
             />
           </div>
         </div>
@@ -82,6 +86,7 @@ function SettingsPage() {
             <LightModeToggle />
           </div>
         </div>
+
         <div className="mb-3 flex h-full items-end justify-center text-xs font-bold text-(--muted-foreground)">
           <div
             className="cursor-pointer hover:text-(--primary)"

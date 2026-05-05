@@ -1,15 +1,29 @@
 import { currentGrade } from "@/components/main-components/videoGuess"
+import { gradeMap } from "@/constants/gradeMap"
+
+function checkAnswerDifference(userAnswer, correctAnswer) {
+  if (correctAnswer > userAnswer) {
+    return correctAnswer - userAnswer
+  } else {
+    return userAnswer - correctAnswer
+  }
+}
 
 // Checks if a match is found between the player's guess and the actual grade
-export function isGradeCorrect(playerGuess) {
-  const normalize = (s) => s.toUpperCase().replace(/\s+/g, "").split(/[-/]/)
+export function isGradeCorrect(playerGuess, actualGrade) {
+  const normalize = (s) => s.toLowerCase().replace(/\s+/g, "").split(/[-/]/)
 
-  const guessParts = normalize(playerGuess)
-  const gradeParts = normalize(currentGrade)
+  const userAnswer = normalize(playerGuess)
+  const correctAnswer = normalize(actualGrade ?? currentGrade)
+  const diff = checkAnswerDifference(
+    gradeMap[userAnswer[0]],
+    gradeMap[correctAnswer[0]],
+  )
 
-  if (guessParts[0] === "5A") {
-    guessParts.push(...["5A+", "5B", "5B+", "5C"])
+  // This checks within gradeMap if there is a match.
+  if (gradeMap[userAnswer[0]] === gradeMap[correctAnswer[0]]) {
+    return { isCorrect: true, diff }
+  } else {
+    return { isCorrect: false, diff }
   }
-
-  return gradeParts.some((part) => guessParts.includes(part)) // true or false
 }

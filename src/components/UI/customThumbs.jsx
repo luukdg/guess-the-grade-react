@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
 import { SliderThumb } from "@mui/material/Slider"
+
 import { useMemo } from "react"
+
 import Hold1 from "/holds/hold1.svg"
 import Hold2 from "/holds/hold2.svg"
 import Hold3 from "/holds/hold3.svg"

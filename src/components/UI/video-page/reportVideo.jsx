@@ -1,3 +1,11 @@
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Flag } from "lucide-react"
+import { z } from "zod"
+
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+
+import { submitReport } from "@/api/submitReport"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -9,19 +17,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Textarea } from "../textarea"
-import { useForm } from "react-hook-form"
-import { submitReport } from "@/api/submitReport"
 import { useSettings } from "@/context/settingsContext"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+
+import { Textarea } from "../textarea"
+import { openToaster } from "./reportToaster"
 
 const reportFormSchema = z.object({
   issue: z.string().nonempty({ message: "You must enter something." }),
 })
 
-export function Report({ firebaseId, openToaster }) {
+export function Report({ firebaseId, variant }) {
   const [open, setOpen] = useState(false)
   const [report, setReport] = useState(false)
   const {
@@ -50,7 +55,8 @@ export function Report({ firebaseId, openToaster }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="default">
+        <Button variant={variant} size="sm">
+          <Flag />
           Report
         </Button>
       </DialogTrigger>
