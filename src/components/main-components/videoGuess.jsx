@@ -52,7 +52,6 @@ const VideoGuess = ({
       )
       setVideos(newVideos)
       setCredits(newVideos[0].credits)
-      console.log(newVideos)
       setCurrentIndex(0)
       updateVideoId(newVideos[0].youtubeLink)
       setFirebaseId(newVideos[0].ticketId)

@@ -1,7 +1,6 @@
 import { Separator } from "@radix-ui/react-separator"
 import { ArrowLeft, User } from "lucide-react"
 
-import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { LogOutAlert } from "@/components/UI/logoutAlert"
@@ -17,10 +16,6 @@ import { useSettings } from "@/context/settingsContext"
 function Profile() {
   const navigate = useNavigate()
   const { user, settings } = useSettings()
-
-  useEffect(() => {
-    console.log("Profile page: ", user)
-  }, [])
 
   return (
     <div className="border-border flex h-full w-full flex-col overflow-y-auto px-3 pt-3">

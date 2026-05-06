@@ -133,7 +133,6 @@ export const SettingsProvider = ({ children }) => {
       const currentStreak = correct
         ? stats.currentStreak + 1
         : stats.currentStreak
-      console.log("correct =", correct, "prev streak =", stats.currentStreak)
 
       const maxStreak = Math.max(stats.maxStreak, currentStreak)
       const correctGuesses = stats.correctGuesses + (correct ? 1 : 0)
@@ -146,16 +145,8 @@ export const SettingsProvider = ({ children }) => {
       if (!gameFinished) {
         totalGames = stats.totalGames + 1
         averageScore = correctGuesses / totalGames
-        console.log("New total games:", totalGames)
-        console.log("New average score:", averageScore)
         setFlushReady(true)
       }
-
-      console.log("Correct guesses:", correctGuesses)
-      console.log("Total videos:", videosWatched)
-      console.log("New accuracy:", accuracy)
-      console.log("Current streak:", currentStreak)
-      console.log("Max streak:", maxStreak)
 
       return {
         ...prev,

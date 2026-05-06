@@ -28,7 +28,6 @@ function BoulderOfTheDay() {
     guessState,
     updateGuessState,
     updateVideoId,
-    videoStats,
     setVideoStats,
   } = useGameContext()
 
@@ -81,12 +80,6 @@ function BoulderOfTheDay() {
   useEffect(() => {
     fetchBoulderOfTheDay()
   }, [])
-
-  useEffect(() => {
-    if (videoStats) {
-      console.log(videoStats)
-    }
-  }, [videoStats])
 
   return (
     <>

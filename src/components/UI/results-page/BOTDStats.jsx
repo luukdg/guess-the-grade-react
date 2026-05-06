@@ -1,7 +1,4 @@
 import { Bar, BarChart, XAxis } from "recharts"
-
-import { useEffect } from "react"
-
 import {
   Card,
   CardDescription,
@@ -34,10 +31,6 @@ export function BOTDStats(guesses) {
     grades: rangesToGrades[range], // X-axis label
     guesses: guessesPerRange.guesses[range] || 0, // Y-axis value
   }))
-
-  useEffect(() => {
-    console.log("guesses per range: ", guessesPerRange)
-  }, [guesses, guessesPerRange])
 
   return (
     <Card>
