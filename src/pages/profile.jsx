@@ -70,7 +70,7 @@ function Profile() {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle className="font-archivo-black">Max streak:</CardTitle>
+              <CardTitle className="font-archivo-black">Best streak:</CardTitle>
               <CardDescription className="text-primary text-2xl">
                 {settings.dailyBlocStats.maxStreak}
               </CardDescription>

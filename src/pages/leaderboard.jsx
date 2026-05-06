@@ -25,12 +25,12 @@ import climberIcon from "/climber.svg"
 // Different options per game mode
 const statOptions = {
   survivalStats: [
-    { value: "maxStreak", label: "Max Streak" },
+    { value: "maxStreak", label: "Best Streak" },
     { value: "accuracy", label: "Accuracy" },
     { value: "totalGames", label: "Total Games" },
   ],
   dailyBlocStats: [
-    { value: "maxStreak", label: "Max Streak" },
+    { value: "maxStreak", label: "Best Streak" },
     { value: "averageScore", label: "Guess Average" },
   ],
 }
@@ -47,7 +47,7 @@ function Leaderboard() {
 
   const leaderboard = async () => {
     if (!user) return
-    const cacheKey = `${gameMode}_${dataType}` // ✅ unique key per mode + stat
+    const cacheKey = `${gameMode}_${dataType}` // unique key per mode + stat
     if (data[cacheKey]) return
 
     setDataLoading(false)
@@ -56,7 +56,7 @@ function Leaderboard() {
     setDataLoading(true)
   }
 
-  // ✅ Reset dataType when switching game mode if it doesn't exist in new options
+  // Reset dataType when switching game mode if it doesn't exist in new options
   function handleGameModeChange(mode) {
     setGameMode(mode)
     const modeOptions = statOptions[mode]
@@ -67,7 +67,7 @@ function Leaderboard() {
 
   useEffect(() => {
     leaderboard()
-  }, [dataType, gameMode, user]) // ✅ add gameMode as dependency
+  }, [dataType, gameMode, user])
 
   const orderedOptions = [
     options.find((o) => o.value === dataType),

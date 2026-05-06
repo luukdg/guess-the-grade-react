@@ -39,6 +39,8 @@ export default defineConfig([
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/purity": "warn",
     },
     settings: {
       react: { version: "detect" },
