@@ -42,10 +42,24 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         navigateFallback: "/index.html",
         navigateFallbackDenylist: [/^\/\.well-known\//],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         runtimeCaching: [
           {
-            urlPattern: ({ request }) => request.mode === "navigate",
-            handler: "NetworkFirst",
+            // Image caching
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+            // Cache requests for image file extensions
+
+            handler: "CacheFirst",
+            // Images don't change often, so prioritize cache
+
+            options: {
+              cacheName: "images-cache",
+              expiration: {
+                maxEntries: 60,
+                maxAgeSeconds: 30 * 24 * 60 * 60,
+                // 30 days
+              },
+            },
           },
         ],
       },
